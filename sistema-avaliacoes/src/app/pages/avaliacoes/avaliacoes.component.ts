@@ -62,22 +62,22 @@ import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.ser
 
             <mat-form-field>
               <mat-label>Tipo de Avaliação</mat-label>
-              <mat-select (selectionChange)="filterByType($event.value)">
+              <mat-select [(value)]="selectedTipo" (selectionChange)="filterByType($event.value)">
                 <mat-option value="">Todos os tipos</mat-option>
-                <mat-option value="Diagnóstica">Diagnóstica</mat-option>
-                <mat-option value="Processual">Processual</mat-option>
-                <mat-option value="Final de Ciclo">Final de Ciclo</mat-option>
-                <mat-option value="Certificadora">Certificadora</mat-option>
+                <mat-option value="1">Diagnóstica</mat-option>
+                <mat-option value="2">Processual</mat-option>
+                <mat-option value="3">Final de Ciclo</mat-option>
+                <mat-option value="4">Certificadora</mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>Status</mat-label>
-              <mat-select (selectionChange)="filterByStatus($event.value)">
+              <mat-select [(value)]="selectedStatus" (selectionChange)="filterByStatus($event.value)">
                 <mat-option value="">Todos</mat-option>
-                <mat-option value="0">Pendente</mat-option>
-                <mat-option value="1">Aprovado</mat-option>
-                <mat-option value="2">Cancelado</mat-option>
+                <mat-option value="1">Pendente</mat-option>
+                <mat-option value="2">Aprovado</mat-option>
+                <mat-option value="3">Cancelado</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
