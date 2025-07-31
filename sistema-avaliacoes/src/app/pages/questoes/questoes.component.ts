@@ -118,7 +118,7 @@ import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models
                 <mat-option value="">Todas as fases</mat-option>
                 <mat-option value="1º Ano">1º Ano</mat-option>
                 <mat-option value="2º Ano">2º Ano</mat-option>
-                <mat-option value="3º Ano">3º Ano</mat-option>
+                <mat-option value="3º Ano">3�� Ano</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -140,9 +140,9 @@ import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models
             <span>{{ questoes.length }} questões encontradas</span>
           </div>
           <div class="bulk-actions">
-            <button mat-button (click)="exportarSelecionadas()" [disabled]="!hasSelection()">
+            <button mat-button (click)="exportarSelecionadas()">
               <mat-icon>download</mat-icon>
-              Exportar Selecionadas
+              Exportar Todas
             </button>
           </div>
         </div>
