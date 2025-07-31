@@ -473,8 +473,8 @@ export class AplicacoesComponent implements OnInit {
         id: 1,
         tipoAvaliacao: { id: 1, descricao: 'Diagnóstica', status: true },
         instrucao: 'Avaliação diagnóstica de Matemática para o 7º ano',
-        responsavelId: 1,
-        statusAvaliacaoId: 1
+        responsavel: { id: 1, nome: 'Prof. Ana Silva', email: 'ana@professor.com', cpf: '12345678901', roles: [], status: true },
+        statusAvaliacao: { id: 1, descricao: 'Rascunho', status: true }
       },
       usuarioId: 2,
       usuario: { id: 2, nome: 'Maria Santos', email: 'maria@aluno.com', cpf: '98765432109', roles: [], status: true },
