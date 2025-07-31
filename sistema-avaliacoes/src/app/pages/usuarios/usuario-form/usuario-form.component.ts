@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UsuarioService } from '../../../services/usuario.service';
@@ -26,7 +26,7 @@ import { Usuario, UserRole } from '../../../models';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    MatSnackBarModule,
+
     MatProgressSpinnerModule,
     MatCheckboxModule
   ],
