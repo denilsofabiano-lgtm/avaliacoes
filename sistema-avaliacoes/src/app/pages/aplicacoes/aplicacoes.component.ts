@@ -493,7 +493,6 @@ export class AplicacoesComponent implements OnInit {
       avaliacaoId: 2,
       avaliacao: {
         id: 2,
-        tipoAvaliacaoId: 2,
         tipoAvaliacao: { id: 2, descricao: 'Processual', status: true },
         instrucao: 'Avaliação processual de Português',
         responsavelId: 1,
