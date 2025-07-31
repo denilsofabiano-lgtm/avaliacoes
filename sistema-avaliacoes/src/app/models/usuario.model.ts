@@ -1,6 +1,6 @@
 export interface Usuario {
   id?: number;
-  dataCadastro?: Date;
+  dataCadastro?: string;
   cpf: string;
   nome: string;
   email: string;
@@ -16,11 +16,41 @@ export enum UserRole {
 }
 
 export interface LoginRequest {
-  email: string;
-  senha: string;
+  username: string; // Backend espera 'username' não 'email'
+  password: string; // Backend espera 'password' não 'senha'
+}
+
+export interface LoginResponse {
+  token: string;
 }
 
 export interface AuthResponse {
   token: string;
   usuario: Usuario;
+}
+
+export interface RegisterRequest {
+  nome: string;
+  email: string;
+  cpf: string;
+  senha: string;
+  roles?: UserRole[];
+  status?: boolean;
+}
+
+export interface ApiResponse<T> {
+  message?: string;
+  data?: T;
+  error?: string;
+  details?: string[];
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  };
 }
