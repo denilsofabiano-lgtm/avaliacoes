@@ -183,15 +183,28 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      
-      // Simular login
-      setTimeout(() => {
-        this.isLoading = false;
-        this.snackBar.open('Login realizado com sucesso!', 'Fechar', {
-          duration: 3000
-        });
-        this.router.navigate(['/dashboard']);
-      }, 1500);
+
+      const credentials: LoginRequest = {
+        username: this.loginForm.get('email')?.value,
+        password: this.loginForm.get('senha')?.value
+      };
+
+      this.authService.login(credentials).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.snackBar.open('Login realizado com sucesso!', 'Fechar', {
+            duration: 3000
+          });
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          const message = error.error?.error || 'Erro ao fazer login. Verifique suas credenciais.';
+          this.snackBar.open(message, 'Fechar', {
+            duration: 5000
+          });
+        }
+      });
     }
   }
 
