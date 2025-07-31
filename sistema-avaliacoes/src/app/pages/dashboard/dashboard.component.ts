@@ -17,6 +17,7 @@ import { RelatorioService, DashboardData } from '../../services/relatorio.servic
     MatIconModule,
     MatButtonModule,
     MatGridListModule,
+    MatProgressSpinnerModule,
     RouterModule
   ],
   template: `
