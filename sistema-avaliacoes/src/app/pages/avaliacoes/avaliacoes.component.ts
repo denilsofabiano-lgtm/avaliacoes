@@ -36,7 +36,10 @@ import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.ser
     MatCardModule,
     MatChipsModule,
     MatTooltipModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    FormsModule
   ],
   template: `
     <div class="avaliacoes-container">
