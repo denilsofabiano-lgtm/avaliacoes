@@ -21,7 +21,7 @@ import { RouterModule } from '@angular/router';
     <div class="dashboard-container">
       <h1>Dashboard</h1>
       
-      <mat-grid-list cols="4" rowHeight="200px" gutterSize="16">
+      <mat-grid-list [cols]="gridCols" rowHeight="200px" gutterSize="16">
         <mat-grid-tile>
           <mat-card class="dashboard-card">
             <mat-card-header>
@@ -183,7 +183,7 @@ export class DashboardComponent implements OnInit {
   recentActivities = [
     {
       icon: 'assignment_add',
-      description: 'Nova avaliação "Matemática - 3º Ano" criada',
+      description: 'Nova avaliaç��o "Matemática - 3º Ano" criada',
       time: 'há 2 horas'
     },
     {
