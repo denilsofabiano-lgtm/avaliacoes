@@ -95,4 +95,59 @@ export class UsuarioService {
         })
       );
   }
+
+  // Métodos compatíveis com o componente
+  getAll(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.apiUrl)
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao buscar usuários:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  getById(id: number): Observable<Usuario> {
+    return this.getUsuario(id);
+  }
+
+  create(usuario: Partial<Usuario>): Observable<Usuario> {
+    return this.http.post<Usuario>(this.apiUrl, usuario)
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao criar usuário:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  update(id: number, usuario: Partial<Usuario>): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario)
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao atualizar usuário:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`)
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao deletar usuário:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  toggleStatus(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/toggle-status`, {})
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao alterar status do usuário:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 }
