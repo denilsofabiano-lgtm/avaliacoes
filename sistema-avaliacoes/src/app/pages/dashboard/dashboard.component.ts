@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -183,7 +183,7 @@ export class DashboardComponent implements OnInit {
   recentActivities = [
     {
       icon: 'assignment_add',
-      description: 'Nova avaliaç��o "Matemática - 3º Ano" criada',
+      description: 'Nova avaliação "Matemática - 3º Ano" criada',
       time: 'há 2 horas'
     },
     {
