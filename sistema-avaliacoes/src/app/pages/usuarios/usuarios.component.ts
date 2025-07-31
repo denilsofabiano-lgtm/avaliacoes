@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -11,7 +12,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snackbar';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Usuario, UserRole } from '../../models';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -28,7 +33,10 @@ import { Usuario, UserRole } from '../../models';
     MatSelectModule,
     MatCardModule,
     MatChipsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   template: `
     <div class="usuarios-container">
@@ -72,7 +80,17 @@ import { Usuario, UserRole } from '../../models';
       </mat-card>
 
       <mat-card class="table-card">
-        <table mat-table [dataSource]="usuarios" class="users-table" matSort>
+        <div *ngIf="loading" class="loading-container">
+          <mat-spinner></mat-spinner>
+          <p>Carregando usuários...</p>
+        </div>
+
+        <div *ngIf="!loading && usuarios.length === 0" class="no-data-container">
+          <mat-icon>people_outline</mat-icon>
+          <p>Nenhum usuário encontrado</p>
+        </div>
+
+        <table mat-table [dataSource]="usuarios" class="users-table" matSort *ngIf="!loading && usuarios.length > 0">
           <ng-container matColumnDef="nome">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
             <td mat-cell *matCellDef="let user">{{ user.nome }}</td>
@@ -189,6 +207,35 @@ import { Usuario, UserRole } from '../../models';
       min-width: 200px;
     }
 
+    .loading-container,
+    .no-data-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .loading-container mat-spinner,
+    .no-data-container mat-icon {
+      margin-bottom: 16px;
+    }
+
+    .no-data-container mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #666;
+    }
+
+    .loading-container p,
+    .no-data-container p {
+      margin: 0;
+      color: #666;
+      font-size: 16px;
+    }
+
     @media (max-width: 768px) {
       .usuarios-container {
         padding: 16px;
@@ -227,68 +274,101 @@ import { Usuario, UserRole } from '../../models';
 export class UsuariosComponent implements OnInit {
   displayedColumns: string[] = ['nome', 'email', 'cpf', 'roles', 'status', 'dataCadastro', 'actions'];
   
-  usuarios: Usuario[] = [
-    {
-      id: 1,
-      nome: 'João Silva',
-      email: 'joao@sistema.com',
-      cpf: '12345678901',
-      roles: [UserRole.ROLE_ADMIN],
-      status: true,
-      dataCadastro: new Date('2024-01-15')
-    },
-    {
-      id: 2,
-      nome: 'Maria Santos',
-      email: 'maria@sistema.com',
-      cpf: '98765432109',
-      roles: [UserRole.ROLE_PROFESSOR],
-      status: true,
-      dataCadastro: new Date('2024-02-20')
-    },
-    {
-      id: 3,
-      nome: 'Pedro Oliveira',
-      email: 'pedro@sistema.com',
-      cpf: '11122233344',
-      roles: [UserRole.ROLE_ALUNO],
-      status: true,
-      dataCadastro: new Date('2024-03-10')
-    }
-  ];
+  usuarios: Usuario[] = [];
+  loading = false;
+  allUsuarios: Usuario[] = [];
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadUsuarios();
+  }
+
+  private loadUsuarios(): void {
+    this.loading = true;
+    this.usuarioService.getAll().subscribe({
+      next: (usuarios) => {
+        this.allUsuarios = usuarios;
+        this.usuarios = usuarios;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.snackBar.open('Erro ao carregar usuários', 'Fechar', { duration: 3000 });
+        this.loading = false;
+      }
+    });
+  }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    console.log('Filtrar por:', filterValue);
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase().trim();
+    this.usuarios = this.allUsuarios.filter(usuario =>
+      usuario.nome?.toLowerCase().includes(filterValue) ||
+      usuario.email?.toLowerCase().includes(filterValue) ||
+      usuario.cpf?.includes(filterValue.replace(/\D/g, ''))
+    );
   }
 
   filterByRole(role: string): void {
-    console.log('Filtrar por perfil:', role);
+    if (role) {
+      this.usuarios = this.allUsuarios.filter(usuario =>
+        usuario.roles?.includes(role as UserRole)
+      );
+    } else {
+      this.usuarios = [...this.allUsuarios];
+    }
   }
 
   filterByStatus(status: string): void {
-    console.log('Filtrar por status:', status);
+    if (status !== '') {
+      const isActive = status === 'true';
+      this.usuarios = this.allUsuarios.filter(usuario => usuario.status === isActive);
+    } else {
+      this.usuarios = [...this.allUsuarios];
+    }
   }
 
   addUser(): void {
-    console.log('Adicionar novo usuário');
+    this.router.navigate(['/usuarios/novo']);
   }
 
   editUser(user: Usuario): void {
-    console.log('Editar usuário:', user);
+    this.router.navigate(['/usuarios', user.id, 'editar']);
   }
 
   toggleUserStatus(user: Usuario): void {
-    user.status = !user.status;
-    console.log('Status alterado:', user);
+    const newStatus = !user.status;
+    const action = newStatus ? 'ativar' : 'desativar';
+
+    if (confirm(`Deseja ${action} o usuário ${user.nome}?`)) {
+      this.usuarioService.toggleStatus(user.id!).subscribe({
+        next: () => {
+          user.status = newStatus;
+          this.snackBar.open(`Usuário ${action}do com sucesso!`, 'Fechar', { duration: 3000 });
+        },
+        error: (error) => {
+          this.snackBar.open(`Erro ao ${action} usuário`, 'Fechar', { duration: 3000 });
+        }
+      });
+    }
   }
 
   deleteUser(user: Usuario): void {
-    console.log('Excluir usuário:', user);
+    if (confirm(`Deseja realmente excluir o usuário ${user.nome}? Esta ação não pode ser desfeita.`)) {
+      this.usuarioService.delete(user.id!).subscribe({
+        next: () => {
+          this.snackBar.open('Usuário excluído com sucesso!', 'Fechar', { duration: 3000 });
+          this.loadUsuarios();
+        },
+        error: (error) => {
+          this.snackBar.open('Erro ao excluir usuário', 'Fechar', { duration: 3000 });
+        }
+      });
+    }
   }
 
   formatCpf(cpf: string): string {
