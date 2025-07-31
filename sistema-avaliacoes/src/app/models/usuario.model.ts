@@ -1,12 +1,12 @@
 export interface Usuario {
   id?: number;
-  dataCadastro?: string;
-  cpf: string;
-  nome: string;
-  email: string;
+  dataCadastro?: string | Date;
+  cpf?: string;
+  nome?: string;
+  email?: string;
   senha?: string;
-  roles: UserRole[];
-  status: boolean;
+  roles?: UserRole[];
+  status?: boolean;
 }
 
 export enum UserRole {
