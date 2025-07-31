@@ -16,6 +16,7 @@ import { Usuario, UserRole } from './models';
   imports: [
     CommonModule,
     RouterOutlet,
+    RouterModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
