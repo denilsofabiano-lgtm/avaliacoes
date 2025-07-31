@@ -206,5 +206,25 @@ export class DashboardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.updateGridCols();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updateGridCols();
+  }
+
+  updateGridCols(): void {
+    const width = window.innerWidth;
+    if (width < 768) {
+      this.gridCols = 1;
+    } else if (width < 1024) {
+      this.gridCols = 2;
+    } else if (width < 1440) {
+      this.gridCols = 3;
+    } else {
+      this.gridCols = 4;
+    }
+  }
 }
