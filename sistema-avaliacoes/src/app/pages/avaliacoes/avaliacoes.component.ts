@@ -177,9 +177,14 @@ import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.ser
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
-        <mat-paginator 
-          [pageSizeOptions]="[5, 10, 25, 50]" 
-          showFirstLastButtons>
+        <mat-paginator
+          [length]="totalItems"
+          [pageSize]="pageSize"
+          [pageIndex]="currentPage"
+          [pageSizeOptions]="[5, 10, 25, 50]"
+          (page)="onPageChange($event)"
+          showFirstLastButtons
+          *ngIf="!isLoading">
         </mat-paginator>
       </mat-card>
     </div>
