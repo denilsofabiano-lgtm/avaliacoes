@@ -14,18 +14,59 @@ services:
       - avaliacoes-network
     environment:
       - NODE_ENV=production
+    depends_on:
+      - backend
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`localhost`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=80"
 
-  # Database (PostgreSQL) - Para futuro backend
+  # Backend API Symfony
+  backend:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile
+      target: php
+    container_name: sistema-avaliacoes-backend
+    restart: unless-stopped
+    networks:
+      - avaliacoes-network
+    environment:
+      - APP_ENV=prod
+      - DATABASE_URL=postgresql://avaliacoes_user:avaliacoes_password@database:5432/sistema_avaliacoes?serverVersion=15&charset=utf8
+      - JWT_PASSPHRASE=your-jwt-passphrase
+      - CORS_ALLOW_ORIGIN=http://localhost:8080
+    volumes:
+      - ../sistema-avaliacoes-api:/var/www/html
+    depends_on:
+      - database
+      - redis
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx for Backend
+  nginx-api:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile
+      target: web
+    container_name: sistema-avaliacoes-nginx
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-network
+    depends_on:
+      - backend
+    volumes:
+      - ../sistema-avaliacoes-api/public:/usr/share/nginx/html
+
+  # Database (PostgreSQL)
   database:
     image: postgres:15-alpine
     container_name: sistema-avaliacoes-db
@@ -48,7 +89,7 @@ services:
       retries: 5
       start_period: 30s
 
-  # Redis (Para cache e sessões) - Para futuro backend
+  # Redis (Para cache e sessões)
   redis:
     image: redis:7-alpine
     container_name: sistema-avaliacoes-redis
@@ -65,6 +106,20 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+
+  # Adminer (Database Management)
+  adminer:
+    image: adminer:latest
+    container_name: sistema-avaliacoes-adminer
+    ports:
+      - "8082:8080"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-network
+    depends_on:
+      - database
+    environment:
+      ADMINER_DEFAULT_SERVER: database
 
 volumes:
   postgres_data:
