@@ -85,7 +85,12 @@ import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.ser
       </mat-card>
 
       <mat-card class="table-card">
-        <table mat-table [dataSource]="avaliacoes" class="avaliacoes-table" matSort>
+        <div *ngIf="isLoading" class="loading-spinner">
+          <mat-spinner></mat-spinner>
+          <p>Carregando avaliações...</p>
+        </div>
+
+        <table mat-table [dataSource]="avaliacoes" class="avaliacoes-table" matSort *ngIf="!isLoading">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
             <td mat-cell *matCellDef="let avaliacao">{{ avaliacao.id }}</td>
