@@ -18,47 +18,58 @@ export const routes: Routes = [
   },
   {
     path: 'usuarios',
-    loadComponent: () => import('./pages/usuarios/usuarios.component').then(m => m.UsuariosComponent)
+    loadComponent: () => import('./pages/usuarios/usuarios.component').then(m => m.UsuariosComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'avaliacoes',
-    loadComponent: () => import('./pages/avaliacoes/avaliacoes.component').then(m => m.AvaliacoesComponent)
+    loadComponent: () => import('./pages/avaliacoes/avaliacoes.component').then(m => m.AvaliacoesComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'avaliacoes/nova',
-    loadComponent: () => import('./pages/avaliacoes/avaliacao-form/avaliacao-form.component').then(m => m.AvaliacaoFormComponent)
+    loadComponent: () => import('./pages/avaliacoes/avaliacao-form/avaliacao-form.component').then(m => m.AvaliacaoFormComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'avaliacoes/:id/editar',
-    loadComponent: () => import('./pages/avaliacoes/avaliacao-form/avaliacao-form.component').then(m => m.AvaliacaoFormComponent)
+    loadComponent: () => import('./pages/avaliacoes/avaliacao-form/avaliacao-form.component').then(m => m.AvaliacaoFormComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'questoes',
-    loadComponent: () => import('./pages/questoes/questoes.component').then(m => m.QuestoesComponent)
+    loadComponent: () => import('./pages/questoes/questoes.component').then(m => m.QuestoesComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'questoes/nova',
-    loadComponent: () => import('./pages/questoes/questao-form/questao-form.component').then(m => m.QuestaoFormComponent)
+    loadComponent: () => import('./pages/questoes/questao-form/questao-form.component').then(m => m.QuestaoFormComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'questoes/:id/editar',
-    loadComponent: () => import('./pages/questoes/questao-form/questao-form.component').then(m => m.QuestaoFormComponent)
+    loadComponent: () => import('./pages/questoes/questao-form/questao-form.component').then(m => m.QuestaoFormComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'aplicacoes',
-    loadComponent: () => import('./pages/aplicacoes/aplicacoes.component').then(m => m.AplicacoesComponent)
+    loadComponent: () => import('./pages/aplicacoes/aplicacoes.component').then(m => m.AplicacoesComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'aplicacoes/:id/aplicar',
-    loadComponent: () => import('./pages/aplicacoes/aplicar-prova/aplicar-prova.component').then(m => m.AplicarProvaComponent)
+    loadComponent: () => import('./pages/aplicacoes/aplicar-prova/aplicar-prova.component').then(m => m.AplicarProvaComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'configuracoes',
-    loadComponent: () => import('./pages/configuracoes/configuracoes.component').then(m => m.ConfiguracoesComponent)
+    loadComponent: () => import('./pages/configuracoes/configuracoes.component').then(m => m.ConfiguracoesComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: 'relatorios',
-    loadComponent: () => import('./pages/relatorios/relatorios.component').then(m => m.RelatoriosComponent)
+    loadComponent: () => import('./pages/relatorios/relatorios.component').then(m => m.RelatoriosComponent),
+    canActivate: [AuthGuard]
   },
   {
     path: '**',
