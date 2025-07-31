@@ -118,7 +118,7 @@ import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models
                 <mat-option value="">Todas as fases</mat-option>
                 <mat-option value="1º Ano">1º Ano</mat-option>
                 <mat-option value="2º Ano">2º Ano</mat-option>
-                <mat-option value="3º Ano">3�� Ano</mat-option>
+                <mat-option value="3º Ano">3º Ano</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -457,7 +457,7 @@ export class QuestoesComponent implements OnInit {
   }
 
   exportarSelecionadas(): void {
-    console.log('Exportar questões selecionadas');
+    console.log('Exportar todas as questões');
   }
 
   visualizarQuestao(questao: Questao): void {
