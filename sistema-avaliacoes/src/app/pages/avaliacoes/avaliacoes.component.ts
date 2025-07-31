@@ -111,7 +111,7 @@ import { Avaliacao, TipoAvaliacaoEnum, StatusAvaliacaoEnum } from '../../models'
             <th mat-header-cell *matHeaderCellDef>Questões</th>
             <td mat-cell *matCellDef="let avaliacao">
               <mat-chip color="accent">
-                {{ avaliacao.questoes?.length || 0 }} questões
+                {{ getQuestoesCount(avaliacao) }} questões
               </mat-chip>
             </td>
           </ng-container>
@@ -153,7 +153,6 @@ import { Avaliacao, TipoAvaliacaoEnum, StatusAvaliacaoEnum } from '../../models'
                   <mat-icon>play_circle_filled</mat-icon>
                   Aplicar
                 </button>
-                <mat-divider></mat-divider>
                 <button mat-menu-item (click)="deleteAvaliacao(avaliacao)" color="warn">
                   <mat-icon color="warn">delete</mat-icon>
                   Excluir
@@ -241,8 +240,7 @@ export class AvaliacoesComponent implements OnInit {
       instrucao: 'Avaliação diagnóstica de Matemática para identificar o nível de conhecimento dos alunos no início do semestre.',
       responsavelId: 1,
       responsavel: { id: 1, nome: 'Prof. Maria Silva', email: 'maria@escola.com', cpf: '12345678901', roles: [], status: true },
-      statusAvaliacaoId: 1,
-      questoes: Array(10).fill(null).map((_, i) => ({ id: i + 1 }))
+      statusAvaliacaoId: 1
     },
     {
       id: 2,
@@ -252,8 +250,7 @@ export class AvaliacoesComponent implements OnInit {
       instrucao: 'Avaliação processual de Português focada em interpretação de texto e gramática.',
       responsavelId: 2,
       responsavel: { id: 2, nome: 'Prof. João Santos', email: 'joao@escola.com', cpf: '98765432109', roles: [], status: true },
-      statusAvaliacaoId: 1,
-      questoes: Array(15).fill(null).map((_, i) => ({ id: i + 1 }))
+      statusAvaliacaoId: 1
     }
   ];
 
@@ -293,6 +290,10 @@ export class AvaliacoesComponent implements OnInit {
   getInstrucaoPreview(instrucao: string | undefined): string {
     if (!instrucao) return '';
     return instrucao.length > 80 ? instrucao.substring(0, 80) + '...' : instrucao;
+  }
+
+  getQuestoesCount(avaliacao: Avaliacao): number {
+    return avaliacao.questoes?.length || 0;
   }
 
   getTipoColor(tipo: string | undefined): 'primary' | 'accent' | 'warn' {
