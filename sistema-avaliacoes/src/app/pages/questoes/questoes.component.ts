@@ -148,22 +148,7 @@ import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models
         </div>
 
         <table mat-table [dataSource]="questoes" class="questoes-table" matSort>
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox 
-                (change)="$event ? masterToggle() : null"
-                [checked]="selection.hasValue() && isAllSelected()"
-                [indeterminate]="selection.hasValue() && !isAllSelected()">
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let questao">
-              <mat-checkbox 
-                (click)="$event.stopPropagation()"
-                (change)="$event ? selection.toggle(questao) : null"
-                [checked]="selection.isSelected(questao)">
-              </mat-checkbox>
-            </td>
-          </ng-container>
+
 
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -250,7 +235,7 @@ import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models
                   <mat-icon>report_problem</mat-icon>
                   Reportar Problema
                 </button>
-                <mat-divider></mat-divider>
+
                 <button mat-menu-item (click)="deleteQuestao(questao)" color="warn">
                   <mat-icon color="warn">delete</mat-icon>
                   Excluir
@@ -385,7 +370,7 @@ import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models
   `]
 })
 export class QuestoesComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'id', 'pergunta', 'disciplina', 'tipoAlternativa', 'nivelDificuldade', 'pontuacao', 'tema', 'actions'];
+  displayedColumns: string[] = ['id', 'pergunta', 'disciplina', 'tipoAlternativa', 'nivelDificuldade', 'pontuacao', 'tema', 'actions'];
   
   questoes: Questao[] = [
     {
@@ -432,12 +417,7 @@ export class QuestoesComponent implements OnInit {
     }
   ];
 
-  selection = { 
-    hasValue: () => false, 
-    isSelected: () => false, 
-    toggle: () => {}, 
-    selected: [] 
-  };
+
 
   constructor() {}
 
@@ -496,17 +476,7 @@ export class QuestoesComponent implements OnInit {
     console.log('Excluir questão:', questao);
   }
 
-  hasSelection(): boolean {
-    return this.selection.selected.length > 0;
-  }
 
-  masterToggle(): void {
-    console.log('Toggle all');
-  }
-
-  isAllSelected(): boolean {
-    return false;
-  }
 
   getPerguntaPreview(pergunta: string): string {
     return pergunta.length > 60 ? pergunta.substring(0, 60) + '...' : pergunta;
