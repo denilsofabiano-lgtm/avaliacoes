@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Frontend Angular Application
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sistema-avaliacoes-frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-network
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`localhost`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+
+  # Database (PostgreSQL) - Para futuro backend
+  database:
+    image: postgres:15-alpine
+    container_name: sistema-avaliacoes-db
+    environment:
+      POSTGRES_DB: sistema_avaliacoes
+      POSTGRES_USER: avaliacoes_user
+      POSTGRES_PASSWORD: avaliacoes_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U avaliacoes_user -d sistema_avaliacoes"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Redis (Para cache e sessões) - Para futuro backend
+  redis:
+    image: redis:7-alpine
+    container_name: sistema-avaliacoes-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-network
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  avaliacoes-network:
+    driver: bridge
