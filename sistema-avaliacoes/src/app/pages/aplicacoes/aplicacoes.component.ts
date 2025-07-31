@@ -448,7 +448,6 @@ export class AplicacoesComponent implements OnInit {
       avaliacaoId: 1,
       avaliacao: {
         id: 1,
-        tipoAvaliacaoId: 1,
         tipoAvaliacao: { id: 1, descricao: 'Diagnóstica', status: true },
         instrucao: 'Avaliação diagnóstica de Matemática para o 7º ano',
         responsavelId: 1,
