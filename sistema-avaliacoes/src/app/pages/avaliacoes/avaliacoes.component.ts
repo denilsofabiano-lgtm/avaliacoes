@@ -226,6 +226,44 @@ import { Avaliacao, TipoAvaliacaoEnum, StatusAvaliacaoEnum } from '../../models'
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
+    @media (max-width: 768px) {
+      .avaliacoes-container {
+        padding: 16px;
+      }
+
+      .header-section {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .header-section button {
+        width: 100%;
+      }
+
+      .filters-row {
+        flex-direction: column;
+      }
+
+      .filters-row mat-form-field {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .table-card {
+        margin: 0 -8px;
+      }
+
+      .mat-column-id,
+      .mat-column-dataCadastro {
+        display: none;
+      }
+
+      .instrucao-cell {
+        max-width: 150px;
+      }
+    }
   `]
 })
 export class AvaliacoesComponent implements OnInit {
