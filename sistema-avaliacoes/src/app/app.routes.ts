@@ -22,6 +22,16 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'usuarios/novo',
+    loadComponent: () => import('./pages/usuarios/usuario-form/usuario-form.component').then(m => m.UsuarioFormComponent),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'usuarios/:id/editar',
+    loadComponent: () => import('./pages/usuarios/usuario-form/usuario-form.component').then(m => m.UsuarioFormComponent),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'avaliacoes',
     loadComponent: () => import('./pages/avaliacoes/avaliacoes.component').then(m => m.AvaliacoesComponent),
     canActivate: [AuthGuard]
