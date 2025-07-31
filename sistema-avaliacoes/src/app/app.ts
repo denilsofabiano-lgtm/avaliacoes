@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,7 +8,9 @@ import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
-import { Usuario, UserRole } from './models';
+import { Subject, takeUntil } from 'rxjs';
+import { Usuario } from './models';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -28,43 +30,52 @@ import { Usuario, UserRole } from './models';
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('sidenav') sidenav!: MatSidenav;
-  
+
   title = 'Sistema de Avaliações';
   isLoggedIn = false;
   currentUser: Usuario | null = null;
+  private destroy$ = new Subject<void>();
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    // Simular usuário logado para desenvolvimento
-    this.currentUser = {
-      id: 1,
-      nome: 'Admin Sistema',
-      email: 'admin@sistema.com',
-      cpf: '12345678901',
-      roles: [UserRole.ROLE_ADMIN],
-      status: true
-    };
-    this.isLoggedIn = true;
+    // Observar mudanças de autenticação
+    this.authService.isLoggedIn$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isLoggedIn => {
+        this.isLoggedIn = isLoggedIn;
+      });
+
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.currentUser = user;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get isAdmin(): boolean {
-    return this.currentUser?.roles.includes(UserRole.ROLE_ADMIN) || false;
+    return this.authService.isAdmin;
   }
 
   get isProfessor(): boolean {
-    return this.currentUser?.roles.includes(UserRole.ROLE_PROFESSOR) || false;
+    return this.authService.isProfessor;
   }
 
   get isAluno(): boolean {
-    return this.currentUser?.roles.includes(UserRole.ROLE_ALUNO) || false;
+    return this.authService.isAluno;
   }
 
   logout(): void {
-    this.isLoggedIn = false;
-    this.currentUser = null;
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 }
