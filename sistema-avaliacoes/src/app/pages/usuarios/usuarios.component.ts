@@ -12,7 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Usuario, UserRole } from '../../models';
@@ -34,7 +34,7 @@ import { UsuarioService } from '../../services/usuario.service';
     MatCardModule,
     MatChipsModule,
     MatTooltipModule,
-    MatSnackBarModule,
+
     MatDialogModule,
     MatProgressSpinnerModule
   ],
