@@ -179,6 +179,7 @@ export class DashboardComponent implements OnInit {
   totalAvaliacoes = 23;
   totalQuestoes = 456;
   totalAplicacoes = 12;
+  gridCols = 4;
 
   recentActivities = [
     {
