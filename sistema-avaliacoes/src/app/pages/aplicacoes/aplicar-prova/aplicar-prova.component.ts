@@ -38,8 +38,8 @@ import { interval, Subscription } from 'rxjs';
       <mat-card class="header-card">
         <div class="prova-header">
           <div class="prova-info">
-            <h2>{{ avaliacao?.tipoAvaliacao?.descricao }}</h2>
-            <p class="instrucoes">{{ avaliacao?.instrucao }}</p>
+            <h2>{{ avaliacao.tipoAvaliacao.descricao }}</h2>
+            <p class="instrucoes">{{ avaliacao.instrucao }}</p>
           </div>
           <div class="tempo-info">
             <div class="cronometro">
@@ -80,19 +80,9 @@ import { interval, Subscription } from 'rxjs';
             </span>
           </div>
 
-          <!-- Contexto da Questão -->
-          <div class="contexto" *ngIf="questaoAtualObj.questaoContexto?.contexto">
-            <h4>Texto de Referência:</h4>
-            <p class="contexto-texto">{{ questaoAtualObj.questaoContexto.contexto }}</p>
-          </div>
-
           <!-- Pergunta -->
           <div class="pergunta">
             <p>{{ questaoAtualObj.pergunta }}</p>
-            <img *ngIf="questaoAtualObj.arquivoImagem" 
-                 [src]="'assets/images/' + questaoAtualObj.arquivoImagem" 
-                 alt="Imagem da questão"
-                 class="questao-imagem">
           </div>
 
           <!-- Alternativas (Múltipla Escolha) -->
@@ -104,10 +94,6 @@ import { interval, Subscription } from 'rxjs';
                 <mat-radio-button [value]="alternativa.id" class="alternativa-radio">
                   <span class="alternativa-letra">{{ alternativa.alternativa }})</span>
                   <span class="alternativa-conteudo">{{ alternativa.conteudo }}</span>
-                  <img *ngIf="alternativa.arquivoImagem" 
-                       [src]="'assets/images/' + alternativa.arquivoImagem" 
-                       alt="Imagem da alternativa"
-                       class="alternativa-imagem">
                 </mat-radio-button>
               </div>
             </mat-radio-group>
@@ -295,23 +281,6 @@ import { interval, Subscription } from 'rxjs';
       font-weight: normal;
     }
 
-    .contexto {
-      background: #f8f9fa;
-      padding: 16px;
-      border-radius: 4px;
-      margin-bottom: 20px;
-    }
-
-    .contexto h4 {
-      margin: 0 0 10px 0;
-      color: #1976d2;
-    }
-
-    .contexto-texto {
-      margin: 0;
-      line-height: 1.6;
-    }
-
     .pergunta {
       margin-bottom: 20px;
     }
@@ -320,18 +289,6 @@ import { interval, Subscription } from 'rxjs';
       font-size: 1.1em;
       line-height: 1.6;
       margin-bottom: 10px;
-    }
-
-    .questao-imagem,
-    .alternativa-imagem {
-      max-width: 100%;
-      height: auto;
-      border-radius: 4px;
-      margin-top: 10px;
-    }
-
-    .alternativa-imagem {
-      max-width: 200px;
     }
 
     .alternativas-group {
