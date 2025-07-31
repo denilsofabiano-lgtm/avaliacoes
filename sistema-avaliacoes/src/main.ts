@@ -59,7 +59,10 @@ bootstrapApplication(AppComponent, {
       MatTabsModule,
       MatExpansionModule,
       MatRadioModule,
-      MatCheckboxModule
+      MatCheckboxModule,
+      MatGridListModule,
+      MatSlideToggleModule,
+      MatProgressBarModule
     )
   ]
 }).catch(err => console.error(err));
