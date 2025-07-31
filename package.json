@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run dev",
-    "dev": "echo 'Development server not configured yet'"
+    "start": "npx serve . -p 4200",
+    "dev": "npx serve . -p 4200"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
   },
   "keywords": [],
   "author": "",
