@@ -244,6 +244,20 @@ import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.ser
       white-space: nowrap;
     }
 
+    .loading-spinner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .loading-spinner p {
+      margin-top: 16px;
+      color: #666;
+    }
+
     @media (max-width: 768px) {
       .avaliacoes-container {
         padding: 16px;
