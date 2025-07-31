@@ -40,3 +40,49 @@ html, body {
 .spacer {
   flex: 1 1 auto;
 }
+
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+  .content-area {
+    padding: 16px;
+  }
+
+  .p-2 {
+    padding: 12px;
+  }
+
+  .mt-2 {
+    margin-top: 12px;
+  }
+
+  .mb-2 {
+    margin-bottom: 12px;
+  }
+}
+
+/* Prevenir overflow horizontal */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Cards responsivos */
+.mat-card {
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* Botões responsivos */
+.mat-button, .mat-raised-button, .mat-fab, .mat-mini-fab {
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .mat-button, .mat-raised-button {
+    padding: 0 8px;
+    min-width: auto;
+  }
+}
