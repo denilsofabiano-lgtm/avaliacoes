@@ -5,15 +5,13 @@ import { Questao } from './questao.model';
 
 export interface Avaliacao {
   id?: number;
-  dataCadastro?: Date;
-  tipoAvaliacaoId: number;
+  dataCadastro?: string;
   tipoAvaliacao?: TipoAvaliacao;
   instrucao?: string;
-  responsavelId: number;
   responsavel?: Usuario;
-  statusAvaliacaoId: number;
   statusAvaliacao?: StatusAvaliacao;
   questoes?: Questao[];
+  totalQuestoes?: number;
 }
 
 export interface AvaliacaoQuestao {
