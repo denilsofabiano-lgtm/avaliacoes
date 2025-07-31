@@ -56,7 +56,7 @@ import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.ser
           <div class="filters-row">
             <mat-form-field>
               <mat-label>Buscar</mat-label>
-              <input matInput placeholder="Buscar por instruções..." (keyup)="applyFilter($event)">
+              <input matInput placeholder="Buscar por instruções..." [(ngModel)]="searchTerm" (keyup)="applyFilter($event)">
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
 
