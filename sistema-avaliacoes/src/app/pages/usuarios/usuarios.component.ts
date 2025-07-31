@@ -188,6 +188,40 @@ import { Usuario, UserRole } from '../../models';
     .mat-column-roles {
       min-width: 200px;
     }
+
+    @media (max-width: 768px) {
+      .usuarios-container {
+        padding: 16px;
+      }
+
+      .header-section {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .header-section button {
+        width: 100%;
+      }
+
+      .filters-row {
+        flex-direction: column;
+      }
+
+      .filters-row mat-form-field {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .table-card {
+        margin: 0 -8px;
+      }
+
+      .mat-column-cpf,
+      .mat-column-dataCadastro {
+        display: none;
+      }
+    }
   `]
 })
 export class UsuariosComponent implements OnInit {
