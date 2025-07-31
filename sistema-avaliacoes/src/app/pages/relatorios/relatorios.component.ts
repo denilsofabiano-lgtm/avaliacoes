@@ -579,6 +579,45 @@ import { MatChipsModule } from '@angular/material/chips';
       width: 100px;
       text-align: center;
     }
+
+    @media (max-width: 768px) {
+      .relatorios-container {
+        padding: 16px;
+      }
+
+      .resumo-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .filtros-form {
+        flex-direction: column;
+      }
+
+      .filtros-form mat-form-field {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .relatorio-table {
+        font-size: 14px;
+      }
+
+      .mat-column-distribuicao,
+      .mat-column-ultimaAvaliacao {
+        display: none;
+      }
+
+      .questao-texto {
+        max-width: 150px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .resumo-cards {
+        grid-template-columns: 1fr;
+      }
+    }
   `]
 })
 export class RelatoriosComponent implements OnInit {
