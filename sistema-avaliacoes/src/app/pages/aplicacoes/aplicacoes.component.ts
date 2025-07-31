@@ -495,8 +495,8 @@ export class AplicacoesComponent implements OnInit {
         id: 2,
         tipoAvaliacao: { id: 2, descricao: 'Processual', status: true },
         instrucao: 'Avaliação processual de Português',
-        responsavelId: 1,
-        statusAvaliacaoId: 1
+        responsavel: { id: 1, nome: 'Prof. Ana Silva', email: 'ana@professor.com', cpf: '12345678901', roles: [], status: true },
+        statusAvaliacao: { id: 1, descricao: 'Rascunho', status: true }
       },
       usuarioId: 3,
       usuario: { id: 3, nome: 'Pedro Oliveira', email: 'pedro@aluno.com', cpf: '11122233344', roles: [], status: true },
