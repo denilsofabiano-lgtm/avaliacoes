@@ -227,7 +227,7 @@ import { ParticipanteAvaliacao, StatusAplicacaoEnum } from '../../models';
                   <mat-icon>{{ participante.disponivel ? 'block' : 'check_circle' }}</mat-icon>
                   {{ participante.disponivel ? 'Bloquear' : 'Liberar' }}
                 </button>
-                <mat-divider></mat-divider>
+
                 <button mat-menu-item (click)="resetarAplicacao(participante)" color="warn">
                   <mat-icon color="warn">refresh</mat-icon>
                   Resetar
