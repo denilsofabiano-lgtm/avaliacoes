@@ -298,33 +298,104 @@ export class AvaliacoesComponent implements OnInit {
     this.loadAvaliacoes();
   }
 
+  loadAvaliacoes(): void {
+    this.isLoading = true;
+
+    const filters: AvaliacaoFilters = {
+      page: this.currentPage + 1,
+      limit: this.pageSize,
+      search: this.searchTerm || undefined,
+      tipoAvaliacaoId: this.selectedTipo ? parseInt(this.selectedTipo) : undefined,
+      statusAvaliacaoId: this.selectedStatus ? parseInt(this.selectedStatus) : undefined
+    };
+
+    this.avaliacaoService.getAvaliacoes(filters).subscribe({
+      next: (response) => {
+        this.avaliacoes = response.data || [];
+        this.totalItems = response.pagination?.total || 0;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.snackBar.open('Erro ao carregar avaliações', 'Fechar', {
+          duration: 3000
+        });
+        console.error('Erro ao carregar avaliações:', error);
+      }
+    });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadAvaliacoes();
+  }
+
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    console.log('Filtrar por:', filterValue);
+    this.searchTerm = filterValue.trim();
+    this.currentPage = 0;
+    this.loadAvaliacoes();
   }
 
   filterByType(type: string): void {
-    console.log('Filtrar por tipo:', type);
+    this.selectedTipo = type;
+    this.currentPage = 0;
+    this.loadAvaliacoes();
   }
 
   filterByStatus(status: string): void {
-    console.log('Filtrar por status:', status);
+    this.selectedStatus = status;
+    this.currentPage = 0;
+    this.loadAvaliacoes();
   }
 
   duplicateAvaliacao(avaliacao: Avaliacao): void {
-    console.log('Duplicar avaliação:', avaliacao);
+    if (avaliacao.id) {
+      this.avaliacaoService.duplicateAvaliacao(avaliacao.id).subscribe({
+        next: (response) => {
+          this.snackBar.open('Avaliação duplicada com sucesso!', 'Fechar', {
+            duration: 3000
+          });
+          this.loadAvaliacoes();
+        },
+        error: (error) => {
+          this.snackBar.open('Erro ao duplicar avaliação', 'Fechar', {
+            duration: 3000
+          });
+          console.error('Erro ao duplicar avaliação:', error);
+        }
+      });
+    }
   }
 
   manageQuestoes(avaliacao: Avaliacao): void {
+    // Navegar para página de gestão de questões da avaliação
     console.log('Gerenciar questões:', avaliacao);
   }
 
   aplicarAvaliacao(avaliacao: Avaliacao): void {
+    // Navegar para página de aplicação da avaliação
     console.log('Aplicar avaliação:', avaliacao);
   }
 
   deleteAvaliacao(avaliacao: Avaliacao): void {
-    console.log('Excluir avaliação:', avaliacao);
+    if (avaliacao.id && confirm('Tem certeza que deseja excluir esta avaliação?')) {
+      this.avaliacaoService.deleteAvaliacao(avaliacao.id).subscribe({
+        next: (response) => {
+          this.snackBar.open('Avaliação excluída com sucesso!', 'Fechar', {
+            duration: 3000
+          });
+          this.loadAvaliacoes();
+        },
+        error: (error) => {
+          this.snackBar.open('Erro ao excluir avaliação', 'Fechar', {
+            duration: 3000
+          });
+          console.error('Erro ao excluir avaliação:', error);
+        }
+      });
+    }
   }
 
   getInstrucaoPreview(instrucao: string | undefined): string {
