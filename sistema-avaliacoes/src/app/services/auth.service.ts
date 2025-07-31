@@ -148,22 +148,22 @@ export class AuthService {
 
   get isAdmin(): boolean {
     const user = this.currentUser;
-    return user?.roles.includes(UserRole.ROLE_ADMIN) || false;
+    return user?.roles?.includes(UserRole.ROLE_ADMIN) || false;
   }
 
   get isProfessor(): boolean {
     const user = this.currentUser;
-    return user?.roles.includes(UserRole.ROLE_PROFESSOR) || false;
+    return user?.roles?.includes(UserRole.ROLE_PROFESSOR) || false;
   }
 
   get isAluno(): boolean {
     const user = this.currentUser;
-    return user?.roles.includes(UserRole.ROLE_ALUNO) || false;
+    return user?.roles?.includes(UserRole.ROLE_ALUNO) || false;
   }
 
   hasRole(role: UserRole): boolean {
     const user = this.currentUser;
-    return user?.roles.includes(role) || false;
+    return user?.roles?.includes(role) || false;
   }
 
   getToken(): string | null {
