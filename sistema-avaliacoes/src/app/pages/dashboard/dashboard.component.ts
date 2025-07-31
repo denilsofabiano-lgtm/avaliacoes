@@ -178,11 +178,13 @@ import { RelatorioService, DashboardData } from '../../services/relatorio.servic
   `]
 })
 export class DashboardComponent implements OnInit {
-  totalUsuarios = 125;
-  totalAvaliacoes = 23;
-  totalQuestoes = 456;
-  totalAplicacoes = 12;
+  totalUsuarios = 0;
+  totalAvaliacoes = 0;
+  totalQuestoes = 0;
+  totalAplicacoes = 0;
   gridCols = 4;
+  isLoading = true;
+  dashboardData: DashboardData | null = null;
 
   recentActivities = [
     {
