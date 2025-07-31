@@ -275,33 +275,28 @@ import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.ser
 })
 export class AvaliacoesComponent implements OnInit {
   displayedColumns: string[] = ['id', 'instrucao', 'tipoAvaliacao', 'responsavel', 'questoes', 'status', 'dataCadastro', 'actions'];
-  
-  avaliacoes: Avaliacao[] = [
-    {
-      id: 1,
-      dataCadastro: new Date('2024-01-15'),
-      tipoAvaliacaoId: 1,
-      tipoAvaliacao: { id: 1, descricao: TipoAvaliacaoEnum.DIAGNOSTICA, status: true },
-      instrucao: 'Avaliação diagnóstica de Matemática para identificar o nível de conhecimento dos alunos no início do semestre.',
-      responsavelId: 1,
-      responsavel: { id: 1, nome: 'Prof. Maria Silva', email: 'maria@escola.com', cpf: '12345678901', roles: [], status: true },
-      statusAvaliacaoId: 1
-    },
-    {
-      id: 2,
-      dataCadastro: new Date('2024-02-20'),
-      tipoAvaliacaoId: 2,
-      tipoAvaliacao: { id: 2, descricao: TipoAvaliacaoEnum.PROCESSUAL, status: true },
-      instrucao: 'Avaliação processual de Português focada em interpretação de texto e gramática.',
-      responsavelId: 2,
-      responsavel: { id: 2, nome: 'Prof. João Santos', email: 'joao@escola.com', cpf: '98765432109', roles: [], status: true },
-      statusAvaliacaoId: 1
-    }
-  ];
 
-  constructor() {}
+  avaliacoes: Avaliacao[] = [];
+  isLoading = false;
 
-  ngOnInit(): void {}
+  // Paginação
+  totalItems = 0;
+  pageSize = 10;
+  currentPage = 0;
+
+  // Filtros
+  searchTerm = '';
+  selectedTipo = '';
+  selectedStatus = '';
+
+  constructor(
+    private avaliacaoService: AvaliacaoService,
+    private snackBar: MatSnackBar
+  ) {}
+
+  ngOnInit(): void {
+    this.loadAvaliacoes();
+  }
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
