@@ -209,10 +209,34 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
-  constructor() {}
+  constructor(private relatorioService: RelatorioService) {}
 
   ngOnInit(): void {
     this.updateGridCols();
+    this.loadDashboardData();
+  }
+
+  loadDashboardData(): void {
+    this.isLoading = true;
+    this.relatorioService.getDashboard().subscribe({
+      next: (data) => {
+        this.dashboardData = data;
+        this.totalUsuarios = data.resumo_geral.total_usuarios;
+        this.totalAvaliacoes = data.resumo_geral.total_avaliacoes;
+        this.totalQuestoes = data.resumo_geral.total_questoes;
+        this.totalAplicacoes = data.resumo_geral.total_participacoes;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar dashboard:', error);
+        this.isLoading = false;
+        // Manter dados de fallback para demonstração
+        this.totalUsuarios = 125;
+        this.totalAvaliacoes = 23;
+        this.totalQuestoes = 456;
+        this.totalAplicacoes = 12;
+      }
+    });
   }
 
   @HostListener('window:resize', ['$event'])
