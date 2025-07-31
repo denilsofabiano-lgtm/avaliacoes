@@ -397,6 +397,45 @@ import { ParticipanteAvaliacao, StatusAplicacaoEnum } from '../../models';
     .mat-column-progresso {
       width: 150px;
     }
+
+    @media (max-width: 768px) {
+      .aplicacoes-container {
+        padding: 16px;
+      }
+
+      .header-section {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .header-section button {
+        width: 100%;
+      }
+
+      .filters-row {
+        flex-direction: column;
+      }
+
+      .filters-row mat-form-field {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .table-card {
+        margin: 0 -8px;
+      }
+
+      .mat-column-escola,
+      .mat-column-tempos,
+      .mat-column-disponivel {
+        display: none;
+      }
+
+      .avaliacao-info {
+        max-width: 120px;
+      }
+    }
   `]
 })
 export class AplicacoesComponent implements OnInit {
