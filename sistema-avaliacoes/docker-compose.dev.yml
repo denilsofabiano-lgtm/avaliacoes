@@ -19,6 +19,46 @@ services:
       - NODE_ENV=development
     command: npm run start
 
+  # Backend API Symfony (Development)
+  backend-dev:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile
+      target: php
+    container_name: sistema-avaliacoes-backend-dev
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=postgresql://dev_user:dev_password@database-dev:5432/sistema_avaliacoes_dev?serverVersion=15&charset=utf8
+      - JWT_PASSPHRASE=dev-jwt-passphrase
+      - CORS_ALLOW_ORIGIN=http://localhost:4200
+    volumes:
+      - ../sistema-avaliacoes-api:/var/www/html
+    depends_on:
+      - database-dev
+      - redis-dev
+    ports:
+      - "9000:9000"
+
+  # Nginx for Backend API (Development)
+  nginx-api-dev:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile
+      target: web
+    container_name: sistema-avaliacoes-nginx-dev
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    depends_on:
+      - backend-dev
+    volumes:
+      - ../sistema-avaliacoes-api/public:/usr/share/nginx/html
+
   # Database para desenvolvimento
   database-dev:
     image: postgres:15-alpine
@@ -34,6 +74,44 @@ services:
     restart: unless-stopped
     networks:
       - avaliacoes-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev_user -d sistema_avaliacoes_dev"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Redis (Para cache e sessões) - Development
+  redis-dev:
+    image: redis:7-alpine
+    container_name: sistema-avaliacoes-redis-dev
+    ports:
+      - "6380:6379"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_dev_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Adminer (Database Management) - Development
+  adminer-dev:
+    image: adminer:latest
+    container_name: sistema-avaliacoes-adminer-dev
+    ports:
+      - "8083:8080"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    depends_on:
+      - database-dev
+    environment:
+      ADMINER_DEFAULT_SERVER: database-dev
 
 volumes:
   postgres_dev_data:
