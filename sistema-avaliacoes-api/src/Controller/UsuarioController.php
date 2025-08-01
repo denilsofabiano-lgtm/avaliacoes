@@ -283,6 +283,34 @@ class UsuarioController extends AbstractController
         }
     }
 
+    #[Route('/{id}/toggle-status', name: 'toggle_status', methods: ['PATCH'], requirements: ['id' => '\d+'])]
+    public function toggleStatus(int $id, UsuarioRepository $usuarioRepository): JsonResponse
+    {
+        $usuario = $usuarioRepository->find($id);
+
+        if (!$usuario) {
+            return $this->json(['error' => 'Usuário não encontrado'], Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $usuario->setStatus(!$usuario->isStatus());
+            $this->entityManager->flush();
+
+            $action = $usuario->isStatus() ? 'ativado' : 'desativado';
+
+            return $this->json([
+                'message' => "Usuário {$action} com sucesso",
+                'status' => $usuario->isStatus()
+            ], Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return $this->json([
+                'error' => 'Erro ao alterar status do usuário',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     private function generateRandomPassword(int $length = 8): string
     {
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
