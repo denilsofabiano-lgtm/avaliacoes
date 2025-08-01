@@ -58,6 +58,11 @@ export function extractErrorMessage(error: any): string {
       return 'Erro ao carregar dados do dashboard.';
     }
 
+    // Verificar se parece ser erro de usuários
+    if (error.url && error.url.includes('usuarios')) {
+      return 'Erro ao carregar usuários. Servidor indisponível.';
+    }
+
     // Fallback genérico
     return 'Erro de comunicação com o servidor';
   }
