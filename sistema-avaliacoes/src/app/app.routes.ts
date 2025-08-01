@@ -67,6 +67,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'aplicacoes/nova',
+    loadComponent: () => import('./pages/aplicacoes/aplicacao-form/aplicacao-form.component').then(m => m.AplicacaoFormComponent),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'aplicacoes/:id/aplicar',
     loadComponent: () => import('./pages/aplicacoes/aplicar-prova/aplicar-prova.component').then(m => m.AplicarProvaComponent),
     canActivate: [AuthGuard]
