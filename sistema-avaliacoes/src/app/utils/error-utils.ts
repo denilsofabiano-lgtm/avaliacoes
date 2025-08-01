@@ -130,7 +130,13 @@ export function extractErrorMessage(error: any): string {
     return fallbackMessage;
   }
 
-  const finalMessage = 'Erro inesperado';
+  let finalMessage = 'Erro inesperado';
+
+  // PROTEÇÃO FINAL: Garantir que NUNCA retornamos [object Object]
+  if (finalMessage === '[object Object]' || finalMessage.includes('[object Object]')) {
+    finalMessage = 'Erro de comunicação com o servidor';
+    console.warn('🚨 PREVENIDO: [object Object] foi interceptado e substituído');
+  }
 
   // Log final para detectar quando a mensagem específica está sendo gerada
   if (finalMessage.includes('buscar') && finalMessage.includes('usuário')) {
