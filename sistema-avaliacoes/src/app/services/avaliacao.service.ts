@@ -48,7 +48,7 @@ export class AvaliacaoService {
         statusAvaliacao: { id: 2, descricao: 'Aprovado', status: true },
         questoes: [],
         totalQuestoes: 20,
-        dataCadastro: new Date('2024-02-10')
+        dataCadastro: '2024-02-10'
       },
       {
         id: 3,
@@ -103,7 +103,7 @@ export class AvaliacaoService {
             return of(this.getFallbackAvaliacoes());
           }
 
-          console.log('📤 Propagando erro do AvaliacaoService');
+          console.log('��� Propagando erro do AvaliacaoService');
           return throwError(() => error);
         })
       );
