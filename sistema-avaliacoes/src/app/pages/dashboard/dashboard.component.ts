@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { RelatorioService, DashboardData } from '../../services/relatorio.service';
 import { AplicacaoService } from '../../services/aplicacao.service';
 import { AuthService } from '../../services/auth.service';
