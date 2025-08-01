@@ -61,6 +61,18 @@ export function extractErrorMessage(error: any): string {
       }
     }
 
+    // Casos específicos para operações de aplicação
+    if (error.url && error.url.includes('aplicacoes')) {
+      switch (error.status) {
+        case 400: return 'Dados da aplicação inválidos. Verifique todos os campos.';
+        case 403: return 'Sem permissão para criar aplicações.';
+        case 404: return 'Recurso não encontrado para aplicação.';
+        case 409: return 'Conflito: aplicação já existe ou usuário já vinculado.';
+        case 422: return 'Dados da aplicação não puderam ser processados.';
+        case 500: return 'Erro no servidor ao criar aplicação. Tente novamente.';
+      }
+    }
+
     switch (error.status) {
       case 0: return 'Servidor indisponível. Verifique sua conexão.';
       case 400: return 'Dados inválidos enviados';
