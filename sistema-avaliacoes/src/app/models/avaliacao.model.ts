@@ -2,6 +2,7 @@ import { Usuario } from './usuario.model';
 import { TipoAvaliacao } from './tipo-avaliacao.model';
 import { StatusAvaliacao } from './status.model';
 import { Questao } from './questao.model';
+import { Disciplina } from './disciplina.model';
 
 export interface Avaliacao {
   id?: number;
