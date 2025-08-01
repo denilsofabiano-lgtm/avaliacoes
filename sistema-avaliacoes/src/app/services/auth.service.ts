@@ -160,7 +160,20 @@ export class AuthService {
           localStorage.setItem('current_user', JSON.stringify(user));
         }),
         catchError(error => {
-          console.error('Erro ao buscar perfil:', error);
+          console.group('❌ AuthService.getProfile Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', `${this.apiUrl}/profile`);
+          console.groupEnd();
+
+          // Se for erro de conexão, limpeza segura
+          if (error.status === 0 || error.status === 404 || error.status === 401) {
+            console.log('✅ Limpando dados de autenticação devido a erro de perfil');
+            this.logout();
+          }
+
+          console.log('📤 Propagando erro do getProfile');
           return throwError(() => error);
         })
       );
