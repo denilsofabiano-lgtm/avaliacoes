@@ -146,6 +146,10 @@ import { extractErrorMessage } from '../../utils/error-utils';
             <span>{{ questoes.length }} questões encontradas</span>
           </div>
           <div class="bulk-actions">
+            <button mat-button (click)="clearAllFilters()">
+              <mat-icon>clear</mat-icon>
+              Limpar Filtros
+            </button>
             <button mat-button (click)="exportarSelecionadas()">
               <mat-icon>download</mat-icon>
               Exportar Todas
