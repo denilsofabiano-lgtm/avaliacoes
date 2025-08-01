@@ -539,6 +539,10 @@ export class QuestoesComponent implements OnInit {
     );
   }
 
+  clearAllFilters(): void {
+    this.questoes = [...this.allQuestoes];
+  }
+
   importarQuestoes(): void {
     const input = document.createElement('input');
     input.type = 'file';
