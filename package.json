@@ -1,16 +1,23 @@
 {
-  "name": "code",
+  "name": "sistema-avaliacoes-fullstack",
   "version": "1.0.0",
-  "description": "",
+  "description": "Sistema de Avaliações - Frontend Angular + Backend Symfony",
   "main": "index.js",
   "scripts": {
-    "start": "npx serve . -p 4200",
-    "dev": "npx serve . -p 4200"
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "frontend": "cd sistema-avaliacoes && npm start",
+    "backend": "cd sistema-avaliacoes-api && php -S localhost:8081 -t public",
+    "backend:setup": "cd sistema-avaliacoes-api && composer install && php bin/console doctrine:database:create --if-not-exists && php bin/console doctrine:migrations:migrate --no-interaction",
+    "install-all": "cd sistema-avaliacoes && npm install && cd ../sistema-avaliacoes-api && composer install",
+    "setup": "npm run install-all && npm run backend:setup",
+    "dev": "npm run start",
+    "serve-static": "npx serve . -p 4200"
   },
   "devDependencies": {
-    "serve": "^14.2.1"
+    "serve": "^14.2.1",
+    "concurrently": "^8.2.2"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["angular", "symfony", "typescript", "php", "fullstack"],
+  "author": "Sistema Avaliacoes Team",
+  "license": "MIT"
 }
