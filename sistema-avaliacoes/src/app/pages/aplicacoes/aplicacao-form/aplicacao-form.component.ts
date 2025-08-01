@@ -297,6 +297,7 @@ export class AplicacaoFormComponent implements OnInit {
     private route: ActivatedRoute,
     private avaliacaoService: AvaliacaoService,
     private usuarioService: UsuarioService,
+    private aplicacaoService: AplicacaoService,
     private snackBar: MatSnackBar
   ) {
     this.avaliacaoForm = this.fb.group({
