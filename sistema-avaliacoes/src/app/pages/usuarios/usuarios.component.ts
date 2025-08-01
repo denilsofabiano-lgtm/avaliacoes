@@ -283,7 +283,8 @@ export class UsuariosComponent implements OnInit {
     private router: Router,
     private usuarioService: UsuarioService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private errorHandler: ErrorHandlerService
   ) {}
 
   ngOnInit(): void {
