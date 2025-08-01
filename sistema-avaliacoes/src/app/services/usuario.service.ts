@@ -82,7 +82,30 @@ export class UsuarioService {
     return this.http.get<PaginatedResponse<Usuario>>(this.apiUrl, { params })
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar usuários:', error);
+          console.group('❌ UsuarioService.getUsuarios Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', this.apiUrl);
+          console.log('Params:', params.toString());
+          console.groupEnd();
+
+          // Se for erro de conexão, retorna dados de fallback paginados
+          if (error.status === 0 || error.status === 404) {
+            console.log('✅ Usando fallback paginado de usuários - backend indisponível');
+            const fallbackUsers = this.getFallbackUsers();
+            return of({
+              data: fallbackUsers,
+              pagination: {
+                total: fallbackUsers.length,
+                page: 1,
+                limit: 10,
+                pages: 1
+              }
+            } as PaginatedResponse<Usuario>);
+          }
+
+          console.log('📤 Propagando erro do getUsuarios');
           return throwError(() => error);
         })
       );
