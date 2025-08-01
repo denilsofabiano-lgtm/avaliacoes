@@ -125,10 +125,12 @@ export class AuthService {
         })
       );
     } else {
-      return throwError(() => ({
+      const errorObj = {
         status: 401,
+        message: 'Credenciais inválidas',
         error: { message: 'Credenciais inválidas' }
-      }));
+      };
+      return throwError(() => errorObj);
     }
   }
 
