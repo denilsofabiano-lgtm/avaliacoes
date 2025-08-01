@@ -32,7 +32,10 @@ deploy_dev() {
     
     echo "🌍 Development environment is running at:"
     echo "   Frontend: http://localhost:4200"
+    echo "   Backend API: http://localhost:8081"
     echo "   Database: localhost:5433"
+    echo "   Redis: localhost:6380"
+    echo "   Adminer: http://localhost:8083"
     echo ""
     echo "📋 To view logs: docker-compose -f docker-compose.dev.yml logs -f"
     echo "🛑 To stop: docker-compose -f docker-compose.dev.yml down"
