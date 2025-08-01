@@ -116,12 +116,12 @@ export class AuthService {
       this.currentUserSubject.next(mockUser);
       this.isLoggedInSubject.next(true);
 
-      return new Observable(observer => {
-        setTimeout(() => {
-          observer.next(response);
-          observer.complete();
-        }, 500); // Simular delay de rede
-      });
+      return of(response).pipe(
+        tap(() => {
+          // Simular delay de rede
+          setTimeout(() => {}, 500);
+        })
+      );
     } else {
       return throwError(() => ({
         status: 401,
