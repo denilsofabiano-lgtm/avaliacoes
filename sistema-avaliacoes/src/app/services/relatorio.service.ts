@@ -46,8 +46,7 @@ export class RelatorioService {
   private apiUrl = `${environment.apiUrl}/relatorios`;
 
   constructor(
-    private http: HttpClient,
-    private errorHandler: ErrorHandlerService
+    private http: HttpClient
   ) {}
 
   private getFallbackDashboardData(): DashboardData {
