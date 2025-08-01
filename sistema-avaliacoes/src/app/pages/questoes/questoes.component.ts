@@ -461,11 +461,11 @@ export class QuestoesComponent implements OnInit {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
     if (!filterValue.trim()) {
-      this.loadQuestoes();
+      this.questoes = [...this.allQuestoes];
       return;
     }
 
-    this.questoes = this.questoes.filter(questao =>
+    this.questoes = this.allQuestoes.filter(questao =>
       questao.pergunta.toLowerCase().includes(filterValue) ||
       questao.tema?.toLowerCase().includes(filterValue) ||
       questao.disciplina?.descricao?.toLowerCase().includes(filterValue)
