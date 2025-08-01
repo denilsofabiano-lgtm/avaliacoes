@@ -79,7 +79,7 @@ export class RelatorioService {
             return of(this.getFallbackDashboardData());
           }
 
-          this.errorHandler.handleError(error, 'Erro ao carregar dados do dashboard');
+          // Se não conseguiu usar fallback, propaga o erro
           return throwError(() => error);
         })
       );
