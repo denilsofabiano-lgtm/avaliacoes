@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Documentation
+README.md
+*.md
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+var/log/*
+var/cache/*
+!var/.gitkeep
+
+# Dependencies
+vendor/
+node_modules/
+
+# Environment
+.env.local
+.env.local.php
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
