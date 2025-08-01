@@ -565,7 +565,12 @@ export class AplicacoesComponent implements OnInit {
   }
 
   filterByEscola(escola: string): void {
-    console.log('Filtrar por escola:', escola);
+    if (!escola) {
+      this.participantes = [...this.allParticipantes];
+      return;
+    }
+
+    this.participantes = this.allParticipantes.filter(p => p.escola === escola);
   }
 
   filterByTurma(turma: string): void {
