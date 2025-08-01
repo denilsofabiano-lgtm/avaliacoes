@@ -485,11 +485,11 @@ export class QuestoesComponent implements OnInit {
 
   filterByTipoAlternativa(tipo: string): void {
     if (!tipo) {
-      this.loadQuestoes();
+      this.questoes = [...this.allQuestoes];
       return;
     }
 
-    this.questoes = this.questoes.filter(questao =>
+    this.questoes = this.allQuestoes.filter(questao =>
       questao.tipoAlternativa?.descricao === tipo
     );
   }
