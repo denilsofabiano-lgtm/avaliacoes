@@ -151,7 +151,14 @@ export class AuthService {
     return this.http.post<ApiResponse<Usuario>>(`${this.apiUrl}/register`, userData)
       .pipe(
         catchError(error => {
-          console.error('Erro no registro:', error);
+          console.group('❌ AuthService.register Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', `${this.apiUrl}/register`);
+          console.groupEnd();
+
+          console.log('📤 Propagando erro do register');
           return throwError(() => error);
         })
       );
@@ -194,7 +201,14 @@ export class AuthService {
           }
         }),
         catchError(error => {
-          console.error('Erro ao atualizar perfil:', error);
+          console.group('❌ AuthService.updateProfile Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', `${this.apiUrl}/profile`);
+          console.groupEnd();
+
+          console.log('📤 Propagando erro do updateProfile');
           return throwError(() => error);
         })
       );
@@ -204,7 +218,14 @@ export class AuthService {
     return this.http.post<ApiResponse<any>>(`${this.apiUrl}/change-password`, passwords)
       .pipe(
         catchError(error => {
-          console.error('Erro ao alterar senha:', error);
+          console.group('❌ AuthService.changePassword Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', `${this.apiUrl}/change-password`);
+          console.groupEnd();
+
+          console.log('📤 Propagando erro do changePassword');
           return throwError(() => error);
         })
       );
