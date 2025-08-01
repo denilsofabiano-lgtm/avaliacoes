@@ -231,13 +231,18 @@ export class DashboardComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        // O erro já é tratado pelo service com fallback ou ErrorHandlerService
         this.isLoading = false;
-        // Manter dados de fallback para demonstração se necessário
+        console.error('Erro ao carregar dashboard:', error);
+
+        // Usar dados de fallback para demonstração
         this.totalUsuarios = 125;
         this.totalAvaliacoes = 23;
         this.totalQuestoes = 456;
         this.totalAplicacoes = 12;
+
+        // Log da mensagem de erro extraída para debug
+        const errorMessage = extractErrorMessage(error);
+        console.log('Mensagem de erro extraída:', errorMessage);
       }
     });
   }
