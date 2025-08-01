@@ -387,9 +387,28 @@ export class UsuariosComponent implements OnInit {
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   }
 
-  formatDate(date: Date | undefined): string {
+  formatDate(date: Date | string | undefined): string {
     if (!date) return '';
-    return new Intl.DateTimeFormat('pt-BR').format(date);
+
+    try {
+      // Se for string, converter para Date
+      let dateObj: Date;
+      if (typeof date === 'string') {
+        dateObj = new Date(date);
+      } else {
+        dateObj = date;
+      }
+
+      // Verificar se a data é válida
+      if (isNaN(dateObj.getTime())) {
+        return 'Data inválida';
+      }
+
+      return new Intl.DateTimeFormat('pt-BR').format(dateObj);
+    } catch (error) {
+      console.log('Error formatting date:', date, error);
+      return 'Data inválida';
+    }
   }
 
   getRoleLabel(role: UserRole): string {
