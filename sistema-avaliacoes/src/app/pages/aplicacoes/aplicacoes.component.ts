@@ -265,6 +265,12 @@ import { ParticipanteAvaliacao, StatusAplicacaoEnum } from '../../models';
       margin-bottom: 20px;
     }
 
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
     .stats-cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
