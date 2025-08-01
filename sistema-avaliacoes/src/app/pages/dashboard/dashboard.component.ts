@@ -473,7 +473,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private relatorioService: RelatorioService,
     private aplicacaoService: AplicacaoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -648,7 +649,7 @@ export class DashboardComponent implements OnInit {
 
   verResultado(avaliacao: ParticipanteAvaliacao): void {
     if (avaliacao.id) {
-      console.log('📈 Visualizando resultado:', avaliacao.avaliacao?.instrucao);
+      console.log('��� Visualizando resultado:', avaliacao.avaliacao?.instrucao);
       // Navegar para a página de resultados
       // this.router.navigate(['/aplicacoes', avaliacao.id, 'resultado']);
     }
