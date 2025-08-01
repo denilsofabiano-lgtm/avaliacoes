@@ -1,101 +1,73 @@
 export function extractErrorMessage(error: any): string {
-  // Log para debug completo
-  console.group('🔍 Error Debug');
-  console.log('Error object:', error);
-  console.log('Error type:', typeof error);
-  console.log('Error constructor:', error?.constructor?.name);
-  console.log('Error keys:', error ? Object.keys(error) : 'null');
-  console.groupEnd();
+  // REGRA PRINCIPAL: NUNCA retornar "[object Object]"
 
-  // Verificação se é null/undefined
+  // Log simplificado
+  console.log('🔍 extractErrorMessage called with:', typeof error, error);
+
+  // Casos simples primeiro
   if (!error) {
     return 'Erro desconhecido';
   }
 
-  // Se já tem uma mensagem processada válida
-  if (error?.message && typeof error.message === 'string' &&
-      error.message !== '[object Object]' &&
-      error.message.trim() !== '') {
-    console.log('✅ Using error.message:', error.message);
-    return error.message;
+  if (typeof error === 'string') {
+    return error || 'Erro sem mensagem';
   }
 
-  // Se for string, retorna diretamente
-  if (typeof error === 'string' && error.trim() !== '') {
-    console.log('✅ Using string error:', error);
-    return error;
-  }
-
-  // Verificações específicas por status primeiro
-  if (error?.status !== undefined) {
-    console.log('🔄 Using status-based message for status:', error.status);
+  // Mensagens por status HTTP (mais comum)
+  if (typeof error === 'object' && error.status !== undefined) {
     switch (error.status) {
-      case 0:
-        return 'Erro de conexão. Servidor indisponível.';
-      case 400:
-        return 'Dados inválidos enviados ao servidor';
-      case 401:
-        return 'Credenciais inválidas. Verifique seu e-mail e senha.';
-      case 403:
-        return 'Acesso negado. Você não tem permissão para esta ação.';
-      case 404:
-        return 'Recurso não encontrado ou servidor indisponível';
-      case 409:
-        return 'Conflito nos dados. Recurso já existe.';
-      case 422:
-        return 'Dados inválidos para processamento';
-      case 500:
-        return 'Erro interno do servidor. Tente novamente mais tarde.';
-      default:
-        return `Erro HTTP ${error.status}: Problema de comunicação com servidor`;
+      case 0: return 'Servidor indisponível. Verifique sua conexão.';
+      case 400: return 'Dados inválidos enviados';
+      case 401: return 'E-mail ou senha incorretos';
+      case 403: return 'Acesso negado';
+      case 404: return 'Servidor não encontrado';
+      case 409: return 'Dados já existem';
+      case 422: return 'Dados inválidos';
+      case 500: return 'Erro no servidor. Tente novamente.';
+      default: return `Erro de conexão (${error.status})`;
     }
   }
 
-  // Tenta extrair de diferentes estruturas de erro HTTP
-  if (error?.error) {
-    console.log('🔄 Checking error.error:', error.error);
+  // Tentar extrair mensagens em ordem de prioridade
+  const paths = [
+    'message',
+    'error.message',
+    'error.error',
+    'error',
+    'msg',
+    'detail'
+  ];
 
-    if (typeof error.error === 'string' && error.error.trim() !== '') {
-      console.log('✅ Using error.error string:', error.error);
-      return error.error;
-    }
-
-    if (error.error?.message && typeof error.error.message === 'string' && error.error.message.trim() !== '') {
-      console.log('✅ Using error.error.message:', error.error.message);
-      return error.error.message;
-    }
-
-    if (error.error?.error && typeof error.error.error === 'string' && error.error.error.trim() !== '') {
-      console.log('✅ Using error.error.error:', error.error.error);
-      return error.error.error;
+  for (const path of paths) {
+    const value = getNestedValue(error, path);
+    if (typeof value === 'string' && value.trim() && value !== '[object Object]') {
+      console.log(`✅ Found message at ${path}:`, value);
+      return value;
     }
   }
 
-  // Tenta outras propriedades comuns
-  const possibleKeys = ['msg', 'detail', 'description', 'text', 'data'];
-  for (const key of possibleKeys) {
-    if (error?.[key] && typeof error[key] === 'string' && error[key].trim() !== '') {
-      console.log(`✅ Using error.${key}:`, error[key]);
-      return error[key];
+  // Se nada funcionou, criar mensagem padrão baseada no contexto
+  if (typeof error === 'object') {
+    // Verificar se parece ser erro de login
+    if (error.url && error.url.includes('login')) {
+      return 'Erro ao fazer login. Verifique suas credenciais.';
     }
+
+    // Verificar se parece ser erro de dashboard
+    if (error.url && error.url.includes('dashboard')) {
+      return 'Erro ao carregar dados do dashboard.';
+    }
+
+    // Fallback genérico
+    return 'Erro de comunicação com o servidor';
   }
 
-  // Se chegou até aqui, tentar stringificar o objeto de forma útil
-  if (typeof error === 'object' && error !== null) {
-    try {
-      const stringified = JSON.stringify(error, null, 2);
-      if (stringified && stringified !== '{}' && stringified !== 'null') {
-        console.log('⚠️ Using stringified error:', stringified);
-        return `Erro: ${stringified.substring(0, 200)}${stringified.length > 200 ? '...' : ''}`;
-      }
-    } catch (e) {
-      console.log('❌ Failed to stringify error');
-    }
-  }
+  return 'Erro inesperado';
+}
 
-  // Fallback absoluto
-  console.log('⚠️ Using fallback message');
-  return 'Erro inesperado. Verifique o console para mais detalhes.';
+// Função auxiliar para acessar propriedades aninhadas
+function getNestedValue(obj: any, path: string): any {
+  return path.split('.').reduce((current, key) => current?.[key], obj);
 }
 
 export function getHttpStatusMessage(status: number): string {
