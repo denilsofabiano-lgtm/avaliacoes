@@ -31,8 +31,12 @@ cd sistema-avaliacoes
 
 ### Desenvolvimento
 ```bash
-# Execute o deploy de desenvolvimento
+# Execute o deploy de desenvolvimento (inclui backend + banco)
 ./deploy.sh dev
+
+# Ou manualmente:
+cd sistema-avaliacoes
+docker-compose -f docker-compose.dev.yml up --build -d
 ```
 
 ## 📁 Estrutura dos Arquivos Docker
