@@ -38,7 +38,7 @@ export class AvaliacaoService {
         statusAvaliacao: { id: 1, descricao: 'Pendente', status: true },
         questoes: [],
         totalQuestoes: 15,
-        dataCadastro: new Date('2024-01-15')
+        dataCadastro: '2024-01-15'
       },
       {
         id: 2,
@@ -52,7 +52,7 @@ export class AvaliacaoService {
       },
       {
         id: 3,
-        instrucao: 'Avalia��ão final de Ciências - Sistema Solar e meio ambiente',
+        instrucao: 'Avaliação final de Ciências - Sistema Solar e meio ambiente',
         tipoAvaliacao: { id: 3, descricao: 'Final de Ciclo', status: true },
         responsavel: { id: 3, nome: 'Prof. Maria Costa', email: 'maria@escola.com', roles: [], status: true },
         statusAvaliacao: { id: 1, descricao: 'Pendente', status: true },
