@@ -75,13 +75,21 @@ export class AuthService {
           }
         }),
         catchError(error => {
-          console.error('Erro no login:', error);
+          console.group('🔐 AuthService Login Error');
+          console.log('Error received in AuthService:', error);
+          console.log('Error type:', typeof error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('Error keys:', error ? Object.keys(error) : 'null');
+          console.groupEnd();
 
           // Fallback para demonstração quando backend não está disponível
           if (error.status === 0 || error.status === 404) {
+            console.log('🔄 Using simulate login fallback');
             return this.simulateLogin(credentials);
           }
 
+          console.log('📤 Throwing error from AuthService');
           return throwError(() => error);
         })
       );
