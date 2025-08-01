@@ -161,6 +161,13 @@ export function extractErrorMessage(error: any): string {
     console.groupEnd();
   }
 
+  // PROTEÇÃO UNIVERSAL FINAL - NUNCA permitir [object Object]
+  if (typeof finalMessage !== 'string' || finalMessage.includes('[object Object]') || finalMessage === '[object Object]') {
+    console.warn('🚨 INTERCEPTADO: Retorno inválido substituído por mensagem padrão');
+    console.log('Valor original:', finalMessage);
+    return 'Erro de comunicação com o servidor';
+  }
+
   return finalMessage;
 }
 
