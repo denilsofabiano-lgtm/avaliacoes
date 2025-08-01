@@ -548,7 +548,7 @@ export class AplicacoesComponent implements OnInit {
   }
 
   novaAplicacao(): void {
-    console.log('Nova aplicação');
+    this.router.navigate(['/aplicacoes/nova']);
   }
 
   getInstrucaoPreview(instrucao: string | undefined): string {
