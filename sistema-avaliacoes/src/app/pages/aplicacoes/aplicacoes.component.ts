@@ -582,6 +582,10 @@ export class AplicacoesComponent implements OnInit {
     this.participantes = this.allParticipantes.filter(p => p.turma === turma);
   }
 
+  clearAllFilters(): void {
+    this.participantes = [...this.allParticipantes];
+  }
+
   novaAplicacao(): void {
     this.router.navigate(['/aplicacoes/nova']);
   }
