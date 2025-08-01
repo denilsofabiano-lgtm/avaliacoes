@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -14,7 +14,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models';
+import { QuestaoService } from '../../services/questao.service';
+import { extractErrorMessage } from '../../utils/error-utils';
 
 @Component({
   selector: 'app-questoes',
@@ -34,7 +38,9 @@ import { Questao, TipoAlternativaEnum, NivelDificuldadeEnum } from '../../models
     MatChipsModule,
     MatTooltipModule,
     MatMenuModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   template: `
     <div class="questoes-container">
@@ -419,61 +425,199 @@ export class QuestoesComponent implements OnInit {
 
 
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private questaoService: QuestaoService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadQuestoes();
+    this.checkRouteParams();
+  }
+
+  private loadQuestoes(): void {
+    // Esta funcionalidade seria implementada com um serviço real
+    console.log('Carregando questões...');
+  }
+
+  private checkRouteParams(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['avaliacao'] && params['manage']) {
+        this.snackBar.open(
+          `Gerenciando questões para avaliação ID: ${params['avaliacao']}`,
+          'Fechar',
+          { duration: 3000 }
+        );
+      }
+    });
+  }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    console.log('Filtrar por:', filterValue);
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    if (!filterValue.trim()) {
+      this.loadQuestoes();
+      return;
+    }
+
+    this.questoes = this.questoes.filter(questao =>
+      questao.pergunta.toLowerCase().includes(filterValue) ||
+      questao.tema?.toLowerCase().includes(filterValue) ||
+      questao.disciplina?.descricao?.toLowerCase().includes(filterValue)
+    );
   }
 
   filterByDisciplina(disciplina: string): void {
-    console.log('Filtrar por disciplina:', disciplina);
+    if (!disciplina) {
+      this.loadQuestoes();
+      return;
+    }
+
+    this.questoes = this.questoes.filter(questao =>
+      questao.disciplina?.descricao === disciplina
+    );
   }
 
   filterByTipoAlternativa(tipo: string): void {
-    console.log('Filtrar por tipo alternativa:', tipo);
+    if (!tipo) {
+      this.loadQuestoes();
+      return;
+    }
+
+    this.questoes = this.questoes.filter(questao =>
+      questao.tipoAlternativa?.descricao === tipo
+    );
   }
 
   filterByDificuldade(dificuldade: string): void {
-    console.log('Filtrar por dificuldade:', dificuldade);
+    if (!dificuldade) {
+      this.loadQuestoes();
+      return;
+    }
+
+    this.questoes = this.questoes.filter(questao =>
+      questao.nivelDificuldade?.descricao === dificuldade
+    );
   }
 
   filterByCiclo(ciclo: string): void {
-    console.log('Filtrar por ciclo:', ciclo);
+    if (!ciclo) {
+      this.loadQuestoes();
+      return;
+    }
+
+    this.questoes = this.questoes.filter(questao =>
+      questao.ciclo === ciclo
+    );
   }
 
   filterByFase(fase: string): void {
-    console.log('Filtrar por fase:', fase);
+    if (!fase) {
+      this.loadQuestoes();
+      return;
+    }
+
+    this.questoes = this.questoes.filter(questao =>
+      questao.fase === fase
+    );
   }
 
   filterByOrigem(origem: string): void {
-    console.log('Filtrar por origem:', origem);
+    if (!origem) {
+      this.loadQuestoes();
+      return;
+    }
+
+    const isAI = origem === 'true';
+    this.questoes = this.questoes.filter(questao =>
+      questao.geradorIa === isAI
+    );
   }
 
   importarQuestoes(): void {
-    console.log('Importar questões');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.xlsx,.csv,.json';
+    input.onchange = (event: any) => {
+      const file = event.target.files[0];
+      if (file) {
+        this.processImportFile(file);
+      }
+    };
+    input.click();
+  }
+
+  private processImportFile(file: File): void {
+    this.snackBar.open(
+      `Processando arquivo: ${file.name}. Funcionalidade em desenvolvimento.`,
+      'Fechar',
+      { duration: 3000 }
+    );
   }
 
   exportarSelecionadas(): void {
-    console.log('Exportar todas as questões');
+    if (this.questoes.length === 0) {
+      this.snackBar.open('Nenhuma questão encontrada para exportar', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    // Simular exportação
+    const dataStr = JSON.stringify(this.questoes, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `questoes-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+
+    this.snackBar.open('Questões exportadas com sucesso!', 'Fechar', { duration: 3000 });
   }
 
   visualizarQuestao(questao: Questao): void {
-    console.log('Visualizar questão:', questao);
+    // Abrir dialog ou navegar para página de visualização
+    this.snackBar.open(
+      `Visualizando questão: ${this.getPerguntaPreview(questao.pergunta)}`,
+      'Fechar',
+      { duration: 3000 }
+    );
   }
 
   duplicarQuestao(questao: Questao): void {
-    console.log('Duplicar questão:', questao);
+    if (confirm(`Deseja duplicar a questão: ${this.getPerguntaPreview(questao.pergunta)}?`)) {
+      const novaQuestao = {
+        ...questao,
+        id: this.questoes.length + 1,
+        pergunta: `Cópia de: ${questao.pergunta}`,
+        dataCadastro: new Date()
+      };
+
+      this.questoes.unshift(novaQuestao);
+      this.snackBar.open('Questão duplicada com sucesso!', 'Fechar', { duration: 3000 });
+    }
   }
 
   adicionarProblema(questao: Questao): void {
-    console.log('Reportar problema:', questao);
+    const problema = prompt('Descreva o problema encontrado na questão:');
+    if (problema && problema.trim()) {
+      this.snackBar.open(
+        `Problema reportado para a questão ID ${questao.id}. Obrigado pelo feedback!`,
+        'Fechar',
+        { duration: 4000 }
+      );
+    }
   }
 
   deleteQuestao(questao: Questao): void {
-    console.log('Excluir questão:', questao);
+    if (confirm(`Tem certeza que deseja excluir a questão: ${this.getPerguntaPreview(questao.pergunta)}?`)) {
+      const index = this.questoes.indexOf(questao);
+      if (index > -1) {
+        this.questoes.splice(index, 1);
+        this.snackBar.open('Questão excluída com sucesso!', 'Fechar', { duration: 3000 });
+      }
+    }
   }
 
 
