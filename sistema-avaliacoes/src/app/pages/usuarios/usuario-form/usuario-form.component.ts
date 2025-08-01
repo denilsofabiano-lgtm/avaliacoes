@@ -267,7 +267,7 @@ export class UsuarioFormComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        const message = error.message || 'Erro ao carregar usuário';
+        const message = extractErrorMessage(error);
         this.snackBar.open(message, 'Fechar', { duration: 5000 });
         this.loading = false;
       }
