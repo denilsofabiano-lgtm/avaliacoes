@@ -119,7 +119,22 @@ export function extractErrorMessage(error: any): string {
     return fallbackMessage;
   }
 
-  return 'Erro inesperado';
+  const finalMessage = 'Erro inesperado';
+
+  // Log final para detectar quando a mensagem específica está sendo gerada
+  if (finalMessage.includes('buscar') && finalMessage.includes('usuário')) {
+    console.group('🚨 DETECTADO: Mensagem "buscar usuário" gerada');
+    console.log('Error original completo:', error);
+    console.log('Error type:', typeof error);
+    console.log('Error status:', error?.status);
+    console.log('Error message:', error?.message);
+    console.log('Error url:', error?.url);
+    console.log('Final message:', finalMessage);
+    console.trace('Stack trace');
+    console.groupEnd();
+  }
+
+  return finalMessage;
 }
 
 // Função auxiliar para acessar propriedades aninhadas
