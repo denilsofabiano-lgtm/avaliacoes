@@ -18,8 +18,7 @@ export class UsuarioService {
   private apiUrl = `${environment.apiUrl}/usuarios`;
 
   constructor(
-    private http: HttpClient,
-    private errorHandler: ErrorHandlerService
+    private http: HttpClient
   ) {}
 
   private getFallbackUsers(): Usuario[] {
