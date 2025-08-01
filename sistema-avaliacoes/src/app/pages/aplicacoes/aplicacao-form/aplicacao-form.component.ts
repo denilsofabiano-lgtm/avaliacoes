@@ -355,7 +355,7 @@ export class AplicacaoFormComponent implements OnInit {
         this.alunosFiltrados = of(this.usuarios);
       },
       error: (error) => {
-        console.error('Erro ao carregar usuários:', error);
+        console.log('❌ Erro ao carregar usuários:', error);
         this.snackBar.open(extractErrorMessage(error), 'Fechar', { duration: 5000 });
       }
     });
