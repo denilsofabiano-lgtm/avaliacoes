@@ -336,8 +336,8 @@ export class AplicacaoFormComponent implements OnInit {
   private carregarDados(): void {
     // Carregar avaliações
     this.avaliacaoService.getAvaliacoes().subscribe({
-      next: (avaliacoes) => {
-        this.avaliacoes = avaliacoes;
+      next: (response) => {
+        this.avaliacoes = response.data || [];
       },
       error: (error) => {
         console.log('❌ Erro ao carregar avaliações:', error);
@@ -347,9 +347,9 @@ export class AplicacaoFormComponent implements OnInit {
 
     // Carregar usuários (alunos)
     this.usuarioService.getUsuarios().subscribe({
-      next: (usuarios) => {
+      next: (response) => {
         // Filtrar apenas alunos (assumindo que alunos não têm role de admin/professor)
-        this.usuarios = usuarios.filter(u => 
+        this.usuarios = (response.data || []).filter((u: any) =>
           !u.roles || u.roles.length === 0 || !u.roles.includes('ROLE_ADMIN')
         );
         this.alunosFiltrados = of(this.usuarios);
@@ -375,9 +375,9 @@ export class AplicacaoFormComponent implements OnInit {
   filterAlunos(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
     this.alunosFiltrados = of(
-      this.usuarios.filter(usuario => 
-        usuario.nome.toLowerCase().includes(filterValue) ||
-        usuario.email.toLowerCase().includes(filterValue)
+      this.usuarios.filter(usuario =>
+        usuario.nome?.toLowerCase().includes(filterValue) ||
+        usuario.email?.toLowerCase().includes(filterValue)
       ).filter(usuario => 
         !this.alunosSelecionados.find(selected => selected.id === usuario.id)
       )
