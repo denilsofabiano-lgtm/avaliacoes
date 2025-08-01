@@ -28,6 +28,51 @@ export class AvaliacaoService {
 
   constructor(private http: HttpClient) {}
 
+  private getFallbackAvaliacoes(): PaginatedResponse<Avaliacao> {
+    const mockAvaliacoes: Avaliacao[] = [
+      {
+        id: 1,
+        instrucao: 'Avaliação diagnóstica de Matemática para identificar o nível de conhecimento dos alunos',
+        tipoAvaliacao: { id: 1, descricao: 'Diagnóstica', status: true },
+        responsavel: { id: 1, nome: 'Prof. Ana Silva', email: 'ana@escola.com', roles: [], status: true },
+        statusAvaliacao: { id: 1, descricao: 'Pendente', status: true },
+        questoes: [],
+        totalQuestoes: 15,
+        dataCadastro: new Date('2024-01-15')
+      },
+      {
+        id: 2,
+        instrucao: 'Avaliação processual de Português - Interpretação de texto e gramática',
+        tipoAvaliacao: { id: 2, descricao: 'Processual', status: true },
+        responsavel: { id: 2, nome: 'Prof. João Santos', email: 'joao@escola.com', roles: [], status: true },
+        statusAvaliacao: { id: 2, descricao: 'Aprovado', status: true },
+        questoes: [],
+        totalQuestoes: 20,
+        dataCadastro: new Date('2024-02-10')
+      },
+      {
+        id: 3,
+        instrucao: 'Avaliação final de Ciências - Sistema Solar e meio ambiente',
+        tipoAvaliacao: { id: 3, descricao: 'Final de Ciclo', status: true },
+        responsavel: { id: 3, nome: 'Prof. Maria Costa', email: 'maria@escola.com', roles: [], status: true },
+        statusAvaliacao: { id: 1, descricao: 'Pendente', status: true },
+        questoes: [],
+        totalQuestoes: 25,
+        dataCadastro: new Date('2024-03-05')
+      }
+    ];
+
+    return {
+      data: mockAvaliacoes,
+      pagination: {
+        total: mockAvaliacoes.length,
+        page: 1,
+        limit: 10,
+        pages: 1
+      }
+    };
+  }
+
   getAvaliacoes(filters: AvaliacaoFilters = {}): Observable<PaginatedResponse<Avaliacao>> {
     let params = new HttpParams();
     
