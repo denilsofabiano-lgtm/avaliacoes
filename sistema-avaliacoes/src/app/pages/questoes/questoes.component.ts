@@ -496,11 +496,11 @@ export class QuestoesComponent implements OnInit {
 
   filterByDificuldade(dificuldade: string): void {
     if (!dificuldade) {
-      this.loadQuestoes();
+      this.questoes = [...this.allQuestoes];
       return;
     }
 
-    this.questoes = this.questoes.filter(questao =>
+    this.questoes = this.allQuestoes.filter(questao =>
       questao.nivelDificuldade?.descricao === dificuldade
     );
   }
