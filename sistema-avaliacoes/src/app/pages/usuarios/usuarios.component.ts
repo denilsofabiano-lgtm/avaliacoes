@@ -299,8 +299,15 @@ export class UsuariosComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        // O erro já é tratado pelo service com fallback ou ErrorHandlerService
         this.loading = false;
+        console.log('👥 Usuários error:', error);
+
+        const message = extractErrorMessage(error);
+        console.log('🎯 Usuários error message:', message);
+
+        this.snackBar.open(message, 'Fechar', {
+          duration: 5000
+        });
       }
     });
   }
