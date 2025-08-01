@@ -372,9 +372,10 @@ export class UsuarioFormComponent implements OnInit {
     return null;
   }
 
-  private passwordMatchValidator(form: FormGroup) {
-    if (!form) return null;
+  private passwordMatchValidator(control: AbstractControl): { [key: string]: any } | null {
+    if (!control) return null;
 
+    const form = control as FormGroup;
     const senha = form.get('senha');
     const confirmarSenha = form.get('confirmarSenha');
 
