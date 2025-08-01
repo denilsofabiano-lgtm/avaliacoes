@@ -188,6 +188,29 @@ cp .env.example .env
 - **RAM**: 4GB
 - **Disco**: 10GB SSD
 
+## ⚠️ Compatibilidade de Versões
+
+### Angular 20 + Node.js
+- **Suportado**: Node.js 22.x LTS, 24.x LTS
+- **Não suportado**: Node.js 18.x (removido do Angular 20)
+- **Recomendado**: Node.js 22 LTS para estabilidade
+
+### Migração de Node.js 18 → 22
+Se você estava usando Node.js 18, atualize para Node.js 22:
+
+```bash
+# Usando nvm
+nvm install 22
+nvm use 22
+
+# Verificar versão
+node --version  # deve ser v22.x.x
+
+# Reinstalar dependências
+rm -rf node_modules package-lock.json
+npm install
+```
+
 ## 📝 Próximos Passos
 
 1. **Backend API**: Adicionar serviço Node.js/Express
