@@ -342,10 +342,14 @@ export class AvaliacoesComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        this.snackBar.open('Erro ao carregar avaliações', 'Fechar', {
-          duration: 3000
+        console.log('📋 Avaliações load error:', error);
+
+        const message = extractErrorMessage(error);
+        console.log('🎯 Avaliações error message:', message);
+
+        this.snackBar.open(message, 'Fechar', {
+          duration: 5000
         });
-        console.error('Erro ao carregar avaliações:', error);
       }
     });
   }
