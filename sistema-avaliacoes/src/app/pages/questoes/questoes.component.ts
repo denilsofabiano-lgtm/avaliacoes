@@ -518,11 +518,11 @@ export class QuestoesComponent implements OnInit {
 
   filterByFase(fase: string): void {
     if (!fase) {
-      this.loadQuestoes();
+      this.questoes = [...this.allQuestoes];
       return;
     }
 
-    this.questoes = this.questoes.filter(questao =>
+    this.questoes = this.allQuestoes.filter(questao =>
       questao.fase === fase
     );
   }
