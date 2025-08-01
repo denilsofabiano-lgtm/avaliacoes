@@ -101,7 +101,8 @@ docker-compose -f docker-compose.dev.yml down
 
 - **postgres_data**: Dados do PostgreSQL (produção)
 - **postgres_dev_data**: Dados do PostgreSQL (desenvolvimento)
-- **redis_data**: Cache Redis
+- **redis_data**: Cache Redis (produção)
+- **redis_dev_data**: Cache Redis (desenvolvimento)
 
 ## 🔍 Monitoramento
 
