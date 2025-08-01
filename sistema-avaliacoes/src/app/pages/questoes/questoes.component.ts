@@ -474,11 +474,11 @@ export class QuestoesComponent implements OnInit {
 
   filterByDisciplina(disciplina: string): void {
     if (!disciplina) {
-      this.loadQuestoes();
+      this.questoes = [...this.allQuestoes];
       return;
     }
 
-    this.questoes = this.questoes.filter(questao =>
+    this.questoes = this.allQuestoes.filter(questao =>
       questao.disciplina?.descricao === disciplina
     );
   }
