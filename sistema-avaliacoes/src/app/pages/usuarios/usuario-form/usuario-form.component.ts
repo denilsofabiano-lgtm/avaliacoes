@@ -360,14 +360,30 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   private passwordMatchValidator(form: FormGroup) {
+    if (!form) return null;
+
     const senha = form.get('senha');
     const confirmarSenha = form.get('confirmarSenha');
-    
-    if (senha && confirmarSenha && senha.value !== confirmarSenha.value) {
-      confirmarSenha.setErrors({ mismatch: true });
-      return { mismatch: true };
+
+    // Se estamos em modo de edição, não validar senhas
+    if (this.isEditMode) {
+      return null;
     }
-    
+
+    if (senha && confirmarSenha && senha.value && confirmarSenha.value) {
+      if (senha.value !== confirmarSenha.value) {
+        confirmarSenha.setErrors({ mismatch: true });
+        return { mismatch: true };
+      } else {
+        // Limpar erro de mismatch se as senhas coincidem
+        const errors = confirmarSenha.errors;
+        if (errors && errors['mismatch']) {
+          delete errors['mismatch'];
+          confirmarSenha.setErrors(Object.keys(errors).length > 0 ? errors : null);
+        }
+      }
+    }
+
     return null;
   }
 }
