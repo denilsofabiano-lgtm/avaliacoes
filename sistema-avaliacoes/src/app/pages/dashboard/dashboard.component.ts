@@ -211,8 +211,7 @@ export class DashboardComponent implements OnInit {
   ];
 
   constructor(
-    private relatorioService: RelatorioService,
-    private errorHandler: ErrorHandlerService
+    private relatorioService: RelatorioService
   ) {}
 
   ngOnInit(): void {
