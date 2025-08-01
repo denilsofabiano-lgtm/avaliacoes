@@ -50,7 +50,11 @@ export class QuestaoService {
     return this.http.get<Questao>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar questão:', error);
+          console.group('❌ QuestaoService.getQuestao Error');
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('Questao ID:', id);
+          console.groupEnd();
           return throwError(() => error);
         })
       );
