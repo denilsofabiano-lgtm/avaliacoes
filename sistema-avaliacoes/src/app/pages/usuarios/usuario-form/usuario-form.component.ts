@@ -370,22 +370,10 @@ export class UsuarioFormComponent implements OnInit {
       return null;
     }
 
-    // Se um dos campos de senha não tem validators (modo edição), não validar
-    if (!senha.hasError || !confirmarSenha.hasError) {
-      return null;
-    }
-
+    // Só validar se ambos os campos têm valores
     if (senha.value && confirmarSenha.value) {
       if (senha.value !== confirmarSenha.value) {
-        confirmarSenha.setErrors({ mismatch: true });
         return { mismatch: true };
-      } else {
-        // Limpar erro de mismatch se as senhas coincidem
-        const errors = confirmarSenha.errors;
-        if (errors && errors['mismatch']) {
-          delete errors['mismatch'];
-          confirmarSenha.setErrors(Object.keys(errors).length > 0 ? errors : null);
-        }
       }
     }
 
