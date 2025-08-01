@@ -365,12 +365,17 @@ export class UsuarioFormComponent implements OnInit {
     const senha = form.get('senha');
     const confirmarSenha = form.get('confirmarSenha');
 
-    // Se estamos em modo de edição, não validar senhas
-    if (this.isEditMode) {
+    // Se não existem os campos de senha, não validar
+    if (!senha || !confirmarSenha) {
       return null;
     }
 
-    if (senha && confirmarSenha && senha.value && confirmarSenha.value) {
+    // Se um dos campos de senha não tem validators (modo edição), não validar
+    if (!senha.hasError || !confirmarSenha.hasError) {
+      return null;
+    }
+
+    if (senha.value && confirmarSenha.value) {
       if (senha.value !== confirmarSenha.value) {
         confirmarSenha.setErrors({ mismatch: true });
         return { mismatch: true };
