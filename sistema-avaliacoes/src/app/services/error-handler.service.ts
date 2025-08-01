@@ -13,7 +13,13 @@ export class ErrorHandlerService {
     let message = customMessage || 'Ocorreu um erro inesperado';
 
     // Log completo do erro para debug
-    console.error('Error details:', error);
+    console.group('❌ ErrorHandlerService');
+    console.log('Error object:', error);
+    console.log('Error type:', typeof error);
+    console.log('Error status:', error?.status);
+    console.log('Error message:', error?.message);
+    console.log('Custom message:', customMessage);
+    console.groupEnd();
 
     if (error instanceof HttpErrorResponse) {
       // Errors do servidor
