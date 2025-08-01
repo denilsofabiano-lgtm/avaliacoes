@@ -340,7 +340,7 @@ export class AplicacaoFormComponent implements OnInit {
         this.avaliacoes = avaliacoes;
       },
       error: (error) => {
-        console.error('Erro ao carregar avaliações:', error);
+        console.log('❌ Erro ao carregar avaliações:', error);
         this.snackBar.open(extractErrorMessage(error), 'Fechar', { duration: 5000 });
       }
     });
