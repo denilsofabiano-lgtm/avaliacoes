@@ -375,7 +375,9 @@ export class UsuariosComponent implements OnInit {
           this.loadUsuarios();
         },
         error: (error) => {
-          this.snackBar.open('Erro ao excluir usuário', 'Fechar', { duration: 3000 });
+          console.log('👥 Delete user error:', error);
+          const message = extractErrorMessage(error);
+          this.snackBar.open(message, 'Fechar', { duration: 5000 });
         }
       });
     }
