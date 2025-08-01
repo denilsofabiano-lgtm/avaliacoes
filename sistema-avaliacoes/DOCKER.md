@@ -92,7 +92,10 @@ docker-compose -f docker-compose.dev.yml down
 
 ### Desenvolvimento
 - **Frontend**: http://localhost:4200
+- **Backend API**: http://localhost:8081
 - **PostgreSQL**: localhost:5433
+- **Redis**: localhost:6380
+- **Adminer**: http://localhost:8083
 
 ## 💾 Volumes Persistentes
 
