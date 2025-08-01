@@ -377,8 +377,9 @@ import { extractErrorMessage } from '../../utils/error-utils';
 })
 export class QuestoesComponent implements OnInit {
   displayedColumns: string[] = ['id', 'pergunta', 'disciplina', 'tipoAlternativa', 'nivelDificuldade', 'pontuacao', 'tema', 'actions'];
-  
-  questoes: Questao[] = [
+
+  questoes: Questao[] = [];
+  allQuestoes: Questao[] = [
     {
       id: 1,
       dataCadastro: new Date('2024-01-15'),
