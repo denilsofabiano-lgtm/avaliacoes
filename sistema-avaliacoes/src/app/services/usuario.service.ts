@@ -251,14 +251,22 @@ export class UsuarioService {
   }
 
   getById(id: number): Observable<Usuario> {
+    console.log('🔄 UsuarioService.getById - fazendo requisição para:', `${this.apiUrl}/${id}`);
+
     return this.http.get<Usuario>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar usuário:', error);
+          console.group('❌ UsuarioService.getById Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('User ID:', id);
+          console.log('API URL tentada:', `${this.apiUrl}/${id}`);
+          console.groupEnd();
 
           // Se for erro de conexão, retorna usuário de fallback
           if (error.status === 0 || error.status === 404) {
-            console.log('Backend indisponível, buscando usuário de demonstração');
+            console.log('✅ Usando fallback para usuário - backend indisponível');
             const fallbackUsers = this.getFallbackUsers();
             const user = fallbackUsers.find(u => u.id === id);
             if (user) {
@@ -266,6 +274,7 @@ export class UsuarioService {
             }
           }
 
+          console.log('📤 Propagando erro do getById');
           return throwError(() => error);
         })
       );
