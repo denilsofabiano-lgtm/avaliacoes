@@ -18,6 +18,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { Avaliacao, TipoAvaliacaoEnum, StatusAvaliacaoEnum } from '../../models';
 import { AvaliacaoService, AvaliacaoFilters } from '../../services/avaliacao.service';
+import { extractErrorMessage } from '../../utils/error-utils';
 
 @Component({
   selector: 'app-avaliacoes',
