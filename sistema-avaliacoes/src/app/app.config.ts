@@ -15,6 +15,11 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     {
       provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
     }
