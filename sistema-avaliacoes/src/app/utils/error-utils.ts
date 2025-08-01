@@ -106,7 +106,13 @@ export function extractErrorMessage(error: any): string {
 
     // Verificar se parece ser erro de usuários
     if (error.url && error.url.includes('usuarios')) {
-      const message = 'Erro ao carregar usuários. Servidor indisponível.';
+      let message = 'Erro ao carregar usuários. Servidor indisponível.';
+
+      // Proteção final
+      if (message.includes('[object Object]') || message === '[object Object]') {
+        message = 'Erro ao carregar usuários. Servidor indisponível.';
+      }
+
       console.group('🚨 POSSÍVEL ORIGEM: Erro de usuários detectado');
       console.log('Error URL:', error.url);
       console.log('Error original:', error);
