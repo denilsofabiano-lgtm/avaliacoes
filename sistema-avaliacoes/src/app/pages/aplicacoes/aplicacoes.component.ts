@@ -574,7 +574,12 @@ export class AplicacoesComponent implements OnInit {
   }
 
   filterByTurma(turma: string): void {
-    console.log('Filtrar por turma:', turma);
+    if (!turma) {
+      this.participantes = [...this.allParticipantes];
+      return;
+    }
+
+    this.participantes = this.allParticipantes.filter(p => p.turma === turma);
   }
 
   novaAplicacao(): void {
