@@ -301,13 +301,22 @@ export class UsuarioFormComponent implements OnInit {
     } else {
       delete formData.confirmarSenha;
       
+      console.log('🔄 Creating user with data:', formData);
       this.usuarioService.create(formData).subscribe({
         next: () => {
           this.snackBar.open('Usuário criado com sucesso!', 'Fechar', { duration: 3000 });
           this.router.navigate(['/usuarios']);
         },
         error: (error) => {
+          console.group('❌ UsuarioForm.create Error');
+          console.log('Error received in form:', error);
+          console.log('Error type:', typeof error);
+          console.log('Form data sent:', formData);
+          console.groupEnd();
+
           const message = extractErrorMessage(error);
+          console.log('🎯 Create user error message:', message);
+
           this.snackBar.open(message, 'Fechar', { duration: 5000 });
           this.loading = false;
         }
