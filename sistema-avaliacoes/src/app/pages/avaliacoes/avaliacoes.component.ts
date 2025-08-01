@@ -419,10 +419,11 @@ export class AvaliacoesComponent implements OnInit {
           this.loadAvaliacoes();
         },
         error: (error) => {
-          this.snackBar.open('Erro ao excluir avaliação', 'Fechar', {
-            duration: 3000
+          console.log('📋 Delete avaliação error:', error);
+          const message = extractErrorMessage(error);
+          this.snackBar.open(message, 'Fechar', {
+            duration: 5000
           });
-          console.error('Erro ao excluir avaliação:', error);
         }
       });
     }
