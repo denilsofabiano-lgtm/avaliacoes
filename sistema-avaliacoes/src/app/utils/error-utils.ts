@@ -70,7 +70,7 @@ export function extractErrorMessage(error: any): string {
     }
   }
 
-  // Tentar extrair mensagens em ordem de prioridade
+  // Tentar extrair mensagens em ordem de prioridade - VERSÃO SEGURA
   const paths = [
     'message',
     'error.message',
@@ -82,7 +82,7 @@ export function extractErrorMessage(error: any): string {
 
   for (const path of paths) {
     const value = getNestedValue(error, path);
-    if (typeof value === 'string' && value.trim() && value !== '[object Object]') {
+    if (typeof value === 'string' && value.trim() && value !== '[object Object]' && !value.includes('[object')) {
       console.log(`✅ Found message at ${path}:`, value);
       return value;
     }
