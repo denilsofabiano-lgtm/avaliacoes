@@ -40,10 +40,16 @@ import { ParticipanteAvaliacao, StatusAplicacaoEnum } from '../../models';
     <div class="aplicacoes-container">
       <div class="header-section">
         <h1>Aplicações de Avaliações</h1>
-        <button mat-raised-button color="primary" (click)="novaAplicacao()">
-          <mat-icon>add</mat-icon>
-          Nova Aplicação
-        </button>
+        <div class="header-actions">
+          <button mat-button (click)="clearAllFilters()">
+            <mat-icon>clear</mat-icon>
+            Limpar Filtros
+          </button>
+          <button mat-raised-button color="primary" (click)="novaAplicacao()">
+            <mat-icon>add</mat-icon>
+            Nova Aplicação
+          </button>
+        </div>
       </div>
 
       <div class="stats-cards">
