@@ -70,6 +70,11 @@ export class AuthService {
               next: (user) => {
                 this.currentUserSubject.next(user);
                 localStorage.setItem('current_user', JSON.stringify(user));
+              },
+              error: (error) => {
+                console.log('❌ Erro ao buscar perfil após login:', error);
+                // Não falha o login por conta disso, mas avisa
+                console.log('⚠️ Login realizado mas falha ao carregar perfil');
               }
             });
           }
