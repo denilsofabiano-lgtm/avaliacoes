@@ -179,11 +179,6 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       senha: ['', Validators.required]
     });
-
-    // Executar teste de mensagens de erro
-    setTimeout(() => {
-      testErrorMessages();
-    }, 1000);
   }
 
   onSubmit(): void {
