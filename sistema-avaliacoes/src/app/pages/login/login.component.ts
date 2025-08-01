@@ -11,7 +11,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/usuario.model';
 import { extractErrorMessage } from '../../utils/error-utils';
-import { testErrorMessages } from '../../test-error';
 
 @Component({
   selector: 'app-login',
