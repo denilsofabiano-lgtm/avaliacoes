@@ -89,7 +89,17 @@ export function extractErrorMessage(error: any): string {
     }
 
     // Fallback genérico
-    return 'Erro de comunicação com o servidor';
+    const fallbackMessage = 'Erro de comunicação com o servidor';
+
+    // Log especial para detectar o problema específico
+    if (fallbackMessage.includes('buscar') && fallbackMessage.includes('usuário')) {
+      console.group('🚨 DETECTADO: Mensagem problemática');
+      console.log('Error original:', error);
+      console.log('Message returned:', fallbackMessage);
+      console.groupEnd();
+    }
+
+    return fallbackMessage;
   }
 
   return 'Erro inesperado';
