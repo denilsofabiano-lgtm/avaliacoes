@@ -440,7 +440,7 @@ export class AplicacaoFormComponent implements OnInit {
           this.router.navigate(['/aplicacoes']);
         },
         error: (error) => {
-          console.error('Erro ao criar aplicação:', error);
+          console.log('❌ Erro ao criar aplicação:', error);
           const message = extractErrorMessage(error);
           this.snackBar.open(message, 'Fechar', { duration: 5000 });
         }
