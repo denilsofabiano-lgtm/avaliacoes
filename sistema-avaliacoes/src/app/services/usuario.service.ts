@@ -161,7 +161,7 @@ export class UsuarioService {
             return of(this.getFallbackUsers());
           }
 
-          this.errorHandler.handleError(error, 'Erro ao carregar usuários');
+          // Se não conseguiu usar fallback, propaga o erro
           return throwError(() => error);
         })
       );
