@@ -1,6 +1,17 @@
 export function extractErrorMessage(error: any): string {
   // REGRA PRINCIPAL: NUNCA retornar "[object Object]"
 
+  // Detectar chamadas relacionadas a usuários
+  const stackTrace = new Error().stack;
+  if (stackTrace && (stackTrace.includes('usuario') || stackTrace.includes('Usuario'))) {
+    console.group('🚨 USUÁRIO ERROR DETECTED');
+    console.log('Stack trace:', stackTrace);
+    console.log('Error received:', error);
+    console.log('Error type:', typeof error);
+    console.log('Error keys:', error ? Object.keys(error) : 'no keys');
+    console.groupEnd();
+  }
+
   // Log simplificado (removido para evitar confusion com [object Object])
   // console.log('🔍 extractErrorMessage called with:', typeof error, error);
 
