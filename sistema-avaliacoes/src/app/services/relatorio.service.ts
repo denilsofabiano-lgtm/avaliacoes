@@ -71,15 +71,21 @@ export class RelatorioService {
     return this.http.get<DashboardData>(`${this.apiUrl}/dashboard`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar dados do dashboard:', error);
+          console.group('📊 RelatorioService Dashboard Error');
+          console.log('Error received in RelatorioService:', error);
+          console.log('Error type:', typeof error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('Error keys:', error ? Object.keys(error) : 'null');
+          console.groupEnd();
 
           // Se for erro de conexão (backend indisponível), retorna dados de fallback
           if (error.status === 0 || error.status === 404) {
-            console.log('Backend indisponível, usando dados de demonstração para dashboard');
+            console.log('🔄 Using fallback dashboard data');
             return of(this.getFallbackDashboardData());
           }
 
-          // Se não conseguiu usar fallback, propaga o erro
+          console.log('📤 Throwing error from RelatorioService');
           return throwError(() => error);
         })
       );
