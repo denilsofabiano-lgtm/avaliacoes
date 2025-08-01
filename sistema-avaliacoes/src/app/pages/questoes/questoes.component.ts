@@ -529,12 +529,12 @@ export class QuestoesComponent implements OnInit {
 
   filterByOrigem(origem: string): void {
     if (!origem) {
-      this.loadQuestoes();
+      this.questoes = [...this.allQuestoes];
       return;
     }
 
     const isAI = origem === 'true';
-    this.questoes = this.questoes.filter(questao =>
+    this.questoes = this.allQuestoes.filter(questao =>
       questao.geradorIa === isAI
     );
   }
