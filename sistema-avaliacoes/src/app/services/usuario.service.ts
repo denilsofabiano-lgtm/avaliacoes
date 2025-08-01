@@ -197,14 +197,23 @@ export class UsuarioService {
   }
 
   create(usuario: Partial<Usuario>): Observable<Usuario> {
+    console.log('🔄 UsuarioService.create - dados enviados:', usuario);
+    console.log('🔄 UsuarioService.create - API URL:', this.apiUrl);
+
     return this.http.post<Usuario>(this.apiUrl, usuario)
       .pipe(
         catchError(error => {
-          console.error('Erro ao criar usuário:', error);
+          console.group('❌ UsuarioService.create Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('Error error:', error?.error);
+          console.log('Data sent:', usuario);
+          console.groupEnd();
 
           // Se for erro de conexão (backend indisponível), simula criação
           if (error.status === 0 || error.status === 404) {
-            console.log('Backend indisponível, simulando criação de usuário');
+            console.log('✅ Simulando criação de usuário - backend indisponível');
             const newUser: Usuario = {
               id: Date.now(), // ID único baseado em timestamp
               nome: usuario.nome,
@@ -214,9 +223,11 @@ export class UsuarioService {
               status: usuario.status !== undefined ? usuario.status : true,
               dataCadastro: new Date()
             };
+            console.log('✅ Usuário simulado criado:', newUser);
             return of(newUser);
           }
 
+          console.log('📤 Propagando erro do create');
           return throwError(() => error);
         })
       );
