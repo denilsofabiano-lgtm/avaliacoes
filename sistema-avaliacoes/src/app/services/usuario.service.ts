@@ -156,6 +156,14 @@ export class UsuarioService {
       .pipe(
         catchError(error => {
           console.error('Erro ao buscar usuários:', error);
+
+          // Se for erro de conexão (backend indisponível), retorna dados de fallback
+          if (error.status === 0 || error.status === 404) {
+            console.log('Backend indisponível, usando dados de demonstração');
+            return of(this.getFallbackUsers());
+          }
+
+          this.errorHandler.handleError(error, 'Erro ao carregar usuários');
           return throwError(() => error);
         })
       );
