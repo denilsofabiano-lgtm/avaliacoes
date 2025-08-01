@@ -9,12 +9,21 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('🌐 HTTP Request:', request.method, request.url);
+
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'Ocorreu um erro inesperado';
 
         // Log completo do erro para debug
-        console.error('HTTP Error intercepted:', error);
+        console.group('🚨 ErrorInterceptor - HTTP Error');
+        console.log('Request URL:', request.url);
+        console.log('Request Method:', request.method);
+        console.log('Error object:', error);
+        console.log('Error status:', error.status);
+        console.log('Error message:', error.message);
+        console.log('Error error:', error.error);
+        console.groupEnd();
 
         if (error instanceof HttpErrorResponse) {
           switch (error.status) {
