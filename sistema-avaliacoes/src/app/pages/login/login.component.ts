@@ -190,6 +190,8 @@ export class LoginComponent {
         password: this.loginForm.get('senha')?.value
       };
 
+      console.log('🔐 Starting login with credentials:', credentials);
+
       this.authService.login(credentials).subscribe({
         next: (response) => {
           this.isLoading = false;
