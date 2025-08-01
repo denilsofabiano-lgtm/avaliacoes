@@ -170,7 +170,24 @@ export class UsuarioService {
   }
 
   getById(id: number): Observable<Usuario> {
-    return this.getUsuario(id);
+    return this.http.get<Usuario>(`${this.apiUrl}/${id}`)
+      .pipe(
+        catchError(error => {
+          console.error('Erro ao buscar usuário:', error);
+
+          // Se for erro de conexão, retorna usuário de fallback
+          if (error.status === 0 || error.status === 404) {
+            console.log('Backend indisponível, buscando usuário de demonstração');
+            const fallbackUsers = this.getFallbackUsers();
+            const user = fallbackUsers.find(u => u.id === id);
+            if (user) {
+              return of(user);
+            }
+          }
+
+          return throwError(() => error);
+        })
+      );
   }
 
   create(usuario: Partial<Usuario>): Observable<Usuario> {
