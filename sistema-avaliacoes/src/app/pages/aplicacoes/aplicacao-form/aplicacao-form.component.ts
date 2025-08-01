@@ -21,6 +21,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Avaliacao, Usuario, ParticipanteAvaliacao, StatusAplicacaoEnum } from '../../../models';
 import { AvaliacaoService } from '../../../services/avaliacao.service';
 import { UsuarioService } from '../../../services/usuario.service';
+import { AplicacaoService, CreateAplicacaoRequest } from '../../../services/aplicacao.service';
 import { extractErrorMessage } from '../../../utils/error-utils';
 
 @Component({
