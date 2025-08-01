@@ -68,7 +68,12 @@ export class AplicacaoService {
     return this.http.post<ApiResponse<ParticipanteAvaliacao[]>>(this.apiUrl, aplicacao)
       .pipe(
         catchError(error => {
-          console.error('Erro ao criar aplicação:', error);
+          console.group('❌ AplicacaoService.createAplicacao Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', this.apiUrl);
+          console.groupEnd();
 
           // Se for erro de conexão, simula criação
           if (error.status === 0 || error.status === 404) {
