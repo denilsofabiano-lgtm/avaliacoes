@@ -225,15 +225,20 @@ export class UsuarioFormComponent implements OnInit {
     private route: ActivatedRoute,
     private usuarioService: UsuarioService,
     private snackBar: MatSnackBar
-  ) {
-    this.initForm();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isEditMode = true;
         this.usuarioId = +params['id'];
+      }
+
+      // Inicializar form após definir isEditMode
+      this.initForm();
+
+      // Carregar usuário se estiver em modo de edição
+      if (this.isEditMode) {
         this.loadUsuario();
       }
     });
