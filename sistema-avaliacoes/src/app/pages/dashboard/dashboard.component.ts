@@ -310,6 +310,126 @@ import { extractErrorMessage } from '../../utils/error-utils';
       align-items: center;
       gap: 8px;
     }
+
+    /* Estilos específicos para alunos */
+    .welcome-section {
+      margin-bottom: 24px;
+    }
+
+    .welcome-card {
+      background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+      color: white;
+    }
+
+    .welcome-card mat-card-title {
+      color: white;
+    }
+
+    .welcome-card mat-icon {
+      color: white;
+    }
+
+    .avaliacoes-section h2 {
+      margin: 24px 0 16px 0;
+      color: #333;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 16px;
+    }
+
+    .stat-card.disponivel {
+      border-left: 4px solid #4caf50;
+    }
+
+    .stat-card.concluida {
+      border-left: 4px solid #2196f3;
+    }
+
+    .stat-card.em-andamento {
+      border-left: 4px solid #ff9800;
+    }
+
+    .stat-number {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .stat-card.disponivel .stat-number {
+      color: #4caf50;
+    }
+
+    .stat-card.concluida .stat-number {
+      color: #2196f3;
+    }
+
+    .stat-card.em-andamento .stat-number {
+      color: #ff9800;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .avaliacoes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .avaliacoes-card {
+      height: fit-content;
+    }
+
+    .no-avaliacoes {
+      margin-top: 24px;
+    }
+
+    .no-content {
+      text-align: center;
+      padding: 40px 20px;
+      color: #666;
+    }
+
+    .no-content mat-icon {
+      font-size: 48px;
+      height: 48px;
+      width: 48px;
+      color: #ccc;
+      margin-bottom: 16px;
+    }
+
+    .no-content h3 {
+      margin: 16px 0 8px 0;
+      color: #333;
+    }
+
+    .no-items {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      margin: 16px 0;
+    }
+
+    @media (max-width: 768px) {
+      .stats-row {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+
+      .avaliacoes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   `]
 })
 export class DashboardComponent implements OnInit {
