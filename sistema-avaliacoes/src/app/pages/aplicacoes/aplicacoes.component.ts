@@ -441,7 +441,8 @@ import { ParticipanteAvaliacao, StatusAplicacaoEnum } from '../../models';
 export class AplicacoesComponent implements OnInit {
   displayedColumns: string[] = ['usuario', 'avaliacao', 'escola', 'status', 'progresso', 'tempos', 'disponivel', 'actions'];
   
-  participantes: ParticipanteAvaliacao[] = [
+  participantes: ParticipanteAvaliacao[] = [];
+  allParticipantes: ParticipanteAvaliacao[] = [
     {
       id: 1,
       dataCadastro: new Date('2024-01-15'),
