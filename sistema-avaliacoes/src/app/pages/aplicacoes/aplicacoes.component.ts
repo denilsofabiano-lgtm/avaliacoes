@@ -598,15 +598,34 @@ export class AplicacoesComponent implements OnInit {
     return `${progress}%`;
   }
 
-  formatDateTime(date: Date | undefined): string {
+  formatDateTime(date: Date | string | undefined): string {
     if (!date) return '';
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date);
+
+    try {
+      // Se for string, converter para Date
+      let dateObj: Date;
+      if (typeof date === 'string') {
+        dateObj = new Date(date);
+      } else {
+        dateObj = date;
+      }
+
+      // Verificar se a data é válida
+      if (isNaN(dateObj.getTime())) {
+        return 'Data inválida';
+      }
+
+      return new Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(dateObj);
+    } catch (error) {
+      console.log('Error formatting date:', date, error);
+      return 'Data inválida';
+    }
   }
 
   getDuracao(participante: ParticipanteAvaliacao): string {
