@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor() {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
@@ -47,7 +46,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               errorMessage = 'Erro interno do servidor';
               break;
             default:
-              errorMessage = this.extractErrorMessage(error.error) || error.message || 'Erro de comunicação com servidor';
+              errorMessage = this.extractErrorMessage(error.error) || error.message || 'Erro de comunica��ão com servidor';
           }
         } else {
           errorMessage = this.extractErrorMessage(error) || errorMessage;
