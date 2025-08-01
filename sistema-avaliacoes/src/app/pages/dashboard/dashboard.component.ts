@@ -530,4 +530,140 @@ export class DashboardComponent implements OnInit {
       this.gridCols = 4;
     }
   }
+
+  // Getters para roles
+  get isAdmin(): boolean {
+    return this.authService.isAdmin;
+  }
+
+  get isProfessor(): boolean {
+    return this.authService.isProfessor;
+  }
+
+  get isAluno(): boolean {
+    return this.authService.isAluno;
+  }
+
+  get currentUser() {
+    return this.authService.currentUser;
+  }
+
+  // Métodos para alunos
+  loadMinhasAvaliacoes(): void {
+    this.isLoading = true;
+    this.aplicacaoService.getAplicacoes().subscribe({
+      next: (response) => {
+        this.minhasAvaliacoes = response.data || [];
+        this.categorizeAvaliacoes();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.log('📊 Erro ao carregar avaliações do aluno:', error);
+        this.isLoading = false;
+
+        // Dados de fallback para demonstração
+        this.createMockAvaliacoes();
+      }
+    });
+  }
+
+  private categorizeAvaliacoes(): void {
+    this.avaliacoesDisponiveis = this.minhasAvaliacoes.filter(a =>
+      a.disponivel && !a.dataInicio && !a.dataFim
+    );
+
+    this.avaliacoesEmAndamento = this.minhasAvaliacoes.filter(a =>
+      a.dataInicio && !a.dataFim
+    );
+
+    this.avaliacoesConcluidas = this.minhasAvaliacoes.filter(a =>
+      a.dataFim
+    );
+  }
+
+  private createMockAvaliacoes(): void {
+    this.minhasAvaliacoes = [
+      {
+        id: 1,
+        avaliacaoId: 1,
+        avaliacao: {
+          id: 1,
+          instrucao: 'Avaliação de Matemática - 1º Bimestre',
+          disciplina: { id: 1, descricao: 'Matemática', codigo: 'MAT' }
+        },
+        usuarioId: 1,
+        disponivel: true,
+        statusAplicacaoId: 1,
+        avaliado: false
+      } as ParticipanteAvaliacao,
+      {
+        id: 2,
+        avaliacaoId: 2,
+        avaliacao: {
+          id: 2,
+          instrucao: 'Prova de Português - Redação',
+          disciplina: { id: 2, descricao: 'Português', codigo: 'POR' }
+        },
+        usuarioId: 1,
+        disponivel: true,
+        dataInicio: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 horas atrás
+        statusAplicacaoId: 2,
+        avaliado: false
+      } as ParticipanteAvaliacao,
+      {
+        id: 3,
+        avaliacaoId: 3,
+        avaliacao: {
+          id: 3,
+          instrucao: 'Teste de Ciências - Capítulos 1-3',
+          disciplina: { id: 3, descricao: 'Ciências', codigo: 'CIE' }
+        },
+        usuarioId: 1,
+        disponivel: false,
+        dataInicio: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 dia atrás
+        dataFim: new Date(Date.now() - 23 * 60 * 60 * 1000), // 23 horas atrás
+        statusAplicacaoId: 3,
+        avaliado: true
+      } as ParticipanteAvaliacao
+    ];
+
+    this.categorizeAvaliacoes();
+  }
+
+  iniciarAvaliacao(avaliacao: ParticipanteAvaliacao): void {
+    if (avaliacao.id) {
+      console.log('🎯 Iniciando avaliação:', avaliacao.avaliacao?.instrucao);
+      // Navegar para a página de aplicação
+      // this.router.navigate(['/aplicacoes', avaliacao.id, 'aplicar']);
+    }
+  }
+
+  continuarAvaliacao(avaliacao: ParticipanteAvaliacao): void {
+    if (avaliacao.id) {
+      console.log('🔄 Continuando avaliação:', avaliacao.avaliacao?.instrucao);
+      // Navegar para a página de aplicação
+      // this.router.navigate(['/aplicacoes', avaliacao.id, 'aplicar']);
+    }
+  }
+
+  verResultado(avaliacao: ParticipanteAvaliacao): void {
+    if (avaliacao.id) {
+      console.log('📈 Visualizando resultado:', avaliacao.avaliacao?.instrucao);
+      // Navegar para a página de resultados
+      // this.router.navigate(['/aplicacoes', avaliacao.id, 'resultado']);
+    }
+  }
+
+  formatDate(date: Date | undefined): string {
+    if (!date) return 'Data não informada';
+
+    const d = new Date(date);
+    return d.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
 }
