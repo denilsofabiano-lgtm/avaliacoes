@@ -24,6 +24,17 @@ export function extractErrorMessage(error: any): string {
       }
     }
 
+    // Casos específicos para operações de avaliação
+    if (error.url && error.url.includes('avaliacoes')) {
+      switch (error.status) {
+        case 400: return 'Dados da avaliação inválidos. Verifique os campos.';
+        case 403: return 'Sem permissão para esta operação de avaliação.';
+        case 404: return 'Avaliação não encontrada.';
+        case 409: return 'Conflito: avaliação já existe ou em uso.';
+        case 422: return 'Dados da avaliação não puderam ser processados.';
+      }
+    }
+
     switch (error.status) {
       case 0: return 'Servidor indisponível. Verifique sua conexão.';
       case 400: return 'Dados inválidos enviados';
