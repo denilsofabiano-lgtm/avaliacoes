@@ -210,7 +210,10 @@ export class DashboardComponent implements OnInit {
     }
   ];
 
-  constructor(private relatorioService: RelatorioService) {}
+  constructor(
+    private relatorioService: RelatorioService,
+    private errorHandler: ErrorHandlerService
+  ) {}
 
   ngOnInit(): void {
     this.updateGridCols();
