@@ -232,9 +232,9 @@ export class DashboardComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Erro ao carregar dashboard:', error);
+        // O erro já é tratado pelo service com fallback ou ErrorHandlerService
         this.isLoading = false;
-        // Manter dados de fallback para demonstração
+        // Manter dados de fallback para demonstração se necessário
         this.totalUsuarios = 125;
         this.totalAvaliacoes = 23;
         this.totalQuestoes = 456;
