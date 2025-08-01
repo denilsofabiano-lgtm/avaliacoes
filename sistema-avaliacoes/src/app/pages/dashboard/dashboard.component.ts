@@ -617,7 +617,7 @@ export class DashboardComponent implements OnInit {
         avaliacao: {
           id: 3,
           instrucao: 'Teste de Ciências - Capítulos 1-3',
-          disciplina: { id: 3, descricao: 'Ciências', codigo: 'CIE' }
+          disciplina: { id: 3, descricao: 'Ciências', idDisciplinaExterno: 'CIE', status: true }
         },
         usuarioId: 1,
         disponivel: false,
