@@ -356,7 +356,7 @@ export class AplicacaoFormComponent implements OnInit {
       },
       error: (error) => {
         console.log('❌ Erro ao carregar usuários:', error);
-        this.snackBar.open(extractErrorMessage(error), 'Fechar', { duration: 5000 });
+        this.snackBar.open(extractUserErrorMessage(error), 'Fechar', { duration: 5000 });
       }
     });
   }
