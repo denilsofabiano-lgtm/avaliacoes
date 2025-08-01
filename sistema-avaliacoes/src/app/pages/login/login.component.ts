@@ -202,8 +202,8 @@ export class LoginComponent {
           this.isLoading = false;
           console.error('Erro no login:', error);
 
-          // O ErrorInterceptor já processou o erro e criou uma mensagem legível
-          const message = error.message || 'Erro ao fazer login. Verifique suas credenciais.';
+          // Usar função utilitária para extrair mensagem legível
+          const message = extractErrorMessage(error);
 
           this.snackBar.open(message, 'Fechar', {
             duration: 5000
