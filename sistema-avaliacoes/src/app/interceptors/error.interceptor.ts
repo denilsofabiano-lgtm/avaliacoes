@@ -69,6 +69,9 @@ export class ErrorInterceptor implements HttpInterceptor {
           originalError: error
         };
 
+        console.log('🔄 ErrorInterceptor processed message:', errorMessage);
+        console.log('📤 Returning error:', readableError);
+
         return throwError(() => readableError);
       })
     );
