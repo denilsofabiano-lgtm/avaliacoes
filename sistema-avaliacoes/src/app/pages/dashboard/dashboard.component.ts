@@ -590,7 +590,7 @@ export class DashboardComponent implements OnInit {
         avaliacao: {
           id: 1,
           instrucao: 'Avaliação de Matemática - 1º Bimestre',
-          disciplina: { id: 1, descricao: 'Matemática', codigo: 'MAT' }
+          disciplina: { id: 1, descricao: 'Matemática', idDisciplinaExterno: 'MAT', status: true }
         },
         usuarioId: 1,
         disponivel: true,
