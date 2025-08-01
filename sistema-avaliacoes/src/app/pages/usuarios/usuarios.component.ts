@@ -17,7 +17,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Usuario, UserRole } from '../../models';
 import { UsuarioService } from '../../services/usuario.service';
-import { ErrorHandlerService } from '../../services/error-handler.service';
+import { extractErrorMessage } from '../../utils/error-utils';
 
 @Component({
   selector: 'app-usuarios',
