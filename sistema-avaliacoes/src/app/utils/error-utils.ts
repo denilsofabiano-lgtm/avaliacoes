@@ -138,6 +138,11 @@ export function extractErrorMessage(error: any): string {
       return 'Erro ao carregar avaliações. Servidor indisponível.';
     }
 
+    // Verificar se parece ser erro de aplicações
+    if (error.url && error.url.includes('aplicacoes')) {
+      return 'Erro ao processar aplicação. Servidor indisponível.';
+    }
+
     // Fallback genérico
     const fallbackMessage = 'Erro de comunicação com o servidor';
 
