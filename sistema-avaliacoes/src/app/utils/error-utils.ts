@@ -122,3 +122,15 @@ export function getHttpStatusMessage(status: number): string {
       return 'Erro de comunicação com o servidor';
   }
 }
+
+export function logError(context: string, error: any, additionalData?: any): void {
+  console.group(`❌ ${context} Error`);
+  console.log('Error object:', error);
+  console.log('Error status:', error?.status);
+  console.log('Error message:', error?.message);
+  console.log('Error error:', error?.error);
+  if (additionalData) {
+    console.log('Additional data:', additionalData);
+  }
+  console.groupEnd();
+}
