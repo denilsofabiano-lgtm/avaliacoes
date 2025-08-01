@@ -311,7 +311,7 @@ import { extractErrorMessage } from '../../utils/error-utils';
       gap: 8px;
     }
 
-    /* Estilos específicos para alunos */
+    /* Estilos espec��ficos para alunos */
     .welcome-section {
       margin-bottom: 24px;
     }
@@ -440,6 +440,12 @@ export class DashboardComponent implements OnInit {
   gridCols = 4;
   isLoading = true;
   dashboardData: DashboardData | null = null;
+
+  // Propriedades para alunos
+  minhasAvaliacoes: ParticipanteAvaliacao[] = [];
+  avaliacoesDisponiveis: ParticipanteAvaliacao[] = [];
+  avaliacoesEmAndamento: ParticipanteAvaliacao[] = [];
+  avaliacoesConcluidas: ParticipanteAvaliacao[] = [];
 
   recentActivities = [
     {
