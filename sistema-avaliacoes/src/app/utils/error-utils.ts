@@ -17,10 +17,21 @@ export function extractErrorMessage(error: any): string {
   if (typeof error === 'object' && error.status !== undefined) {
     // Casos específicos para operações de usuário
     if (error.url && error.url.includes('usuarios')) {
+      let message;
       switch (error.status) {
-        case 400: return 'Dados do usuário inválidos. Verifique todos os campos.';
-        case 409: return 'E-mail ou CPF já cadastrado no sistema.';
-        case 422: return 'Formulário contém dados inválidos.';
+        case 400: message = 'Dados do usuário inválidos. Verifique todos os campos.'; break;
+        case 409: message = 'E-mail ou CPF já cadastrado no sistema.'; break;
+        case 422: message = 'Formulário contém dados inválidos.'; break;
+      }
+
+      if (message) {
+        console.group('🚨 POSSÍVEL ORIGEM: Erro específico de usuário');
+        console.log('Error URL:', error.url);
+        console.log('Error status:', error.status);
+        console.log('Error original:', error);
+        console.log('Message returned:', message);
+        console.groupEnd();
+        return message;
       }
     }
 
