@@ -116,6 +116,8 @@ services:
 volumes:
   postgres_dev_data:
     driver: local
+  redis_dev_data:
+    driver: local
 
 networks:
   avaliacoes-dev-network:
