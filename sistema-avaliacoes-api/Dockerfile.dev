@@ -1,0 +1,65 @@
+# Development stage - PHP-FPM
+FROM php:8.2-fpm-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    libzip-dev \
+    postgresql-dev \
+    icu-dev \
+    autoconf \
+    g++ \
+    make
+
+# Install PHP extensions
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
+    intl \
+    opcache
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy composer files first for better layer caching
+COPY composer.json composer.lock ./
+
+# Install dependencies (include dev dependencies for development)
+RUN composer install --prefer-dist --no-scripts --no-autoloader
+
+# Copy application code
+COPY . .
+
+# Generate autoloader
+RUN composer dump-autoload --optimize
+
+# Copy PHP configuration
+COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+
+# Create necessary directories
+RUN mkdir -p var/cache var/log
+RUN chown -R www-data:www-data var/
+
+# Expose port 9000
+EXPOSE 9000
+
+# Start PHP-FPM
+CMD ["php-fpm"]
