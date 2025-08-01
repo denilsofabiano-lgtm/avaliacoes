@@ -15,6 +15,15 @@ export function extractErrorMessage(error: any): string {
 
   // Mensagens por status HTTP (mais comum)
   if (typeof error === 'object' && error.status !== undefined) {
+    // Casos específicos para operações de usuário
+    if (error.url && error.url.includes('usuarios')) {
+      switch (error.status) {
+        case 400: return 'Dados do usuário inválidos. Verifique todos os campos.';
+        case 409: return 'E-mail ou CPF já cadastrado no sistema.';
+        case 422: return 'Formulário contém dados inválidos.';
+      }
+    }
+
     switch (error.status) {
       case 0: return 'Servidor indisponível. Verifique sua conexão.';
       case 400: return 'Dados inválidos enviados';
