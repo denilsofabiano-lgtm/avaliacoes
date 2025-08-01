@@ -314,7 +314,7 @@ export class UsuarioFormComponent implements OnInit {
       
       this.usuarioService.update(this.usuarioId!, formData).subscribe({
         next: () => {
-          this.snackBar.open('Usuário atualizado com sucesso!', 'Fechar', { duration: 3000 });
+          this.snackBar.open('Usu��rio atualizado com sucesso!', 'Fechar', { duration: 3000 });
           this.router.navigate(['/usuarios']);
         },
         error: (error) => {
@@ -339,7 +339,7 @@ export class UsuarioFormComponent implements OnInit {
           console.log('Form data sent:', formData);
           console.groupEnd();
 
-          const message = extractErrorMessage(error);
+          const message = extractUserErrorMessage(error);
           console.log('🎯 Create user error message:', message);
 
           this.snackBar.open(message, 'Fechar', { duration: 5000 });
