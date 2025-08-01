@@ -318,14 +318,24 @@ export class UsuarioService {
   }
 
   update(id: number, usuario: Partial<Usuario>): Observable<Usuario> {
+    console.log('🔄 UsuarioService.update - fazendo requisição para:', `${this.apiUrl}/${id}`);
+    console.log('🔄 UsuarioService.update - dados enviados:', usuario);
+
     return this.http.put<Usuario>(`${this.apiUrl}/${id}`, usuario)
       .pipe(
         catchError(error => {
-          console.error('Erro ao atualizar usuário:', error);
+          console.group('❌ UsuarioService.update Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('Error error:', error?.error);
+          console.log('User ID:', id);
+          console.log('Data sent:', usuario);
+          console.groupEnd();
 
           // Se for erro de conexão (backend indisponível), simula atualização
           if (error.status === 0 || error.status === 404) {
-            console.log('Backend indisponível, simulando atualização de usuário');
+            console.log('�� Simulando atualização de usuário - backend indisponível');
             const updatedUser: Usuario = {
               id: id,
               nome: usuario.nome,
@@ -335,9 +345,11 @@ export class UsuarioService {
               status: usuario.status !== undefined ? usuario.status : true,
               dataCadastro: new Date()
             };
+            console.log('✅ Usuário simulado atualizado:', updatedUser);
             return of(updatedUser);
           }
 
+          console.log('📤 Propagando erro do update');
           return throwError(() => error);
         })
       );
