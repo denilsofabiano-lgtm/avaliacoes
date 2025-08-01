@@ -359,7 +359,9 @@ export class UsuariosComponent implements OnInit {
           this.snackBar.open(`Usuário ${action}do com sucesso!`, 'Fechar', { duration: 3000 });
         },
         error: (error) => {
-          this.snackBar.open(`Erro ao ${action} usuário`, 'Fechar', { duration: 3000 });
+          console.log('👥 Toggle status error:', error);
+          const message = extractErrorMessage(error);
+          this.snackBar.open(message, 'Fechar', { duration: 5000 });
         }
       });
     }
