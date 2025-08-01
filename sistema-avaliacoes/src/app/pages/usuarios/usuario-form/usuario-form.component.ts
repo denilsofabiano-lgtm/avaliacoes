@@ -275,13 +275,25 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.usuarioForm.invalid) return;
+    console.log('🔄 Form submission started');
+    console.log('Form valid:', this.usuarioForm.valid);
+    console.log('Form errors:', this.usuarioForm.errors);
+    console.log('Raw form data:', this.usuarioForm.value);
+
+    if (this.usuarioForm.invalid) {
+      console.log('❌ Form is invalid, stopping submission');
+      return;
+    }
 
     this.loading = true;
     const formData = this.usuarioForm.value;
-    
+
     // Remove formatação do CPF
-    formData.cpf = formData.cpf.replace(/\D/g, '');
+    if (formData.cpf) {
+      formData.cpf = formData.cpf.replace(/\D/g, '');
+    }
+
+    console.log('📤 Processed form data:', formData);
     
     if (this.isEditMode) {
       delete formData.senha;
