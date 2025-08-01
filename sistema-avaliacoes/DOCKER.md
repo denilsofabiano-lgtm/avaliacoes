@@ -6,8 +6,16 @@ Este documento descreve como fazer deploy da aplicação Sistema de Avaliações
 
 - Docker (versão 20.0 ou superior)
 - Docker Compose (versão 2.0 ou superior)
+- Node.js 22 LTS (para desenvolvimento local)
 - 4GB RAM livre
 - 2GB espaço em disco
+
+## 🔧 Versões Suportadas
+
+- **Node.js**: 22 LTS (recomendado para Angular 20)
+- **Angular**: 20.x
+- **TypeScript**: 5.8.x
+- **npm**: 10.x ou superior
 
 ## 🚀 Deploy Rápido
 
