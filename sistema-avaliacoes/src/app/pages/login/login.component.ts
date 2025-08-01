@@ -200,10 +200,17 @@ export class LoginComponent {
         },
         error: (error) => {
           this.isLoading = false;
-          console.error('Erro no login:', error);
+
+          console.group('🔑 LoginComponent Error Handler');
+          console.log('Error received in LoginComponent:', error);
+          console.log('Error type:', typeof error);
+          console.log('About to call extractErrorMessage...');
+          console.groupEnd();
 
           // Usar função utilitária para extrair mensagem legível
           const message = extractErrorMessage(error);
+
+          console.log('🎯 Final message from extractErrorMessage:', message);
 
           this.snackBar.open(message, 'Fechar', {
             duration: 5000
