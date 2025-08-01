@@ -3,7 +3,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, throwError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Usuario, PaginatedResponse, ApiResponse, UserRole } from '../models/usuario.model';
-import { ErrorHandlerService } from './error-handler.service';
 
 export interface UsuarioFilters {
   page?: number;
