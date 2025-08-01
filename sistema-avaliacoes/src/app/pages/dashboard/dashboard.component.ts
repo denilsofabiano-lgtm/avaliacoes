@@ -634,24 +634,22 @@ export class DashboardComponent implements OnInit {
   iniciarAvaliacao(avaliacao: ParticipanteAvaliacao): void {
     if (avaliacao.id) {
       console.log('🎯 Iniciando avaliação:', avaliacao.avaliacao?.instrucao);
-      // Navegar para a página de aplicação
-      // this.router.navigate(['/aplicacoes', avaliacao.id, 'aplicar']);
+      this.router.navigate(['/aplicacoes', avaliacao.id, 'aplicar']);
     }
   }
 
   continuarAvaliacao(avaliacao: ParticipanteAvaliacao): void {
     if (avaliacao.id) {
       console.log('🔄 Continuando avaliação:', avaliacao.avaliacao?.instrucao);
-      // Navegar para a página de aplicação
-      // this.router.navigate(['/aplicacoes', avaliacao.id, 'aplicar']);
+      this.router.navigate(['/aplicacoes', avaliacao.id, 'aplicar']);
     }
   }
 
   verResultado(avaliacao: ParticipanteAvaliacao): void {
     if (avaliacao.id) {
-      console.log('��� Visualizando resultado:', avaliacao.avaliacao?.instrucao);
-      // Navegar para a página de resultados
-      // this.router.navigate(['/aplicacoes', avaliacao.id, 'resultado']);
+      console.log('📈 Visualizando resultado:', avaliacao.avaliacao?.instrucao);
+      // Para visualizar resultado, vamos para a página de aplicações primeiro
+      this.router.navigate(['/aplicacoes']);
     }
   }
 
