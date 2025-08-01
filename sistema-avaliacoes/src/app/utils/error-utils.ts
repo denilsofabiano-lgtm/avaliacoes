@@ -210,3 +210,38 @@ export function logError(context: string, error: any, additionalData?: any): voi
   }
   console.groupEnd();
 }
+
+export function extractUserErrorMessage(error: any): string {
+  // Função específica para erros de usuário que NUNCA retorna [object Object]
+
+  if (!error) {
+    return 'Erro desconhecido ao processar usuário';
+  }
+
+  // Verificar status HTTP primeiro
+  if (error.status !== undefined) {
+    switch (error.status) {
+      case 0: return 'Servidor indisponível. Verifique sua conexão.';
+      case 400: return 'Dados do usuário inválidos. Verifique todos os campos.';
+      case 401: return 'Acesso não autorizado. Faça login novamente.';
+      case 403: return 'Sem permissão para esta operação.';
+      case 404: return 'Usuário não encontrado.';
+      case 409: return 'E-mail ou CPF já cadastrado no sistema.';
+      case 422: return 'Dados inválidos para processamento.';
+      case 500: return 'Erro no servidor. Tente novamente.';
+      default: return 'Erro de comunicação com o servidor';
+    }
+  }
+
+  // Tentar extrair mensagem do erro
+  if (typeof error.message === 'string' && error.message.trim()) {
+    return error.message;
+  }
+
+  if (typeof error.error === 'string' && error.error.trim()) {
+    return error.error;
+  }
+
+  // Fallback seguro
+  return 'Erro ao processar operação do usuário';
+}
