@@ -201,25 +201,8 @@ export class LoginComponent {
           this.isLoading = false;
           console.error('Erro no login:', error);
 
-          let message = 'Erro ao fazer login. Verifique suas credenciais.';
-
-          if (error.error) {
-            if (typeof error.error === 'string') {
-              message = error.error;
-            } else if (error.error.message) {
-              message = error.error.message;
-            } else if (error.error.error) {
-              message = error.error.error;
-            }
-          } else if (error.message) {
-            message = error.message;
-          } else if (error.status === 0) {
-            message = 'Erro de conexão. Verifique se o servidor está funcionando.';
-          } else if (error.status === 401) {
-            message = 'Credenciais inválidas. Verifique seu e-mail e senha.';
-          } else if (error.status === 500) {
-            message = 'Erro interno do servidor. Tente novamente mais tarde.';
-          }
+          // O ErrorInterceptor já processou o erro e criou uma mensagem legível
+          const message = error.message || 'Erro ao fazer login. Verifique suas credenciais.';
 
           this.snackBar.open(message, 'Fechar', {
             duration: 5000
