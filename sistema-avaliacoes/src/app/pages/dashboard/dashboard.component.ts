@@ -603,7 +603,7 @@ export class DashboardComponent implements OnInit {
         avaliacao: {
           id: 2,
           instrucao: 'Prova de Português - Redação',
-          disciplina: { id: 2, descricao: 'Português', codigo: 'POR' }
+          disciplina: { id: 2, descricao: 'Português', idDisciplinaExterno: 'POR', status: true }
         },
         usuarioId: 1,
         disponivel: true,
