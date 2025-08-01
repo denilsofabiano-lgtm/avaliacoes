@@ -22,48 +22,67 @@
   <mat-sidenav-container class="content-area" *ngIf="isLoggedIn">
     <mat-sidenav #sidenav mode="side" opened class="sidenav">
       <mat-nav-list>
-        <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
-          <mat-icon matListItemIcon>dashboard</mat-icon>
-          <span matListItemTitle>Dashboard</span>
-        </a>
-        
-        <mat-divider></mat-divider>
-        
-        <div mat-subheader>Gestão</div>
-        <a mat-list-item routerLink="/usuarios" routerLinkActive="active-link" *ngIf="isAdmin">
-          <mat-icon matListItemIcon>people</mat-icon>
-          <span matListItemTitle>Usuários</span>
-        </a>
-        
-        <a mat-list-item routerLink="/avaliacoes" routerLinkActive="active-link" *ngIf="isProfessor || isAdmin">
-          <mat-icon matListItemIcon>assignment</mat-icon>
-          <span matListItemTitle>Avaliações</span>
-        </a>
-        
-        <a mat-list-item routerLink="/questoes" routerLinkActive="active-link" *ngIf="isProfessor || isAdmin">
-          <mat-icon matListItemIcon>quiz</mat-icon>
-          <span matListItemTitle>Questões</span>
-        </a>
-        
-        <mat-divider></mat-divider>
-        
-        <div mat-subheader>Aplicação</div>
-        <a mat-list-item routerLink="/aplicacoes" routerLinkActive="active-link">
-          <mat-icon matListItemIcon>play_circle_filled</mat-icon>
-          <span matListItemTitle>Aplicações</span>
-        </a>
-        
-        <a mat-list-item routerLink="/relatorios" routerLinkActive="active-link" *ngIf="isProfessor || isAdmin">
-          <mat-icon matListItemIcon>bar_chart</mat-icon>
-          <span matListItemTitle>Relatórios</span>
-        </a>
-        
-        <mat-divider></mat-divider>
-        
-        <a mat-list-item routerLink="/configuracoes" routerLinkActive="active-link" *ngIf="isAdmin">
-          <mat-icon matListItemIcon>settings</mat-icon>
-          <span matListItemTitle>Configurações</span>
-        </a>
+        <!-- Menu para Alunos: apenas Dashboard e Aplicações -->
+        <ng-container *ngIf="isAluno">
+          <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>dashboard</mat-icon>
+            <span matListItemTitle>Dashboard</span>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <div mat-subheader>Avaliações</div>
+          <a mat-list-item routerLink="/aplicacoes" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>assignment</mat-icon>
+            <span matListItemTitle>Minhas Avaliações</span>
+          </a>
+        </ng-container>
+
+        <!-- Menu para Professores e Administradores -->
+        <ng-container *ngIf="isProfessor || isAdmin">
+          <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>dashboard</mat-icon>
+            <span matListItemTitle>Dashboard</span>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <div mat-subheader>Gestão</div>
+          <a mat-list-item routerLink="/usuarios" routerLinkActive="active-link" *ngIf="isAdmin">
+            <mat-icon matListItemIcon>people</mat-icon>
+            <span matListItemTitle>Usuários</span>
+          </a>
+
+          <a mat-list-item routerLink="/avaliacoes" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>assignment</mat-icon>
+            <span matListItemTitle>Avaliações</span>
+          </a>
+
+          <a mat-list-item routerLink="/questoes" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>quiz</mat-icon>
+            <span matListItemTitle>Questões</span>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <div mat-subheader>Aplicação</div>
+          <a mat-list-item routerLink="/aplicacoes" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>play_circle_filled</mat-icon>
+            <span matListItemTitle>Aplicações</span>
+          </a>
+
+          <a mat-list-item routerLink="/relatorios" routerLinkActive="active-link">
+            <mat-icon matListItemIcon>bar_chart</mat-icon>
+            <span matListItemTitle>Relatórios</span>
+          </a>
+
+          <mat-divider></mat-divider>
+
+          <a mat-list-item routerLink="/configuracoes" routerLinkActive="active-link" *ngIf="isAdmin">
+            <mat-icon matListItemIcon>settings</mat-icon>
+            <span matListItemTitle>Configurações</span>
+          </a>
+        </ng-container>
       </mat-nav-list>
     </mat-sidenav>
 
