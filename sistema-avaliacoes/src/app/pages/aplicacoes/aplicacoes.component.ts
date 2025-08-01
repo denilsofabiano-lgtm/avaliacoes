@@ -510,7 +510,7 @@ export class AplicacoesComponent implements OnInit {
     }
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
