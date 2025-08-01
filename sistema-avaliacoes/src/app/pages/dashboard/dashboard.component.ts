@@ -232,12 +232,7 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-
-        console.group('📊 DashboardComponent Error Handler');
-        console.log('Error received in DashboardComponent:', error);
-        console.log('Error type:', typeof error);
-        console.log('About to call extractErrorMessage...');
-        console.groupEnd();
+        console.log('📊 Dashboard error:', error);
 
         // Usar dados de fallback para demonstração
         this.totalUsuarios = 125;
@@ -245,9 +240,8 @@ export class DashboardComponent implements OnInit {
         this.totalQuestoes = 456;
         this.totalAplicacoes = 12;
 
-        // Log da mensagem de erro extraída para debug
         const errorMessage = extractErrorMessage(error);
-        console.log('🎯 Final message from extractErrorMessage:', errorMessage);
+        console.log('🎯 Dashboard error message:', errorMessage);
       }
     });
   }
