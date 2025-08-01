@@ -42,6 +42,10 @@ export function extractErrorMessage(error: any): string {
         console.log('Error original:', error);
         console.log('Message returned:', message);
         console.groupEnd();
+        // Proteção final antes de retornar
+        if (message.includes('[object Object]') || message === '[object Object]') {
+          message = 'Dados do usuário inválidos. Verifique todos os campos.';
+        }
         return message;
       }
     }
