@@ -22,7 +22,7 @@ import { Avaliacao, Usuario, ParticipanteAvaliacao, StatusAplicacaoEnum } from '
 import { AvaliacaoService } from '../../../services/avaliacao.service';
 import { UsuarioService } from '../../../services/usuario.service';
 import { AplicacaoService, CreateAplicacaoRequest } from '../../../services/aplicacao.service';
-import { extractErrorMessage } from '../../../utils/error-utils';
+import { extractErrorMessage, extractAplicacaoErrorMessage } from '../../../utils/error-utils';
 
 @Component({
   selector: 'app-aplicacao-form',
