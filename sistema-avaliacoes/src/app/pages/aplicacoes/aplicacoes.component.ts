@@ -513,7 +513,15 @@ export class AplicacoesComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initializeData();
+  }
+
+  private initializeData(): void {
+    if (this.allParticipantes.length > 0 && this.participantes.length === 0) {
+      this.participantes = [...this.allParticipantes];
+    }
+  }
 
   getCount(tipo: string): number {
     switch (tipo) {
