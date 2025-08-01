@@ -5,8 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { RelatorioService, DashboardData } from '../../services/relatorio.service';
+import { AplicacaoService } from '../../services/aplicacao.service';
+import { AuthService } from '../../services/auth.service';
+import { ParticipanteAvaliacao } from '../../models';
 import { extractErrorMessage } from '../../utils/error-utils';
 
 @Component({
@@ -19,100 +23,230 @@ import { extractErrorMessage } from '../../utils/error-utils';
     MatButtonModule,
     MatGridListModule,
     MatProgressSpinnerModule,
+    MatListModule,
     RouterModule
   ],
   template: `
     <div class="dashboard-container">
       <h1>Dashboard</h1>
-      
-      <mat-grid-list [cols]="gridCols" rowHeight="200px" gutterSize="16">
-        <mat-grid-tile>
-          <mat-card class="dashboard-card">
+
+      <!-- Dashboard para Alunos -->
+      <ng-container *ngIf="isAluno">
+        <div class="welcome-section">
+          <mat-card class="welcome-card">
             <mat-card-header>
               <mat-card-title>
-                <mat-icon>people</mat-icon>
-                Usuários
+                <mat-icon>school</mat-icon>
+                Bem-vindo, {{ currentUser?.nome }}!
               </mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <div class="metric">{{ totalUsuarios }}</div>
-              <div class="metric-label">Total de usuários</div>
+              <p>Aqui você pode acessar suas avaliações disponíveis e acompanhar seu progresso.</p>
             </mat-card-content>
-            <mat-card-actions>
-              <button mat-button routerLink="/usuarios">Ver todos</button>
-            </mat-card-actions>
           </mat-card>
-        </mat-grid-tile>
+        </div>
 
-        <mat-grid-tile>
-          <mat-card class="dashboard-card">
-            <mat-card-header>
-              <mat-card-title>
+        <div class="avaliacoes-section">
+          <h2>Suas Avaliações</h2>
+
+          <div class="stats-row">
+            <mat-card class="stat-card disponivel">
+              <mat-card-content>
+                <div class="stat-number">{{ avaliacoesDisponiveis.length }}</div>
+                <div class="stat-label">Disponíveis</div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="stat-card concluida">
+              <mat-card-content>
+                <div class="stat-number">{{ avaliacoesConcluidas.length }}</div>
+                <div class="stat-label">Concluídas</div>
+              </mat-card-content>
+            </mat-card>
+
+            <mat-card class="stat-card em-andamento">
+              <mat-card-content>
+                <div class="stat-number">{{ avaliacoesEmAndamento.length }}</div>
+                <div class="stat-label">Em Andamento</div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="avaliacoes-grid">
+            <!-- Avaliações Disponíveis -->
+            <mat-card class="avaliacoes-card" *ngIf="avaliacoesDisponiveis.length > 0">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>assignment</mat-icon>
+                  Avaliações Disponíveis
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-list>
+                  <mat-list-item *ngFor="let avaliacao of avaliacoesDisponiveis">
+                    <mat-icon matListItemIcon>assignment</mat-icon>
+                    <div matListItemTitle>{{ avaliacao.avaliacao?.instrucao || 'Avaliação sem título' }}</div>
+                    <div matListItemLine>{{ avaliacao.avaliacao?.disciplina?.descricao || 'Disciplina não informada' }}</div>
+                    <button mat-icon-button (click)="iniciarAvaliacao(avaliacao)" matListItemMeta>
+                      <mat-icon>play_arrow</mat-icon>
+                    </button>
+                  </mat-list-item>
+                </mat-list>
+              </mat-card-content>
+              <mat-card-actions *ngIf="avaliacoesDisponiveis.length === 0">
+                <p class="no-items">Nenhuma avaliação disponível no momento.</p>
+              </mat-card-actions>
+            </mat-card>
+
+            <!-- Avaliações em Andamento -->
+            <mat-card class="avaliacoes-card" *ngIf="avaliacoesEmAndamento.length > 0">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>schedule</mat-icon>
+                  Em Andamento
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-list>
+                  <mat-list-item *ngFor="let avaliacao of avaliacoesEmAndamento">
+                    <mat-icon matListItemIcon>schedule</mat-icon>
+                    <div matListItemTitle>{{ avaliacao.avaliacao?.instrucao || 'Avaliação sem título' }}</div>
+                    <div matListItemLine>Iniciada em: {{ formatDate(avaliacao.dataInicio) }}</div>
+                    <button mat-icon-button (click)="continuarAvaliacao(avaliacao)" matListItemMeta>
+                      <mat-icon>play_arrow</mat-icon>
+                    </button>
+                  </mat-list-item>
+                </mat-list>
+              </mat-card-content>
+            </mat-card>
+
+            <!-- Avaliações Concluídas -->
+            <mat-card class="avaliacoes-card" *ngIf="avaliacoesConcluidas.length > 0">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>check_circle</mat-icon>
+                  Concluídas
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-list>
+                  <mat-list-item *ngFor="let avaliacao of avaliacoesConcluidas">
+                    <mat-icon matListItemIcon>check_circle</mat-icon>
+                    <div matListItemTitle>{{ avaliacao.avaliacao?.instrucao || 'Avaliação sem título' }}</div>
+                    <div matListItemLine>Concluída em: {{ formatDate(avaliacao.dataFim) }}</div>
+                    <button mat-icon-button (click)="verResultado(avaliacao)" matListItemMeta>
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                  </mat-list-item>
+                </mat-list>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- Mensagem quando não há avaliações -->
+          <mat-card *ngIf="minhasAvaliacoes.length === 0 && !isLoading" class="no-avaliacoes">
+            <mat-card-content>
+              <div class="no-content">
                 <mat-icon>assignment</mat-icon>
-                Avaliações
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="metric">{{ totalAvaliacoes }}</div>
-              <div class="metric-label">Avaliações criadas</div>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button routerLink="/avaliacoes">Gerenciar</button>
-            </mat-card-actions>
-          </mat-card>
-        </mat-grid-tile>
-
-        <mat-grid-tile>
-          <mat-card class="dashboard-card">
-            <mat-card-header>
-              <mat-card-title>
-                <mat-icon>quiz</mat-icon>
-                Questões
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="metric">{{ totalQuestoes }}</div>
-              <div class="metric-label">Banco de questões</div>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button routerLink="/questoes">Ver banco</button>
-            </mat-card-actions>
-          </mat-card>
-        </mat-grid-tile>
-
-        <mat-grid-tile>
-          <mat-card class="dashboard-card">
-            <mat-card-header>
-              <mat-card-title>
-                <mat-icon>play_circle_filled</mat-icon>
-                Aplicações
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="metric">{{ totalAplicacoes }}</div>
-              <div class="metric-label">Em andamento</div>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button routerLink="/aplicacoes">Acompanhar</button>
-            </mat-card-actions>
-          </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
-
-      <div class="recent-activities">
-        <h2>Atividades Recentes</h2>
-        <mat-card>
-          <mat-card-content>
-            <div class="activity-item" *ngFor="let activity of recentActivities">
-              <mat-icon>{{ activity.icon }}</mat-icon>
-              <div class="activity-content">
-                <div class="activity-description">{{ activity.description }}</div>
-                <div class="activity-time">{{ activity.time }}</div>
+                <h3>Nenhuma avaliação encontrada</h3>
+                <p>Você ainda não possui avaliações vinculadas ao seu perfil.</p>
               </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-container>
+
+      <!-- Dashboard para Professores e Administradores -->
+      <ng-container *ngIf="isProfessor || isAdmin">
+        <mat-grid-list [cols]="gridCols" rowHeight="200px" gutterSize="16">
+          <mat-grid-tile>
+            <mat-card class="dashboard-card">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>people</mat-icon>
+                  Usuários
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="metric">{{ totalUsuarios }}</div>
+                <div class="metric-label">Total de usuários</div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-button routerLink="/usuarios">Ver todos</button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-card class="dashboard-card">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>assignment</mat-icon>
+                  Avaliações
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="metric">{{ totalAvaliacoes }}</div>
+                <div class="metric-label">Avaliações criadas</div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-button routerLink="/avaliacoes">Gerenciar</button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-card class="dashboard-card">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>quiz</mat-icon>
+                  Questões
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="metric">{{ totalQuestoes }}</div>
+                <div class="metric-label">Banco de questões</div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-button routerLink="/questoes">Ver banco</button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+            <mat-card class="dashboard-card">
+              <mat-card-header>
+                <mat-card-title>
+                  <mat-icon>play_circle_filled</mat-icon>
+                  Aplicações
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="metric">{{ totalAplicacoes }}</div>
+                <div class="metric-label">Em andamento</div>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-button routerLink="/aplicacoes">Acompanhar</button>
+              </mat-card-actions>
+            </mat-card>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <div class="recent-activities">
+          <h2>Atividades Recentes</h2>
+          <mat-card>
+            <mat-card-content>
+              <div class="activity-item" *ngFor="let activity of recentActivities">
+                <mat-icon>{{ activity.icon }}</mat-icon>
+                <div class="activity-content">
+                  <div class="activity-description">{{ activity.description }}</div>
+                  <div class="activity-time">{{ activity.time }}</div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </ng-container>
     </div>
   `,
   styles: [`
