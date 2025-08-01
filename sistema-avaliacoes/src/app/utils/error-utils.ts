@@ -1,8 +1,8 @@
 export function extractErrorMessage(error: any): string {
   // REGRA PRINCIPAL: NUNCA retornar "[object Object]"
 
-  // Log simplificado
-  console.log('🔍 extractErrorMessage called with:', typeof error, error);
+  // Log simplificado (removido para evitar confusion com [object Object])
+  // console.log('🔍 extractErrorMessage called with:', typeof error, error);
 
   // Casos simples primeiro
   if (!error) {
