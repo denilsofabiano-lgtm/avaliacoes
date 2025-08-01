@@ -18,7 +18,60 @@ export interface UsuarioFilters {
 export class UsuarioService {
   private apiUrl = `${environment.apiUrl}/usuarios`;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private errorHandler: ErrorHandlerService
+  ) {}
+
+  private getFallbackUsers(): Usuario[] {
+    return [
+      {
+        id: 1,
+        nome: 'Administrador Sistema',
+        email: 'admin@sistema.com',
+        cpf: '12345678901',
+        roles: [UserRole.ROLE_ADMIN],
+        status: true,
+        dataCadastro: new Date('2024-01-15')
+      },
+      {
+        id: 2,
+        nome: 'Professor Demo',
+        email: 'professor@sistema.com',
+        cpf: '98765432109',
+        roles: [UserRole.ROLE_PROFESSOR],
+        status: true,
+        dataCadastro: new Date('2024-02-20')
+      },
+      {
+        id: 3,
+        nome: 'Aluno Demo',
+        email: 'aluno@sistema.com',
+        cpf: '11122233344',
+        roles: [UserRole.ROLE_ALUNO],
+        status: true,
+        dataCadastro: new Date('2024-03-10')
+      },
+      {
+        id: 4,
+        nome: 'Maria Silva',
+        email: 'maria@sistema.com',
+        cpf: '55566677788',
+        roles: [UserRole.ROLE_PROFESSOR],
+        status: true,
+        dataCadastro: new Date('2024-03-15')
+      },
+      {
+        id: 5,
+        nome: 'João Santos',
+        email: 'joao@sistema.com',
+        cpf: '99988877766',
+        roles: [UserRole.ROLE_ALUNO],
+        status: false,
+        dataCadastro: new Date('2024-03-20')
+      }
+    ];
+  }
 
   getUsuarios(filters: UsuarioFilters = {}): Observable<PaginatedResponse<Usuario>> {
     let params = new HttpParams();
