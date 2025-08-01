@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -57,7 +57,7 @@ import { extractErrorMessage } from '../../utils/error-utils';
           <div class="filters-row">
             <mat-form-field>
               <mat-label>Buscar</mat-label>
-              <input matInput placeholder="Buscar por instruções..." [(ngModel)]="searchTerm" (keyup)="applyFilter($event)">
+              <input matInput placeholder="Buscar por instru��ões..." [(ngModel)]="searchTerm" (keyup)="applyFilter($event)">
               <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
 
@@ -316,7 +316,8 @@ export class AvaliacoesComponent implements OnInit {
 
   constructor(
     private avaliacaoService: AvaliacaoService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -400,13 +401,22 @@ export class AvaliacoesComponent implements OnInit {
   }
 
   manageQuestoes(avaliacao: Avaliacao): void {
-    // Navegar para página de gestão de questões da avaliação
-    console.log('Gerenciar questões:', avaliacao);
+    // Redirecionar para questões com filtro da avaliação
+    this.router.navigate(['/questoes'], {
+      queryParams: {
+        avaliacao: avaliacao.id,
+        manage: true
+      }
+    });
   }
 
   aplicarAvaliacao(avaliacao: Avaliacao): void {
-    // Navegar para página de aplicação da avaliação
-    console.log('Aplicar avaliação:', avaliacao);
+    // Redirecionar para página de aplicações da avaliação
+    this.router.navigate(['/aplicacoes/nova'], {
+      queryParams: {
+        avaliacaoId: avaliacao.id
+      }
+    });
   }
 
   deleteAvaliacao(avaliacao: Avaliacao): void {
