@@ -300,7 +300,7 @@ export class UsuariosComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.snackBar.open('Erro ao carregar usuários', 'Fechar', { duration: 3000 });
+        // O erro já é tratado pelo service com fallback ou ErrorHandlerService
         this.loading = false;
       }
     });
