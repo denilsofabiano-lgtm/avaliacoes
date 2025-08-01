@@ -48,7 +48,11 @@ export class AplicacaoService {
     return this.http.get<PaginatedResponse<ParticipanteAvaliacao>>(this.apiUrl, { params })
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar aplicações:', error);
+          console.group('❌ AplicacaoService.getAplicacoes Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.groupEnd();
           return throwError(() => error);
         })
       );
@@ -58,7 +62,11 @@ export class AplicacaoService {
     return this.http.get<ParticipanteAvaliacao>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar aplicação:', error);
+          console.group('❌ AplicacaoService.getAplicacao Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.groupEnd();
           return throwError(() => error);
         })
       );
@@ -94,7 +102,11 @@ export class AplicacaoService {
     return this.http.put<ApiResponse<ParticipanteAvaliacao>>(`${this.apiUrl}/${id}`, aplicacao)
       .pipe(
         catchError(error => {
-          console.error('Erro ao atualizar aplicação:', error);
+          console.group('❌ AplicacaoService.updateAplicacao Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.groupEnd();
           return throwError(() => error);
         })
       );
@@ -104,7 +116,11 @@ export class AplicacaoService {
     return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao deletar aplicação:', error);
+          console.group('❌ AplicacaoService.deleteAplicacao Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.groupEnd();
           return throwError(() => error);
         })
       );
@@ -114,7 +130,11 @@ export class AplicacaoService {
     return this.http.patch<ApiResponse<any>>(`${this.apiUrl}/${id}/toggle-disponibilidade`, {})
       .pipe(
         catchError(error => {
-          console.error('Erro ao alterar disponibilidade:', error);
+          console.group('❌ AplicacaoService.toggleDisponibilidade Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.groupEnd();
 
           // Se for erro de conexão, simula sucesso
           if (error.status === 0 || error.status === 404) {
@@ -134,7 +154,11 @@ export class AplicacaoService {
     return this.http.post<ApiResponse<ParticipanteAvaliacao>>(`${this.apiUrl}/${id}/reset`, {})
       .pipe(
         catchError(error => {
-          console.error('Erro ao resetar aplicação:', error);
+          console.group('❌ AplicacaoService.resetAplicacao Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.groupEnd();
 
           // Se for erro de conexão, simula sucesso
           if (error.status === 0 || error.status === 404) {
@@ -154,7 +178,11 @@ export class AplicacaoService {
     return this.http.get(`${this.apiUrl}/estatisticas`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar estatísticas:', error);
+          console.group('❌ AplicacaoService.getEstatisticas Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.groupEnd();
           
           // Retornar estatísticas mock se backend indisponível
           if (error.status === 0 || error.status === 404) {
