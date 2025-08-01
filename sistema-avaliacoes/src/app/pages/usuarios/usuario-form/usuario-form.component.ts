@@ -280,7 +280,7 @@ export class UsuarioFormComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        const message = extractErrorMessage(error);
+        const message = extractUserErrorMessage(error);
         this.snackBar.open(message, 'Fechar', { duration: 5000 });
         this.loading = false;
       }
