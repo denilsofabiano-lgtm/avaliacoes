@@ -440,8 +440,10 @@ export class QuestoesComponent implements OnInit {
   }
 
   private loadQuestoes(): void {
-    // Esta funcionalidade seria implementada com um serviço real
-    console.log('Carregando questões...');
+    // Inicializar dados se ainda não foi feito
+    if (this.allQuestoes.length > 0 && this.questoes.length === 0) {
+      this.questoes = [...this.allQuestoes];
+    }
   }
 
   private checkRouteParams(): void {
