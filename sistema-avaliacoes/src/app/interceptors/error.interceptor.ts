@@ -46,16 +46,19 @@ export class ErrorInterceptor implements HttpInterceptor {
               errorMessage = 'Erro interno do servidor';
               break;
             default:
-              errorMessage = this.extractErrorMessage(error.error) || error.message || 'Erro de comunica��ão com servidor';
+              errorMessage = this.extractErrorMessage(error.error) || error.message || 'Erro de comunicação com servidor';
           }
         } else {
           errorMessage = this.extractErrorMessage(error) || errorMessage;
         }
 
-        // Criar um novo erro com mensagem legível
-        const readableError = new Error(errorMessage);
-        (readableError as any).status = error.status;
-        (readableError as any).originalError = error;
+        // Criar um novo erro com mensagem legível preservando propriedades originais
+        const readableError = {
+          ...error,
+          message: errorMessage,
+          status: error.status,
+          originalError: error
+        };
 
         return throwError(() => readableError);
       })
