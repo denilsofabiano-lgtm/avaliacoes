@@ -23,8 +23,7 @@ services:
   backend-dev:
     build:
       context: ../sistema-avaliacoes-api
-      dockerfile: Dockerfile
-      target: php
+      dockerfile: Dockerfile.dev
     container_name: sistema-avaliacoes-backend-dev
     restart: unless-stopped
     networks:
