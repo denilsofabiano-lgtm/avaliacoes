@@ -305,7 +305,8 @@ export class UsuarioFormComponent implements OnInit {
           this.router.navigate(['/usuarios']);
         },
         error: (error) => {
-          this.snackBar.open('Erro ao criar usuário', 'Fechar', { duration: 3000 });
+          const message = error.message || 'Erro ao criar usuário';
+          this.snackBar.open(message, 'Fechar', { duration: 5000 });
           this.loading = false;
         }
       });
