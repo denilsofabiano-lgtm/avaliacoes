@@ -113,7 +113,20 @@ export class AvaliacaoService {
     return this.http.get<Avaliacao>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar avaliação:', error);
+          console.group('❌ AvaliacaoService.getAvaliacao Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('Avaliacao ID:', id);
+          console.log('API URL tentada:', `${this.apiUrl}/${id}`);
+          console.groupEnd();
+
+          // Se for erro de conexão, retorna erro tratado
+          if (error.status === 0 || error.status === 404) {
+            console.log('✅ Backend indisponível para buscar avaliação');
+          }
+
+          console.log('📤 Propagando erro do getAvaliacao');
           return throwError(() => error);
         })
       );
