@@ -307,7 +307,7 @@ export class UsuarioFormComponent implements OnInit {
           this.router.navigate(['/usuarios']);
         },
         error: (error) => {
-          const message = error.message || 'Erro ao criar usuário';
+          const message = extractErrorMessage(error);
           this.snackBar.open(message, 'Fechar', { duration: 5000 });
           this.loading = false;
         }
