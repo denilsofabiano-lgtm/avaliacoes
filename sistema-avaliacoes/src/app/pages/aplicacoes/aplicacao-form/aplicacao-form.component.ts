@@ -416,31 +416,35 @@ export class AplicacaoFormComponent implements OnInit {
       const avaliacaoId = this.avaliacaoForm.get('avaliacaoId')?.value;
       const configuracao = this.configuracaoForm.value;
 
-      // Criar participantes para cada aluno selecionado
-      const participantes: Partial<ParticipanteAvaliacao>[] = this.alunosSelecionados.map(aluno => ({
+      const aplicacaoRequest: CreateAplicacaoRequest = {
         avaliacaoId: avaliacaoId,
-        usuarioId: aluno.id,
-        ano: configuracao.ano,
-        escola: configuracao.escola,
-        turma: configuracao.turma,
-        disponivel: configuracao.disponivel,
-        dataInicioAvaliacao: configuracao.dataInicioAvaliacao,
-        statusAplicacaoId: StatusAplicacaoEnum.PENDENTE,
-        avaliado: false,
-        dataCadastro: new Date()
-      }));
+        participantes: this.alunosSelecionados.map(aluno => ({
+          usuarioId: aluno.id!,
+          ano: configuracao.ano,
+          escola: configuracao.escola,
+          turma: configuracao.turma,
+          disponivel: configuracao.disponivel,
+          dataInicioAvaliacao: configuracao.dataInicioAvaliacao.toISOString()
+        }))
+      };
 
-      // Simular criação (em uma implementação real, seria uma chamada ao backend)
-      console.log('Criando aplicação com participantes:', participantes);
+      this.aplicacaoService.createAplicacao(aplicacaoRequest).subscribe({
+        next: (response) => {
+          this.snackBar.open(
+            `Aplicação criada com sucesso para ${this.alunosSelecionados.length} aluno(s)!`,
+            'Fechar',
+            { duration: 3000 }
+          );
 
-      this.snackBar.open(
-        `Aplicação criada com sucesso para ${this.alunosSelecionados.length} aluno(s)!`, 
-        'Fechar', 
-        { duration: 3000 }
-      );
-
-      // Redirecionar para a lista de aplicações
-      this.router.navigate(['/aplicacoes']);
+          // Redirecionar para a lista de aplicações
+          this.router.navigate(['/aplicacoes']);
+        },
+        error: (error) => {
+          console.error('Erro ao criar aplicação:', error);
+          const message = extractErrorMessage(error);
+          this.snackBar.open(message, 'Fechar', { duration: 5000 });
+        }
+      });
     }
   }
 }
