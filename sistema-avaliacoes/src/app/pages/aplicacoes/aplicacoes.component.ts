@@ -540,8 +540,18 @@ export class AplicacoesComponent implements OnInit {
   }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    console.log('Filtrar por:', filterValue);
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+
+    if (!filterValue.trim()) {
+      this.participantes = [...this.allParticipantes];
+      return;
+    }
+
+    this.participantes = this.allParticipantes.filter(p =>
+      p.usuario?.nome?.toLowerCase().includes(filterValue) ||
+      p.usuario?.email?.toLowerCase().includes(filterValue) ||
+      p.avaliacao?.instrucao?.toLowerCase().includes(filterValue)
+    );
   }
 
   filterByStatus(status: string): void {
