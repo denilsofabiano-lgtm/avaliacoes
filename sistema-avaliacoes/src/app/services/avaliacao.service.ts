@@ -192,7 +192,7 @@ export class AvaliacaoService {
               data: {
                 id: Date.now(),
                 instrucao: 'Cópia da avaliação',
-                dataCadastro: new Date()
+                dataCadastro: new Date().toISOString()
               }
             } as ApiResponse<Avaliacao>);
           }
