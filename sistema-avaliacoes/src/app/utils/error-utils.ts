@@ -72,6 +72,11 @@ export function extractErrorMessage(error: any): string {
       return 'Erro ao carregar usuários. Servidor indisponível.';
     }
 
+    // Verificar se parece ser erro de avaliações
+    if (error.url && error.url.includes('avaliacoes')) {
+      return 'Erro ao carregar avaliações. Servidor indisponível.';
+    }
+
     // Fallback genérico
     return 'Erro de comunicação com o servidor';
   }
