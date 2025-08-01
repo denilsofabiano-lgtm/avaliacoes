@@ -74,8 +74,11 @@ export class AvaliacaoService {
   }
 
   getAvaliacoes(filters: AvaliacaoFilters = {}): Observable<PaginatedResponse<Avaliacao>> {
+    console.log('🔄 AvaliacaoService.getAvaliacoes - fazendo requisição para:', this.apiUrl);
+    console.log('🔄 Filtros aplicados:', filters);
+
     let params = new HttpParams();
-    
+
     if (filters.page) params = params.set('page', filters.page.toString());
     if (filters.limit) params = params.set('limit', filters.limit.toString());
     if (filters.search) params = params.set('search', filters.search);
@@ -86,7 +89,21 @@ export class AvaliacaoService {
     return this.http.get<PaginatedResponse<Avaliacao>>(this.apiUrl, { params })
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar avaliações:', error);
+          console.group('❌ AvaliacaoService.getAvaliacoes Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', this.apiUrl);
+          console.log('Params:', params.toString());
+          console.groupEnd();
+
+          // Se for erro de conexão (backend indisponível), retorna dados de fallback
+          if (error.status === 0 || error.status === 404) {
+            console.log('✅ Usando fallback de avaliações - backend indisponível');
+            return of(this.getFallbackAvaliacoes());
+          }
+
+          console.log('📤 Propagando erro do AvaliacaoService');
           return throwError(() => error);
         })
       );
