@@ -52,7 +52,7 @@ export class AvaliacaoService {
       },
       {
         id: 3,
-        instrucao: 'Avaliação final de Ciências - Sistema Solar e meio ambiente',
+        instrucao: 'Avalia��ão final de Ciências - Sistema Solar e meio ambiente',
         tipoAvaliacao: { id: 3, descricao: 'Final de Ciclo', status: true },
         responsavel: { id: 3, nome: 'Prof. Maria Costa', email: 'maria@escola.com', roles: [], status: true },
         statusAvaliacao: { id: 1, descricao: 'Pendente', status: true },
@@ -143,7 +143,16 @@ export class AvaliacaoService {
     return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
-          console.error('Erro ao deletar avaliação:', error);
+          console.log('❌ Delete avaliação error:', error);
+
+          // Se for erro de conexão, simula sucesso
+          if (error.status === 0 || error.status === 404) {
+            console.log('✅ Simulando exclusão de avaliação - backend indisponível');
+            return of({
+              message: 'Avaliação excluída com sucesso (simulação)'
+            } as ApiResponse<any>);
+          }
+
           return throwError(() => error);
         })
       );
