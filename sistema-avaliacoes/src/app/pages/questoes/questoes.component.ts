@@ -507,11 +507,11 @@ export class QuestoesComponent implements OnInit {
 
   filterByCiclo(ciclo: string): void {
     if (!ciclo) {
-      this.loadQuestoes();
+      this.questoes = [...this.allQuestoes];
       return;
     }
 
-    this.questoes = this.questoes.filter(questao =>
+    this.questoes = this.allQuestoes.filter(questao =>
       questao.ciclo === ciclo
     );
   }
