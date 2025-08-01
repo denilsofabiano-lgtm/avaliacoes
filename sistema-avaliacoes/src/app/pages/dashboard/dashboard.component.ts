@@ -311,7 +311,7 @@ import { extractErrorMessage } from '../../utils/error-utils';
       gap: 8px;
     }
 
-    /* Estilos espec��ficos para alunos */
+    /* Estilos específicos para alunos */
     .welcome-section {
       margin-bottom: 24px;
     }
@@ -471,12 +471,19 @@ export class DashboardComponent implements OnInit {
   ];
 
   constructor(
-    private relatorioService: RelatorioService
+    private relatorioService: RelatorioService,
+    private aplicacaoService: AplicacaoService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.updateGridCols();
-    this.loadDashboardData();
+
+    if (this.isAluno) {
+      this.loadMinhasAvaliacoes();
+    } else {
+      this.loadDashboardData();
+    }
   }
 
   loadDashboardData(): void {
