@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UsuarioService } from '../../../services/usuario.service';
 import { Usuario, UserRole } from '../../../models';
-import { extractErrorMessage } from '../../../utils/error-utils';
+import { extractErrorMessage, extractUserErrorMessage } from '../../../utils/error-utils';
 
 @Component({
   selector: 'app-usuario-form',
