@@ -240,15 +240,23 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   private initForm(): void {
+    const senhaValidators = this.isEditMode ? [] : [Validators.required, Validators.minLength(6)];
+    const confirmarSenhaValidators = this.isEditMode ? [] : [Validators.required];
+
     this.usuarioForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       cpf: ['', [Validators.required, this.cpfValidator]],
-      senha: ['', !this.isEditMode ? [Validators.required, Validators.minLength(6)] : []],
-      confirmarSenha: ['', !this.isEditMode ? [Validators.required] : []],
+      senha: ['', senhaValidators],
+      confirmarSenha: ['', confirmarSenhaValidators],
       roles: [[], [Validators.required]],
       status: [true]
-    }, { validators: this.passwordMatchValidator });
+    });
+
+    // Só adicionar validator de match de senhas se não estiver em modo de edição
+    if (!this.isEditMode) {
+      this.usuarioForm.setValidators(this.passwordMatchValidator);
+    }
   }
 
   private loadUsuario(): void {
