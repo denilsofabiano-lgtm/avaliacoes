@@ -9,14 +9,20 @@ export class ErrorHandlerService {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  handleError(error: any, customMessage?: string): void {
+  handleError(error: any, customMessage?: string): string {
     let message = customMessage || 'Ocorreu um erro inesperado';
-    
+
+    // Log completo do erro para debug
+    console.error('Error details:', error);
+
     if (error instanceof HttpErrorResponse) {
       // Errors do servidor
       switch (error.status) {
+        case 0:
+          message = 'Erro de conexão. Verifique se o servidor está funcionando.';
+          break;
         case 400:
-          message = error.error?.error || 'Dados inválidos';
+          message = this.extractErrorMessage(error.error) || 'Dados inválidos';
           break;
         case 401:
           message = 'Não autorizado. Faça login novamente.';
@@ -25,10 +31,10 @@ export class ErrorHandlerService {
           message = 'Acesso negado. Você não tem permissão para esta ação.';
           break;
         case 404:
-          message = 'Recurso não encontrado';
+          message = 'Recurso não encontrado ou servidor indisponível';
           break;
         case 409:
-          message = error.error?.error || 'Conflito nos dados';
+          message = this.extractErrorMessage(error.error) || 'Conflito nos dados';
           break;
         case 422:
           message = 'Dados inválidos';
@@ -40,16 +46,58 @@ export class ErrorHandlerService {
           message = 'Erro interno do servidor. Tente novamente.';
           break;
         default:
-          message = error.error?.error || error.message || 'Erro de comunicação com o servidor';
+          message = this.extractErrorMessage(error.error) || error.message || 'Erro de comunicação com o servidor';
       }
-    } else if (error?.error?.message) {
-      message = error.error.message;
-    } else if (error?.message) {
-      message = error.message;
+    } else {
+      message = this.extractErrorMessage(error) || message;
     }
 
     this.showError(message);
-    console.error('Error details:', error);
+    return message;
+  }
+
+  private extractErrorMessage(error: any): string | null {
+    if (!error) return null;
+
+    // Se for string, retorna diretamente
+    if (typeof error === 'string') {
+      return error;
+    }
+
+    // Tenta extrair mensagem de diferentes estruturas
+    if (error.message && typeof error.message === 'string') {
+      return error.message;
+    }
+
+    if (error.error && typeof error.error === 'string') {
+      return error.error;
+    }
+
+    if (error.error?.message && typeof error.error.message === 'string') {
+      return error.error.message;
+    }
+
+    if (error.msg && typeof error.msg === 'string') {
+      return error.msg;
+    }
+
+    if (error.detail && typeof error.detail === 'string') {
+      return error.detail;
+    }
+
+    // Se chegou até aqui e ainda é um objeto, tenta JSON.stringify como último recurso
+    if (typeof error === 'object') {
+      try {
+        const stringified = JSON.stringify(error);
+        if (stringified !== '{}' && stringified !== '[object Object]') {
+          return `Erro: ${stringified}`;
+        }
+      } catch (e) {
+        // Se falhar o stringify, ignora
+      }
+    }
+
+    return null;
   }
 
   handleSuccess(message: string): void {
