@@ -46,7 +46,28 @@ export interface RelatorioAluno {
 export class RelatorioService {
   private apiUrl = `${environment.apiUrl}/relatorios`;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private errorHandler: ErrorHandlerService
+  ) {}
+
+  private getFallbackDashboardData(): DashboardData {
+    return {
+      resumo_geral: {
+        total_usuarios: 125,
+        total_avaliacoes: 23,
+        total_questoes: 456,
+        total_participacoes: 89,
+        participacoes_concluidas: 67,
+        taxa_conclusao: 75.3
+      },
+      usuarios_por_role: {
+        professores: 15,
+        alunos: 108,
+        admins: 2
+      }
+    };
+  }
 
   getDashboard(): Observable<DashboardData> {
     return this.http.get<DashboardData>(`${this.apiUrl}/dashboard`)
