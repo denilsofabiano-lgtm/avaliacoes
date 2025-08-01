@@ -150,18 +150,26 @@ export class UsuarioService {
 
   // Métodos compatíveis com o componente
   getAll(): Observable<Usuario[]> {
+    console.log('🔄 UsuarioService.getAll - fazendo requisição para:', this.apiUrl);
+
     return this.http.get<Usuario[]>(this.apiUrl)
       .pipe(
         catchError(error => {
-          console.error('Erro ao buscar usuários:', error);
+          console.group('❌ UsuarioService.getAll Error');
+          console.log('Error object:', error);
+          console.log('Error status:', error?.status);
+          console.log('Error message:', error?.message);
+          console.log('API URL tentada:', this.apiUrl);
+          console.groupEnd();
 
           // Se for erro de conexão (backend indisponível), retorna dados de fallback
           if (error.status === 0 || error.status === 404) {
-            console.log('Backend indisponível, usando dados de demonstração');
+            console.log('✅ Usando fallback de usuários - backend indisponível');
             return of(this.getFallbackUsers());
           }
 
           // Se não conseguiu usar fallback, propaga o erro
+          console.log('📤 Propagando erro do UsuarioService');
           return throwError(() => error);
         })
       );
