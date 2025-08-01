@@ -178,6 +178,18 @@ export function extractErrorMessage(error: any): string {
     console.groupEnd();
   }
 
+  // Log para detectar erros de aplicação
+  if (finalMessage.includes('aplicação')) {
+    console.group('🚨 DETECTADO: Erro de aplicação');
+    console.log('Error original completo:', error);
+    console.log('Error type:', typeof error);
+    console.log('Error status:', error?.status);
+    console.log('Error message:', error?.message);
+    console.log('Error url:', error?.url);
+    console.log('Final message:', finalMessage);
+    console.groupEnd();
+  }
+
   // PROTEÇÃO UNIVERSAL FINAL - NUNCA permitir [object Object]
   if (typeof finalMessage !== 'string' || finalMessage.includes('[object Object]') || finalMessage === '[object Object]') {
     console.warn('🚨 INTERCEPTADO: Retorno inválido substituído por mensagem padrão');
@@ -281,7 +293,7 @@ export function extractAplicacaoErrorMessage(error: any): string {
       case 409: return 'Conflito: alguns usuários já possuem aplicação para esta avaliação.';
       case 422: return 'Dados inválidos. Verifique as datas e configurações.';
       case 500: return 'Erro no servidor ao criar aplicação. Tente novamente.';
-      default: return 'Erro de comunicação com o servidor ao criar aplicação';
+      default: return 'Erro de comunicação com o servidor ao criar aplicaç��o';
     }
   }
 
