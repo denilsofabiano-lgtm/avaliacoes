@@ -318,6 +318,17 @@ export class AplicacaoFormComponent implements OnInit {
   ngOnInit(): void {
     this.carregarDados();
     this.setupFormSubscriptions();
+    this.checkRouteParams();
+  }
+
+  private checkRouteParams(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['avaliacaoId']) {
+        this.avaliacaoForm.patchValue({
+          avaliacaoId: parseInt(params['avaliacaoId'])
+        });
+      }
+    });
   }
 
   private carregarDados(): void {
