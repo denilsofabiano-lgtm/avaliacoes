@@ -441,7 +441,7 @@ export class AplicacaoFormComponent implements OnInit {
         },
         error: (error) => {
           console.log('❌ Erro ao criar aplicação:', error);
-          const message = extractErrorMessage(error);
+          const message = extractAplicacaoErrorMessage(error);
           this.snackBar.open(message, 'Fechar', { duration: 5000 });
         }
       });
