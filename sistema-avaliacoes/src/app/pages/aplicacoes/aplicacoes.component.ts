@@ -555,7 +555,13 @@ export class AplicacoesComponent implements OnInit {
   }
 
   filterByStatus(status: string): void {
-    console.log('Filtrar por status:', status);
+    if (!status) {
+      this.participantes = [...this.allParticipantes];
+      return;
+    }
+
+    const statusId = parseInt(status);
+    this.participantes = this.allParticipantes.filter(p => p.statusAplicacaoId === statusId);
   }
 
   filterByEscola(escola: string): void {
