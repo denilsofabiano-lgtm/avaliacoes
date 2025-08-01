@@ -11,6 +11,7 @@ export interface Avaliacao {
   instrucao?: string;
   responsavel?: Usuario;
   statusAvaliacao?: StatusAvaliacao;
+  disciplina?: Disciplina;
   questoes?: Questao[];
   totalQuestoes?: number;
 }
