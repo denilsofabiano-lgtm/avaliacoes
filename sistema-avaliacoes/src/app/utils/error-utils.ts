@@ -262,3 +262,38 @@ export function extractUserErrorMessage(error: any): string {
   // Fallback seguro
   return 'Erro ao processar operação do usuário';
 }
+
+export function extractAplicacaoErrorMessage(error: any): string {
+  // Função específica para erros de aplicação que NUNCA retorna [object Object]
+
+  if (!error) {
+    return 'Erro desconhecido ao processar aplicação';
+  }
+
+  // Verificar status HTTP primeiro
+  if (error.status !== undefined) {
+    switch (error.status) {
+      case 0: return 'Servidor indisponível. Verifique sua conexão.';
+      case 400: return 'Dados da aplicação inválidos. Verifique se todos os campos estão preenchidos corretamente.';
+      case 401: return 'Acesso não autorizado. Faça login novamente.';
+      case 403: return 'Sem permissão para criar aplicações.';
+      case 404: return 'Avaliação ou usuários não encontrados.';
+      case 409: return 'Conflito: alguns usuários já possuem aplicação para esta avaliação.';
+      case 422: return 'Dados inválidos. Verifique as datas e configurações.';
+      case 500: return 'Erro no servidor ao criar aplicação. Tente novamente.';
+      default: return 'Erro de comunicação com o servidor ao criar aplicação';
+    }
+  }
+
+  // Tentar extrair mensagem do erro
+  if (typeof error.message === 'string' && error.message.trim() && !error.message.includes('[object Object]')) {
+    return error.message;
+  }
+
+  if (typeof error.error === 'string' && error.error.trim() && !error.error.includes('[object Object]')) {
+    return error.error;
+  }
+
+  // Fallback seguro
+  return 'Erro ao criar aplicação. Verifique os dados e tente novamente.';
+}
