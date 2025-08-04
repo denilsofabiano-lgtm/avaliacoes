@@ -204,7 +204,7 @@ import { extractErrorMessage } from '../../utils/error-utils';
     }
 
     .mat-column-actions {
-      width: 150px;
+      width: 80px;
       text-align: center;
     }
 
