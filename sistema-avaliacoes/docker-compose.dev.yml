@@ -23,7 +23,7 @@ services:
   backend-dev:
     build:
       context: ../sistema-avaliacoes-api
-      dockerfile: Dockerfile.dev.minimal
+      dockerfile: Dockerfile.dev.fixed
     container_name: sistema-avaliacoes-backend-dev
     restart: unless-stopped
     networks:
