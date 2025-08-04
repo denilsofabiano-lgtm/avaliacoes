@@ -43,7 +43,7 @@ services:
   nginx-api-local:
     build:
       context: ../sistema-avaliacoes-api
-      dockerfile: Dockerfile.nginx.dev
+      dockerfile: Dockerfile.nginx.local
     container_name: sistema-avaliacoes-nginx-local
     ports:
       - "127.0.0.1:8081:80"  # Bind específico para localhost
