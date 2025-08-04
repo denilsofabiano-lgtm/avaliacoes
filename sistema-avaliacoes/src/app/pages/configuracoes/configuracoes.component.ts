@@ -538,7 +538,23 @@ export class ConfiguracoesComponent implements OnInit {
 
   excluirItem(item: any): void {
     if (confirm('Tem certeza que deseja excluir este item?')) {
-      console.log('Excluir item:', item);
+      if (this.tiposAvaliacao.includes(item)) {
+        const index = this.tiposAvaliacao.indexOf(item);
+        this.tiposAvaliacao.splice(index, 1);
+        this.snackBar.open('Tipo de avaliação excluído com sucesso!', 'Fechar', { duration: 3000 });
+      } else if (this.tiposAlternativa.includes(item)) {
+        const index = this.tiposAlternativa.indexOf(item);
+        this.tiposAlternativa.splice(index, 1);
+        this.snackBar.open('Tipo de alternativa excluído com sucesso!', 'Fechar', { duration: 3000 });
+      } else if (this.niveisDificuldade.includes(item)) {
+        const index = this.niveisDificuldade.indexOf(item);
+        this.niveisDificuldade.splice(index, 1);
+        this.snackBar.open('Nível de dificuldade excluído com sucesso!', 'Fechar', { duration: 3000 });
+      } else if (this.disciplinas.includes(item)) {
+        const index = this.disciplinas.indexOf(item);
+        this.disciplinas.splice(index, 1);
+        this.snackBar.open('Disciplina excluída com sucesso!', 'Fechar', { duration: 3000 });
+      }
     }
   }
 
