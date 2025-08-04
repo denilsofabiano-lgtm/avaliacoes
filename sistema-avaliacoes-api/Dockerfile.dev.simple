@@ -1,0 +1,46 @@
+# Simplified Development Dockerfile
+FROM php:8.2-fpm-alpine
+
+# Install minimal system dependencies
+RUN apk add --no-cache \
+    postgresql-dev \
+    icu-dev \
+    libzip-dev \
+    oniguruma-dev
+
+# Install PHP extensions
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    mbstring \
+    intl \
+    zip
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Configure Composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_MEMORY_LIMIT=-1
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy all files
+COPY . .
+
+# Install dependencies without lock file
+RUN composer install --no-scripts --no-autoloader --no-dev --prefer-dist || \
+    composer install --no-scripts --no-autoloader --prefer-dist
+
+# Generate autoloader
+RUN composer dump-autoload --optimize
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html
+
+# Expose port 9000
+EXPOSE 9000
+
+# Start PHP-FPM
+CMD ["php-fpm"]
