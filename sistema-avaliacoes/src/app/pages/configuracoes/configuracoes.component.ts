@@ -399,7 +399,8 @@ export class ConfiguracoesComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     this.configForm = this.fb.group({
       nomeSistema: ['Sistema de Avaliações'],
