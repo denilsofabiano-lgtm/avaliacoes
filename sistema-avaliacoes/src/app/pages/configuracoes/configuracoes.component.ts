@@ -30,7 +30,8 @@ import { Inject } from '@angular/core';
     MatInputModule,
     MatSelectModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   template: `
     <div class="configuracoes-container">
