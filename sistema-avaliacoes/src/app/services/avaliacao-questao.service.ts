@@ -200,8 +200,8 @@ export class AvaliacaoQuestaoService {
             id: 1,
             pergunta: 'Qual é a capital do Brasil?',
             pontuacao: 2,
-            disciplina: { id: 1, descricao: 'Geografia' },
-            tipoAlternativa: { id: 1, descricao: 'Múltipla Escolha' }
+            disciplina: { id: 1, descricao: 'Geografia', idDisciplinaExterno: 'GEO-001', status: true },
+            tipoAlternativa: { id: 1, descricao: 'Múltipla Escolha', status: true }
           }
         },
         {
@@ -213,8 +213,8 @@ export class AvaliacaoQuestaoService {
             id: 2,
             pergunta: 'Explique o processo de fotossíntese.',
             pontuacao: 3,
-            disciplina: { id: 2, descricao: 'Biologia' },
-            tipoAlternativa: { id: 2, descricao: 'Dissertativa' }
+            disciplina: { id: 2, descricao: 'Biologia', idDisciplinaExterno: 'BIO-001', status: true },
+            tipoAlternativa: { id: 2, descricao: 'Dissertativa', status: true }
           }
         }
       ],
@@ -230,25 +230,25 @@ export class AvaliacaoQuestaoService {
           id: 3,
           pergunta: 'Resolva a equação: 2x + 5 = 15',
           pontuacao: 2.5,
-          disciplina: { id: 3, descricao: 'Matemática' },
-          tipoAlternativa: { id: 1, descricao: 'Múltipla Escolha' },
-          nivelDificuldade: { id: 2, descricao: 'Médio' }
+          disciplina: { id: 3, descricao: 'Matemática', idDisciplinaExterno: 'MAT-001', status: true },
+          tipoAlternativa: { id: 1, descricao: 'Múltipla Escolha', status: true },
+          nivelDificuldade: { id: 2, descricao: 'Médio', status: true }
         },
         {
           id: 4,
           pergunta: 'Quais são os principais biomas brasileiros?',
           pontuacao: 3,
-          disciplina: { id: 1, descricao: 'Geografia' },
-          tipoAlternativa: { id: 2, descricao: 'Dissertativa' },
-          nivelDificuldade: { id: 2, descricao: 'Médio' }
+          disciplina: { id: 1, descricao: 'Geografia', idDisciplinaExterno: 'GEO-001', status: true },
+          tipoAlternativa: { id: 2, descricao: 'Dissertativa', status: true },
+          nivelDificuldade: { id: 2, descricao: 'Médio', status: true }
         },
         {
           id: 5,
           pergunta: 'Defina o conceito de pH.',
           pontuacao: 2,
-          disciplina: { id: 4, descricao: 'Química' },
-          tipoAlternativa: { id: 2, descricao: 'Dissertativa' },
-          nivelDificuldade: { id: 1, descricao: 'Fácil' }
+          disciplina: { id: 4, descricao: 'Química', idDisciplinaExterno: 'QUI-001', status: true },
+          tipoAlternativa: { id: 2, descricao: 'Dissertativa', status: true },
+          nivelDificuldade: { id: 1, descricao: 'Fácil', status: true }
         }
       ],
       total: 3
