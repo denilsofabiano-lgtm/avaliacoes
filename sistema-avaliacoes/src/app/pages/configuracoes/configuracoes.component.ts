@@ -418,19 +418,79 @@ export class ConfiguracoesComponent implements OnInit {
   ngOnInit(): void {}
 
   adicionarTipoAvaliacao(): void {
-    console.log('Adicionar tipo de avaliação');
+    const dialogRef = this.dialog.open(ConfigItemDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Novo Tipo de Avaliação',
+        item: null,
+        type: 'tipoAvaliacao'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newId = Math.max(...this.tiposAvaliacao.map(t => t.id)) + 1;
+        this.tiposAvaliacao.push({ ...result, id: newId });
+        this.snackBar.open('Tipo de avaliação adicionado com sucesso!', 'Fechar', { duration: 3000 });
+      }
+    });
   }
 
   adicionarTipoAlternativa(): void {
-    console.log('Adicionar tipo de alternativa');
+    const dialogRef = this.dialog.open(ConfigItemDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Novo Tipo de Alternativa',
+        item: null,
+        type: 'tipoAlternativa'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newId = Math.max(...this.tiposAlternativa.map(t => t.id)) + 1;
+        this.tiposAlternativa.push({ ...result, id: newId });
+        this.snackBar.open('Tipo de alternativa adicionado com sucesso!', 'Fechar', { duration: 3000 });
+      }
+    });
   }
 
   adicionarNivelDificuldade(): void {
-    console.log('Adicionar nível de dificuldade');
+    const dialogRef = this.dialog.open(ConfigItemDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Novo Nível de Dificuldade',
+        item: null,
+        type: 'nivelDificuldade'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newId = Math.max(...this.niveisDificuldade.map(n => n.id)) + 1;
+        this.niveisDificuldade.push({ ...result, id: newId });
+        this.snackBar.open('Nível de dificuldade adicionado com sucesso!', 'Fechar', { duration: 3000 });
+      }
+    });
   }
 
   adicionarDisciplina(): void {
-    console.log('Adicionar disciplina');
+    const dialogRef = this.dialog.open(ConfigItemDialogComponent, {
+      width: '500px',
+      data: {
+        title: 'Nova Disciplina',
+        item: null,
+        type: 'disciplina'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newId = Math.max(...this.disciplinas.map(d => d.id)) + 1;
+        this.disciplinas.push({ ...result, id: newId });
+        this.snackBar.open('Disciplina adicionada com sucesso!', 'Fechar', { duration: 3000 });
+      }
+    });
   }
 
   sincronizarDisciplinas(): void {
