@@ -1,0 +1,83 @@
+# Fixed Development Dockerfile
+FROM php:8.2-fpm-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    libzip-dev \
+    postgresql-dev \
+    icu-dev \
+    autoconf \
+    g++ \
+    make \
+    unzip
+
+# Install PHP extensions
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    zip \
+    intl \
+    opcache
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Configure Composer and PHP
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_MEMORY_LIMIT=-1
+ENV PHP_MEMORY_LIMIT=512M
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy all application files first
+COPY . .
+
+# Remove existing vendor and composer.lock if they exist
+RUN rm -rf vendor composer.lock
+
+# Copy composer files
+COPY composer.json ./
+
+# Install dependencies with better error handling
+RUN composer validate --no-check-publish || echo "Composer validation warning"
+RUN composer install \
+    --no-scripts \
+    --no-autoloader \
+    --prefer-dist \
+    --ignore-platform-req=ext-sodium \
+    --ignore-platform-req=ext-redis \
+    --verbose || \
+    (echo "First install failed, trying alternative..." && \
+     composer install --no-scripts --prefer-source)
+
+# Generate autoloader
+RUN composer dump-autoload --optimize
+
+# Create necessary Symfony directories
+RUN mkdir -p var/cache var/log public/uploads
+RUN chown -R www-data:www-data var/ public/
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+
+# Copy PHP configuration
+COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+
+# Expose port 9000
+EXPOSE 9000
+
+# Start PHP-FPM
+CMD ["php-fpm"]
