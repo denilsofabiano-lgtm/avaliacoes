@@ -124,6 +124,9 @@ main() {
         "dev")
             deploy_dev
             ;;
+        "local")
+            deploy_local
+            ;;
         "cloud")
             deploy_cloud
             ;;
@@ -132,7 +135,7 @@ main() {
             ;;
         *)
             echo "❌ Invalid environment: $ENVIRONMENT"
-            echo "Valid options: dev, cloud, prod"
+            echo "Valid options: dev, local, cloud, prod"
             exit 1
             ;;
     esac
