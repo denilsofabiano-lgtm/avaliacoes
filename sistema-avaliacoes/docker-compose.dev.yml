@@ -54,8 +54,12 @@ services:
       - avaliacoes-dev-network
     depends_on:
       - backend-dev
-    volumes:
-      - ../sistema-avaliacoes-api/public:/usr/share/nginx/html
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   # Database para desenvolvimento
   database-dev:
