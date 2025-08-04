@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # Frontend Angular Application (Local Development)
+  frontend-local:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: sistema-avaliacoes-frontend-local
+    ports:
+      - "127.0.0.1:4200:4200"  # Bind específico para localhost
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - avaliacoes-local-network
+    environment:
+      - NODE_ENV=development
+    command: ng serve --host 0.0.0.0 --port 4200 --disable-host-check --live-reload=true
+
+  # Backend API Symfony (Local Development)
+  backend-local:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile.dev.fixed
+    container_name: sistema-avaliacoes-backend-local
+    restart: unless-stopped
+    networks:
+      - avaliacoes-local-network
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=postgresql://dev_user:dev_password@database-local:5432/sistema_avaliacoes_dev?serverVersion=15&charset=utf8
+      - JWT_PASSPHRASE=dev-jwt-passphrase
+      - CORS_ALLOW_ORIGIN=http://localhost:4200
+    volumes:
+      - ../sistema-avaliacoes-api:/var/www/html
+    depends_on:
+      - database-local
+      - redis-local
+
+  # Nginx for Backend API (Local Development)
+  nginx-api-local:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile.nginx.dev
+    container_name: sistema-avaliacoes-nginx-local
+    ports:
+      - "127.0.0.1:8081:80"  # Bind específico para localhost
+    restart: unless-stopped
+    networks:
+      - avaliacoes-local-network
+    depends_on:
+      - backend-local
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Database para desenvolvimento local
+  database-local:
+    image: postgres:15-alpine
+    container_name: sistema-avaliacoes-db-local
+    environment:
+      POSTGRES_DB: sistema_avaliacoes_dev
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+    volumes:
+      - postgres_local_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5433:5432"  # Bind específico para localhost
+    restart: unless-stopped
+    networks:
+      - avaliacoes-local-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev_user -d sistema_avaliacoes_dev"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Redis (Para cache e sessões) - Local Development
+  redis-local:
+    image: redis:7-alpine
+    container_name: sistema-avaliacoes-redis-local
+    ports:
+      - "127.0.0.1:6380:6379"  # Bind específico para localhost
+    restart: unless-stopped
+    networks:
+      - avaliacoes-local-network
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_local_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Adminer (Database Management) - Local Development
+  adminer-local:
+    image: adminer:latest
+    container_name: sistema-avaliacoes-adminer-local
+    ports:
+      - "127.0.0.1:8083:8080"  # Bind específico para localhost
+    restart: unless-stopped
+    networks:
+      - avaliacoes-local-network
+    depends_on:
+      - database-local
+    environment:
+      ADMINER_DEFAULT_SERVER: database-local
+
+volumes:
+  postgres_local_data:
+    driver: local
+  redis_local_data:
+    driver: local
+
+networks:
+  avaliacoes-local-network:
+    driver: bridge
