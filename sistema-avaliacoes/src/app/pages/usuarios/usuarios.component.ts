@@ -136,18 +136,25 @@ import { extractErrorMessage } from '../../utils/error-utils';
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Ações</th>
             <td mat-cell *matCellDef="let user">
-              <button mat-icon-button matTooltip="Editar" (click)="editUser(user)">
-                <mat-icon>edit</mat-icon>
+              <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
+                <mat-icon>more_vert</mat-icon>
               </button>
-              <button mat-icon-button 
-                      matTooltip="Alterar Status" 
-                      (click)="toggleUserStatus(user)"
-                      [color]="user.status ? 'warn' : 'primary'">
-                <mat-icon>{{ user.status ? 'block' : 'check_circle' }}</mat-icon>
-              </button>
-              <button mat-icon-button matTooltip="Excluir" color="warn" (click)="deleteUser(user)">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <mat-menu #actionsMenu="matMenu">
+                <button mat-menu-item (click)="editUser(user)">
+                  <mat-icon>edit</mat-icon>
+                  Editar
+                </button>
+                <button mat-menu-item (click)="toggleUserStatus(user)">
+                  <mat-icon [color]="user.status ? 'warn' : 'primary'">
+                    {{ user.status ? 'block' : 'check_circle' }}
+                  </mat-icon>
+                  {{ user.status ? 'Desativar' : 'Ativar' }}
+                </button>
+                <button mat-menu-item (click)="deleteUser(user)">
+                  <mat-icon color="warn">delete</mat-icon>
+                  Excluir
+                </button>
+              </mat-menu>
             </td>
           </ng-container>
 
