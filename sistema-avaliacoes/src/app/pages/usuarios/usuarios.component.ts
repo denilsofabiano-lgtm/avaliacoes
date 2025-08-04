@@ -36,7 +36,7 @@ import { extractErrorMessage } from '../../utils/error-utils';
     MatCardModule,
     MatChipsModule,
     MatTooltipModule,
-
+    MatMenuModule,
     MatDialogModule,
     MatProgressSpinnerModule
   ],
