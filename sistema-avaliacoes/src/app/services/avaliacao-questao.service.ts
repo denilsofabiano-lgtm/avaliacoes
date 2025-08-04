@@ -265,8 +265,7 @@ export class AvaliacaoQuestaoService {
           tipoAlternativa: { id: 2, descricao: 'Dissertativa', status: true },
           nivelDificuldade: { id: 1, descricao: 'Fácil', status: true }
         }
-      ],
-      total: 3
+      ]
     };
   }
 }
