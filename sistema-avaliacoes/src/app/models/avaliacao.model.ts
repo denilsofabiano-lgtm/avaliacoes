@@ -16,14 +16,7 @@ export interface Avaliacao {
   totalQuestoes?: number;
 }
 
-export interface AvaliacaoQuestao {
-  id?: number;
-  dataCadastro?: Date;
-  avaliacaoId: number;
-  questaoId: number;
-  avaliacao?: Avaliacao;
-  questao?: Questao;
-}
+
 
 export interface AvaliacaoParametros {
   id?: number;
