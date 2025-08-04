@@ -47,7 +47,9 @@ COPY composer.loc[k] ./
 
 # Install dependencies (include dev dependencies for development)
 # Use --ignore-platform-req=ext-* to avoid extension conflicts during install
-RUN composer install --prefer-dist --no-scripts --no-autoloader --ignore-platform-req=ext-sodium
+RUN composer install --prefer-dist --no-scripts --no-autoloader --ignore-platform-req=ext-sodium || \
+    composer install --no-scripts --no-autoloader || \
+    composer update --no-scripts --no-autoloader
 
 # Copy application code
 COPY . .
