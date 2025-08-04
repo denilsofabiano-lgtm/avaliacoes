@@ -41,6 +41,28 @@ deploy_dev() {
     echo "🛑 To stop: docker-compose -f docker-compose.dev.yml down"
 }
 
+# Function to deploy cloud development environment
+deploy_cloud() {
+    echo "☁️ Building and starting cloud development environment..."
+
+    # Stop existing containers
+    docker-compose -f docker-compose.cloud.yml down
+
+    # Build and start containers
+    docker-compose -f docker-compose.cloud.yml up --build -d
+
+    echo "🌍 Cloud development environment is running at:"
+    echo "   Frontend: http://0.0.0.0:4200 (or your host IP:4200)"
+    echo "   Backend API: http://0.0.0.0:8081 (or your host IP:8081)"
+    echo "   Database: 0.0.0.0:5433"
+    echo "   Redis: 0.0.0.0:6380"
+    echo "   Adminer: http://0.0.0.0:8083 (or your host IP:8083)"
+    echo ""
+    echo "📋 To view logs: docker-compose -f docker-compose.cloud.yml logs -f"
+    echo "🛑 To stop: docker-compose -f docker-compose.cloud.yml down"
+    echo "🔍 To diagnose: ./diagnose-containers.sh"
+}
+
 # Function to deploy production environment
 deploy_prod() {
     echo "📦 Building and starting production environment..."
