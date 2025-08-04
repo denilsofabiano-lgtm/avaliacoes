@@ -570,3 +570,102 @@ export class ConfiguracoesComponent implements OnInit {
     }
   }
 }
+
+@Component({
+  selector: 'config-item-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSlideToggleModule
+  ],
+  template: `
+    <h2 mat-dialog-title>{{ data.title }}</h2>
+    <form [formGroup]="itemForm" (ngSubmit)="salvar()">
+      <mat-dialog-content>
+        <div class="form-content">
+          <mat-form-field class="full-width">
+            <mat-label>Descrição</mat-label>
+            <input matInput formControlName="descricao" required>
+            <mat-error *ngIf="itemForm.get('descricao')?.hasError('required')">
+              Descrição é obrigatória
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width" *ngIf="data.type === 'disciplina'">
+            <mat-label>ID Externo</mat-label>
+            <input matInput formControlName="idDisciplinaExterno"
+                   placeholder="Ex: MAT001">
+          </mat-form-field>
+
+          <div class="status-toggle">
+            <mat-slide-toggle formControlName="status">
+              {{ itemForm.get('status')?.value ? 'Ativo' : 'Inativo' }}
+            </mat-slide-toggle>
+          </div>
+        </div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions align="end">
+        <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="itemForm.invalid">
+          Salvar
+        </button>
+      </mat-dialog-actions>
+    </form>
+  `,
+  styles: [`
+    .form-content {
+      min-width: 350px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .status-toggle {
+      margin-top: 8px;
+    }
+
+    mat-dialog-actions {
+      padding: 16px 0 0 0;
+    }
+  `]
+})
+export class ConfigItemDialogComponent {
+  itemForm: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<ConfigItemDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.itemForm = this.fb.group({
+      descricao: [data.item?.descricao || '', Validators.required],
+      status: [data.item?.status ?? true]
+    });
+
+    // Adicionar campo idDisciplinaExterno apenas para disciplinas
+    if (data.type === 'disciplina') {
+      this.itemForm.addControl('idDisciplinaExterno',
+        this.fb.control(data.item?.idDisciplinaExterno || ''));
+    }
+  }
+
+  salvar(): void {
+    if (this.itemForm.valid) {
+      this.dialogRef.close(this.itemForm.value);
+    }
+  }
+
+  cancelar(): void {
+    this.dialogRef.close();
+  }
+}
