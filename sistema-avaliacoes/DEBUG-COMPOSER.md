@@ -1,8 +1,16 @@
 # 🔧 Debug do Problema Composer no Backend
 
-## 🚨 Problema Original
+## 🚨 Problemas Resolvidos
+
+### Problema 1: Composer Install (RESOLVIDO ✅)
 ```
 ERROR: failed to solve: process "/bin/sh -c composer install --prefer-dist --no-scripts --no-autoloader" did not complete successfully: exit code: 4
+```
+
+### Problema 2: Nginx Build (RESOLVIDO ✅)
+```
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref: "/composer.lock": not found
+ERROR: Service 'nginx-api-dev' failed to build : Build failed
 ```
 
 ## 🔍 Possíveis Causas
