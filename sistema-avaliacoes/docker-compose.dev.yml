@@ -45,8 +45,7 @@ services:
   nginx-api-dev:
     build:
       context: ../sistema-avaliacoes-api
-      dockerfile: Dockerfile
-      target: web
+      dockerfile: Dockerfile.nginx.dev
     container_name: sistema-avaliacoes-nginx-dev
     ports:
       - "8081:80"
