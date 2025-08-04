@@ -7,3 +7,4 @@ export * from './disciplina.model';
 export * from './avaliacao.model';
 export * from './questao.model';
 export * from './aplicacao.model';
+export * from './avaliacao-questao.model';
