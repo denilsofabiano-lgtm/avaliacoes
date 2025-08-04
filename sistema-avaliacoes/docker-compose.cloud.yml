@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  # Frontend Angular Application (Cloud Development)
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: sistema-avaliacoes-frontend-dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    environment:
+      - NODE_ENV=development
+    command: ng serve --host 0.0.0.0 --port 4200 --disable-host-check --poll=2000
+
+  # Backend API Symfony (Cloud Development)
+  backend-dev:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile.dev.fixed
+    container_name: sistema-avaliacoes-backend-dev
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=postgresql://dev_user:dev_password@database-dev:5432/sistema_avaliacoes_dev?serverVersion=15&charset=utf8
+      - JWT_PASSPHRASE=dev-jwt-passphrase
+      - CORS_ALLOW_ORIGIN=*
+    volumes:
+      - ../sistema-avaliacoes-api:/var/www/html
+    depends_on:
+      - database-dev
+      - redis-dev
+    ports:
+      - "9000:9000"
+
+  # Nginx for Backend API (Cloud Development)
+  nginx-api-dev:
+    build:
+      context: ../sistema-avaliacoes-api
+      dockerfile: Dockerfile.nginx.dev
+    container_name: sistema-avaliacoes-nginx-dev
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    depends_on:
+      - backend-dev
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Database para desenvolvimento
+  database-dev:
+    image: postgres:15-alpine
+    container_name: sistema-avaliacoes-db-dev
+    environment:
+      POSTGRES_DB: sistema_avaliacoes_dev
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev_user -d sistema_avaliacoes_dev"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Redis (Para cache e sessões) - Development
+  redis-dev:
+    image: redis:7-alpine
+    container_name: sistema-avaliacoes-redis-dev
+    ports:
+      - "6380:6379"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_dev_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Adminer (Database Management) - Development
+  adminer-dev:
+    image: adminer:latest
+    container_name: sistema-avaliacoes-adminer-dev
+    ports:
+      - "8083:8080"
+    restart: unless-stopped
+    networks:
+      - avaliacoes-dev-network
+    depends_on:
+      - database-dev
+    environment:
+      ADMINER_DEFAULT_SERVER: database-dev
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+
+networks:
+  avaliacoes-dev-network:
+    driver: bridge
