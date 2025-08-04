@@ -499,7 +499,41 @@ export class ConfiguracoesComponent implements OnInit {
   }
 
   editarItem(item: any): void {
-    console.log('Editar item:', item);
+    let type = '';
+    let title = '';
+    let width = '400px';
+
+    // Determinar o tipo baseado no item
+    if (this.tiposAvaliacao.includes(item)) {
+      type = 'tipoAvaliacao';
+      title = 'Editar Tipo de Avaliação';
+    } else if (this.tiposAlternativa.includes(item)) {
+      type = 'tipoAlternativa';
+      title = 'Editar Tipo de Alternativa';
+    } else if (this.niveisDificuldade.includes(item)) {
+      type = 'nivelDificuldade';
+      title = 'Editar Nível de Dificuldade';
+    } else if (this.disciplinas.includes(item)) {
+      type = 'disciplina';
+      title = 'Editar Disciplina';
+      width = '500px';
+    }
+
+    const dialogRef = this.dialog.open(ConfigItemDialogComponent, {
+      width: width,
+      data: {
+        title: title,
+        item: { ...item },
+        type: type
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        Object.assign(item, result);
+        this.snackBar.open('Item atualizado com sucesso!', 'Fechar', { duration: 3000 });
+      }
+    });
   }
 
   excluirItem(item: any): void {
