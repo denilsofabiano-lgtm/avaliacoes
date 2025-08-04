@@ -26,13 +26,20 @@ ERROR: Service 'nginx-api-dev' failed to build : Build failed
 - `Dockerfile.dev.simple` - Versão simplificada  
 - `Dockerfile.dev.minimal` - Versão mínima para teste
 
-### 2. Melhorias Implementadas:
+### 2. Melhorias Backend Implementadas:
 - ✅ Remoção do composer.lock inválido
 - ✅ Configuração COMPOSER_MEMORY_LIMIT=-1
 - ✅ Ignore platform requirements problemáticos
 - ✅ Fallback commands para instalação
 - ✅ Validação do composer.json
 - ✅ Verbose output para debug
+
+### 3. Correções Nginx Implementadas:
+- ✅ Dockerfile.nginx.dev específico para desenvolvimento
+- ✅ nginx.dev.conf com configurações otimizadas
+- ✅ CORS configurado para localhost:4200
+- ✅ Health check endpoint (/health)
+- ✅ Conexão com backend-dev via FastCGI
 
 ## 🚀 Como Testar
 
