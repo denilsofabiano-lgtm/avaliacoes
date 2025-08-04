@@ -401,13 +401,8 @@ export class AvaliacoesComponent implements OnInit {
   }
 
   manageQuestoes(avaliacao: Avaliacao): void {
-    // Redirecionar para questões com filtro da avaliação
-    this.router.navigate(['/questoes'], {
-      queryParams: {
-        avaliacao: avaliacao.id,
-        manage: true
-      }
-    });
+    // Redirecionar para gestão de questões da avaliação
+    this.router.navigate(['/avaliacoes', avaliacao.id, 'questoes']);
   }
 
   aplicarAvaliacao(avaliacao: Avaliacao): void {
