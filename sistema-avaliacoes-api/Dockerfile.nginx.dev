@@ -1,0 +1,22 @@
+# Simple Nginx for Development
+FROM nginx:alpine
+
+# Copy nginx configuration for development
+COPY nginx.dev.conf /etc/nginx/conf.d/default.conf
+
+# Create basic index.php for testing
+RUN mkdir -p /usr/share/nginx/html
+RUN echo '<?php phpinfo(); ?>' > /usr/share/nginx/html/index.php
+RUN echo 'Nginx is running for Sistema de Avaliações API' > /usr/share/nginx/html/index.html
+
+# Copy public directory if it exists
+COPY public/ /usr/share/nginx/html/ 2>/dev/null || echo "No public directory found, using default"
+
+# Set permissions
+RUN chown -R nginx:nginx /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
