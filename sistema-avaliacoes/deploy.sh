@@ -63,6 +63,34 @@ deploy_cloud() {
     echo "🔍 To diagnose: ./diagnose-containers.sh"
 }
 
+# Function to deploy local development environment (127.0.0.1)
+deploy_local() {
+    echo "🏠 Building and starting LOCAL development environment..."
+
+    # Stop existing containers (all variants)
+    docker-compose -f docker-compose.dev.yml down 2>/dev/null || true
+    docker-compose -f docker-compose.cloud.yml down 2>/dev/null || true
+    docker-compose -f docker-compose.local.yml down 2>/dev/null || true
+
+    # Build and start containers for localhost
+    docker-compose -f docker-compose.local.yml up --build -d
+
+    echo "🌍 Local development environment is running at:"
+    echo "   Frontend: http://localhost:4200"
+    echo "   Frontend: http://127.0.0.1:4200"
+    echo "   Backend API: http://localhost:8081"
+    echo "   Backend API: http://127.0.0.1:8081"
+    echo "   API Health: http://localhost:8081/health"
+    echo "   API Debug: http://localhost:8081/debug"
+    echo "   Database: localhost:5433"
+    echo "   Redis: localhost:6380"
+    echo "   Adminer: http://localhost:8083"
+    echo ""
+    echo "📋 To view logs: docker-compose -f docker-compose.local.yml logs -f"
+    echo "🛑 To stop: docker-compose -f docker-compose.local.yml down"
+    echo "🔍 To check ports: nmap -p 4200,8081 localhost"
+}
+
 # Function to deploy production environment
 deploy_prod() {
     echo "📦 Building and starting production environment..."
