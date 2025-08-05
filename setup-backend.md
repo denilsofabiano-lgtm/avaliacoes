@@ -1,8 +1,22 @@
-# Setup do Backend - Instruções Manuais
+# Setup do Backend - Instruções
 
-Como não é possível executar comandos do sistema automaticamente, siga estas instruções para configurar o backend:
+## Método Rápido (Automatizado)
 
-## 1. Pré-requisitos
+### Para SQLite (Padrão - Recomendado):
+```bash
+npm run setup-full
+```
+
+### Para MySQL:
+```bash
+npm run setup-mysql
+npm run backend:fixtures
+npm run backend:jwt
+```
+
+## Método Manual (Passo a passo)
+
+### 1. Pré-requisitos
 
 Certifique-se de ter instalado:
 - PHP 8.1 ou superior
@@ -13,22 +27,31 @@ Certifique-se de ter instalado:
 ```bash
 php --version
 composer --version
+php -m | grep sqlite  # Verificar SQLite
 ```
 
-## 2. Instalar dependências
+### 2. Instalar dependências
 
 ```bash
 cd sistema-avaliacoes-api
 composer install
 ```
 
-## 3. Configurar banco de dados
+### 3. Configurar banco de dados
 
+**Para SQLite (Padrão):**
 ```bash
 # Criar diretório var se não existir
 mkdir -p var
 
-# Criar banco SQLite e executar migrações
+# Executar migrações (cria o banco SQLite automaticamente)
+php bin/console doctrine:migrations:migrate --no-interaction
+```
+
+**Para MySQL:**
+```bash
+# Primeiro configure o .env com dados do MySQL
+# Depois execute:
 php bin/console doctrine:database:create --if-not-exists
 php bin/console doctrine:migrations:migrate --no-interaction
 ```
