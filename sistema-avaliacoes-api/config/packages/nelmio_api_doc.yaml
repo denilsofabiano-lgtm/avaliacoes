@@ -1,0 +1,48 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Sistema de Avaliações API
+            description: API REST para Sistema de Avaliações Educacionais
+            version: 1.0.0
+            contact:
+                name: Sistema Avaliações Team
+                email: dev@sistema-avaliacoes.com
+        servers:
+            - url: http://localhost:8081
+              description: Servidor de Desenvolvimento
+        components:
+            securitySchemes:
+                bearerAuth:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+        security:
+            - bearerAuth: []
+        tags:
+            - name: Autenticação
+              description: Endpoints para login e autenticação
+            - name: Usuários
+              description: Gestão de usuários do sistema
+            - name: Avaliações
+              description: Gestão de avaliações
+            - name: Questões
+              description: Gestão de questões
+            - name: Aplicações
+              description: Aplicação de provas
+            - name: Relatórios
+              description: Geração de relatórios
+            - name: Configurações
+              description: Configurações do sistema
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+        host_patterns: []
+        name_patterns: []
+    models:
+        names:
+            - alias: Usuario
+              type: App\Entity\Usuario
+            - alias: Avaliacao
+              type: App\Entity\Avaliacao
+            - alias: Questao
+              type: App\Entity\Questao
