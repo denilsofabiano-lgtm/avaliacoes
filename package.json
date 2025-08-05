@@ -17,7 +17,7 @@
     "install-all": "cd sistema-avaliacoes && npm install && cd ../sistema-avaliacoes-api && composer install",
     "setup": "npm run install-all && npm run backend:setup",
     "setup-mysql": "npm run install-all && npm run backend:setup-mysql",
-    "setup-full": "npm run setup && npm run backend:fixtures && npm run backend:jwt",
+    "setup-full": "npm run backend:clean && npm run setup && npm run backend:fixtures && npm run backend:jwt",
     "dev": "npm run start",
     "serve-static": "npx serve . -p 4200"
   },
