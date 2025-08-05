@@ -90,6 +90,14 @@ Acesse: http://localhost:8081/api/usuarios
 
 Deve retornar JSON com lista de usuários.
 
+## 8. Documentação da API
+
+Acesse: http://localhost:8081/api/doc
+
+Para ver a documentação completa dos endpoints disponíveis.
+
+Ou obtenha a lista de endpoints em JSON: http://localhost:8081/api/endpoints
+
 ## 8. Iniciar Frontend
 
 Em outro terminal:
