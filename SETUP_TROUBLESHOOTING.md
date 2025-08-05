@@ -30,6 +30,22 @@ npm run setup
 npm run setup-full
 ```
 
+### 3. "The version 'latest' couldn't be reached, there are no registered migrations"
+**Problema:** Não existem arquivos de migração no projeto
+
+**Solução:** Uma migração inicial foi criada automaticamente. Execute:
+```bash
+npm run setup
+```
+
+Se ainda tiver problemas, execute manualmente:
+```bash
+cd sistema-avaliacoes-api
+composer install
+mkdir -p var
+php bin/console doctrine:migrations:migrate --no-interaction
+```
+
 ### 3. "Class not found"
 **Solução:**
 ```bash
