@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # Frontend Angular Production
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/production/frontend.Dockerfile
+    container_name: avaliacoes-frontend-prod
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - avaliacoes-network
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Sistema de Avaliações Frontend"
+      - "com.example.department=Educação"
+
+  # Backend Symfony Production
+  backend:
+    build:
+      context: .
+      dockerfile: docker/production/backend.Dockerfile
+    container_name: avaliacoes-backend-prod
+    expose:
+      - "9000"
+    volumes:
+      - backend-uploads:/var/www/html/public/uploads
+      - backend-logs:/var/www/html/var/log
+    environment:
+      - APP_ENV=prod
+      - DATABASE_URL=postgresql://avaliacoes_user:avaliacoes_password@database:5432/sistema_avaliacoes
+      - JWT_PASSPHRASE=avaliacoes2024
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - database
+      - redis
+    networks:
+      - avaliacoes-network
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Sistema de Avaliações Backend API"
+      - "com.example.department=Educação"
+
+  # Production Database
+  database:
+    image: postgres:15-alpine
+    container_name: avaliacoes-db-prod
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    environment:
+      - POSTGRES_DB=sistema_avaliacoes
+      - POSTGRES_USER=avaliacoes_user
+      - POSTGRES_PASSWORD=avaliacoes_password
+    networks:
+      - avaliacoes-network
+    restart: unless-stopped
+    labels:
+      - "com.example.description=PostgreSQL Database"
+      - "com.example.department=Educação"
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: avaliacoes-redis-prod
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --requirepass avaliacoes2024
+    networks:
+      - avaliacoes-network
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Redis Cache"
+      - "com.example.department=Educação"
+
+  # Nginx Reverse Proxy (Production)
+  nginx:
+    image: nginx:alpine
+    container_name: avaliacoes-nginx-prod
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx/production.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - avaliacoes-network
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Nginx Reverse Proxy"
+      - "com.example.department=Educação"
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  backend-uploads:
+    driver: local
+  backend-logs:
+    driver: local
+
+networks:
+  avaliacoes-network:
+    driver: bridge
