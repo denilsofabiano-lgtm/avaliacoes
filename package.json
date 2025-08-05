@@ -13,6 +13,7 @@
     "backend:init": "cd sistema-avaliacoes-api && composer install && mkdir -p var && php bin/console doctrine:schema:create",
     "backend:fixtures": "cd sistema-avaliacoes-api && php bin/console doctrine:fixtures:load --no-interaction",
     "backend:jwt": "cd sistema-avaliacoes-api && mkdir -p config/jwt && php bin/console lexik:jwt:generate-keypair --skip-if-exists",
+    "backend:clean": "rm -f sistema-avaliacoes-api/config/packages/nelmio_api_doc.yaml",
     "install-all": "cd sistema-avaliacoes && npm install && cd ../sistema-avaliacoes-api && composer install",
     "setup": "npm run install-all && npm run backend:setup",
     "setup-mysql": "npm run install-all && npm run backend:setup-mysql",
