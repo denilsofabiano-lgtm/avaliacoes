@@ -46,14 +46,14 @@ mkdir -p var
 php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
-### 3. "Class not found"
+### 4. "Class not found"
 **Solução:**
 ```bash
 cd sistema-avaliacoes-api
 composer dump-autoload
 ```
 
-### 4. "Database locked"
+### 5. "Database locked"
 **Solução:**
 ```bash
 cd sistema-avaliacoes-api
@@ -61,7 +61,7 @@ rm var/data.db
 php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
-### 5. "JWT keys not found"
+### 6. "JWT keys not found"
 **Solução:**
 ```bash
 npm run backend:jwt
