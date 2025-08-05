@@ -8,8 +8,13 @@
     "frontend": "cd sistema-avaliacoes && npm start",
     "backend": "cd sistema-avaliacoes-api && php -S localhost:8081 -t public",
     "backend:setup": "cd sistema-avaliacoes-api && composer install && mkdir -p var && php bin/console doctrine:migrations:migrate --no-interaction",
+    "backend:setup-mysql": "cd sistema-avaliacoes-api && composer install && php bin/console doctrine:database:create --if-not-exists && php bin/console doctrine:migrations:migrate --no-interaction",
+    "backend:fixtures": "cd sistema-avaliacoes-api && php bin/console doctrine:fixtures:load --no-interaction",
+    "backend:jwt": "cd sistema-avaliacoes-api && mkdir -p config/jwt && php bin/console lexik:jwt:generate-keypair --skip-if-exists",
     "install-all": "cd sistema-avaliacoes && npm install && cd ../sistema-avaliacoes-api && composer install",
     "setup": "npm run install-all && npm run backend:setup",
+    "setup-mysql": "npm run install-all && npm run backend:setup-mysql",
+    "setup-full": "npm run setup && npm run backend:fixtures && npm run backend:jwt",
     "dev": "npm run start",
     "serve-static": "npx serve . -p 4200"
   },
