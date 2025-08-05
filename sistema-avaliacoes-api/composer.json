@@ -40,8 +40,7 @@
         "symfony/web-link": "7.0.*",
         "symfony/yaml": "7.0.*",
         "lexik/jwt-authentication-bundle": "^2.20",
-        "symfony/uid": "7.0.*",
-        "nelmio/api-doc-bundle": "^4.0"
+        "symfony/uid": "7.0.*"
     },
     "config": {
         "allow-plugins": {
