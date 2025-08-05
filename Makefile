@@ -122,6 +122,22 @@ rebuild: ## Rebuild all containers
 	$(COMPOSE_DEV) down
 	$(COMPOSE_DEV) up --build --force-recreate -d
 
+fix: ## Fix common Docker issues (development)
+	@chmod +x docker/fix.sh
+	./docker/fix.sh development
+
+fix-prod: ## Fix common Docker issues (production)
+	@chmod +x docker/fix.sh
+	./docker/fix.sh production
+
+debug: ## Debug Docker containers (development)
+	@chmod +x docker/debug.sh
+	./docker/debug.sh development
+
+debug-prod: ## Debug Docker containers (production)
+	@chmod +x docker/debug.sh
+	./docker/debug.sh production
+
 # Access containers
 backend-shell: ## Access backend container shell
 	$(COMPOSE_DEV) exec backend /bin/bash
