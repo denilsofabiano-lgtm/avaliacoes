@@ -7,7 +7,7 @@
     "start": "concurrently \"npm run backend\" \"npm run frontend\"",
     "frontend": "cd sistema-avaliacoes && npm start",
     "backend": "cd sistema-avaliacoes-api && php -S localhost:8081 -t public",
-    "backend:setup": "cd sistema-avaliacoes-api && composer install && mkdir -p var && php bin/console make:migration --no-interaction && php bin/console doctrine:migrations:migrate --no-interaction",
+    "backend:setup": "cd sistema-avaliacoes-api && composer install && mkdir -p var && php bin/console doctrine:migrations:diff --no-interaction && php bin/console doctrine:migrations:migrate --no-interaction",
     "backend:setup-mysql": "cd sistema-avaliacoes-api && composer install && php bin/console doctrine:database:create --if-not-exists && php bin/console doctrine:migrations:migrate --no-interaction",
     "backend:fixtures": "cd sistema-avaliacoes-api && php bin/console doctrine:fixtures:load --no-interaction",
     "backend:jwt": "cd sistema-avaliacoes-api && mkdir -p config/jwt && php bin/console lexik:jwt:generate-keypair --skip-if-exists",
