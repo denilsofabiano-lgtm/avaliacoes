@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Frontend Angular
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/development/frontend.Dockerfile
+    container_name: avaliacoes-frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./sistema-avaliacoes:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - avaliacoes-network
+
+  # Backend Symfony API
+  backend:
+    build:
+      context: .
+      dockerfile: docker/development/backend.Dockerfile
+    container_name: avaliacoes-backend
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./sistema-avaliacoes-api:/var/www/html
+      - backend-data:/var/www/html/var
+    environment:
+      - APP_ENV=dev
+      - DATABASE_URL=sqlite:///%kernel.project_dir%/var/data.db
+      - JWT_PASSPHRASE=avaliacoes2024
+    networks:
+      - avaliacoes-network
+
+volumes:
+  backend-data:
+    driver: local
+
+networks:
+  avaliacoes-network:
+    driver: bridge
