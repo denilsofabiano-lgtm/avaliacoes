@@ -32,25 +32,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files
-COPY sistema-avaliacoes-api/composer*.json ./
+# Copy application code
+COPY sistema-avaliacoes-api/ ./
+
+# Create required directories and set permissions
+RUN mkdir -p var/cache var/log config/jwt \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/var \
+    && chown -R www-data:www-data var/ config/jwt/
 
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev --no-scripts
 
-# Copy application code
-COPY sistema-avaliacoes-api/ ./
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage
-
-# Create required directories
-RUN mkdir -p var/cache var/log config/jwt \
-    && chown -R www-data:www-data var/ config/jwt/
-
 # Run post-install scripts
-RUN composer run-script post-install-cmd
+RUN composer run-script post-install-cmd || true
 
 # Generate JWT keys
 RUN php bin/console lexik:jwt:generate-keypair --skip-if-exists || true
