@@ -71,6 +71,15 @@ mkdir -p config/jwt
 php bin/console lexik:jwt:generate-keypair --skip-if-exists
 ```
 
+### 7. "There is no extension able to load the configuration for 'nelmio_api_doc'"
+**Problema:** Arquivo de configuração existe mas bundle não está instalado
+
+**Solução:**
+```bash
+rm -f sistema-avaliacoes-api/config/packages/nelmio_api_doc.yaml
+npm run setup
+```
+
 ## 📋 Comandos Disponíveis
 
 ### Setup Completo
