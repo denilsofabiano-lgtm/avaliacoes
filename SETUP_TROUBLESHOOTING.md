@@ -80,6 +80,33 @@ rm -f sistema-avaliacoes-api/config/packages/nelmio_api_doc.yaml
 npm run setup
 ```
 
+### 8. "Failed opening required 'autoload_runtime.php'" (Docker)
+**Problema:** Composer não instalou as dependências corretamente no container
+
+**Solução Rápida:**
+```bash
+# Usar script de fix automático
+make fix
+
+# Ou manualmente
+docker-compose down
+docker-compose up --build --force-recreate
+```
+
+**Solução Completa:**
+```bash
+# Debug para verificar o problema
+make debug
+
+# Fix específico
+./docker/fix.sh development
+
+# Se ainda não funcionar, reset completo
+docker-compose down -v
+docker system prune -f
+docker-compose up --build
+```
+
 ## 📋 Comandos Disponíveis
 
 ### Setup Completo
