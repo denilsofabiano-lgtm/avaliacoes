@@ -14,12 +14,16 @@ RUN apk add --no-cache \
     zip \
     unzip \
     sqlite \
-    sqlite-dev
+    sqlite-dev \
+    postgresql-dev \
+    libpq
 
 # Install PHP extensions
 RUN docker-php-ext-install \
     pdo_sqlite \
     pdo_mysql \
+    pdo_pgsql \
+    pgsql \
     mbstring \
     exif \
     pcntl \
